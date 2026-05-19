@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Cyprus Properties</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f5f5f0;
+            color: #1a1a1a;
+        }
+
+        .app {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        .lang-switch {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+
+        .lb {
+            padding: 6px 10px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .lb.active {
+            border: 2px solid #1a1a1a;
+        }
+
+        .lb img {
+            display: block;
+            border-radius: 2px;
+        }
+
+        .header {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 14px;
+        }
+
+        .logo {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .header h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .header p {
+            font-size: 13px;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        .filters {
+            background: white;
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 14px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .fg {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .fg label {
+            font-size: 11px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        select {
+            font-size: 14px;
+            padding: 8px 10px;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            background: #f8f8f8;
+            color: #1a1a1a;
+            width: 100%;
+        }
+
+        .sort-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .sort-btn {
+            font-size: 12px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            background: white;
+            color: #666;
+            cursor: pointer;
+        }
+
+        .sort-btn.active {
+            background: #0f6e56;
+            color: white;
+            border-color: #0f6e56;
+        }
+
+        .count {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .listings {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 16px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 160px;
+            background: linear-gradient(135deg, #e6f7f2, #b2e0d0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 56px;
+            position: relative;
+        }
+
+        .fav-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            border: none;
+            border-radius: 50%;
+            width: 34px;
+            height: 34px;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .market-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 11px;
+            padding: 3px 9px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .badge-new-build {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .badge-resale {
+            background: #f3e5f5;
+            color: #6a1b9a;
+        }
+
+        .card-body {
+            padding: 14px;
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 6px;
+            gap: 8px;
+        }
+
+        .card-title {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .card-price {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0f6e56;
+            white-space: nowrap;
+        }
+
+        .card-meta {
+            display: flex;
+            gap: 10px;
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            display: inline-block;
+            font-size: 12px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            background: #e6f7f2;
+            color: #0f6e56;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .new-badge {
+            display: inline-block;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            background: #fff3e0;
+            color: #e65100;
+            font-weight: 600;
+            margin-left: 6px;
+        }
+
+        .btns {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 11px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .bwa {
+            background: #25D366;
+            color: white;
+        }
+
+        .bem {
+            background: #f0f0f0;
+            color: #1a1a1a;
+        }
+
+        .bfrm {
+            background: white;
+            color: #888;
+            border: 1px solid #e0e0e0 !important;
+            font-size: 13px;
+        }
+
+        .cform {
+            margin-top: 6px;
+            padding: 12px;
+            background: #f8f8f8;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .cform input,
+        .cform textarea,
+        .cform select {
+            font-size: 14px;
+            padding: 9px 12px;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            background: white;
+            color: #1a1a1a;
+            width: 100%;
+            font-family: inherit;
+            resize: none;
+        }
+
+        .sbtn {
+            background: #0f6e56;
+            color: white;
+            border: none;
+            padding: 11px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .bottom-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .action-card {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            border: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .action-icon {
+            font-size: 28px;
+        }
+
+        .action-text strong {
+            display: block;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .action-text span {
+            font-size: 13px;
+            color: #888;
+        }
+
+        .none {
+            text-align: center;
+            padding: 40px 20px;
+            color: #aaa;
+            background: white;
+            border-radius: 16px;
+            grid-column: 1/-1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app" id="app">
+
+        <div class="lang-switch">
+            <button class="lb active" onclick="setLang('ru', this)"><img src="https://flagcdn.com/24x18/ru.png"
+                    alt="RU"></button>
+            <button class="lb" onclick="setLang('en', this)"><img src="https://flagcdn.com/24x18/gb.png"
+                    alt="EN"></button>
+            <button class="lb" onclick="setLang('el', this)"><img src="https://flagcdn.com/24x18/cy.png"
+                    alt="ΕΛ"></button>
+            <button class="lb" onclick="setLang('he', this)"><img src="https://flagcdn.com/24x18/il.png"
+                    alt="HE"></button>
+        </div>
+
+        <div class="header">
+            <div class="logo">Best Cyprus Properties</div>
+            <h1 id="hn"></h1>
+            <p id="hs"></p>
+        </div>
+
+        <div class="filters">
+            <div class="fg"><label id="lc"></label>
+                <select id="fc" onchange="render()">
+                    <option value=""></option>
+                    <option value="Limassol"></option>
+                    <option value="Limassol_suburb"></option>
+                    <option value="Paphos"></option>
+                    <option value="Paphos_suburb"></option>
+                    <option value="Larnaca"></option>
+                    <option value="Larnaca_suburb"></option>
+                    <option value="Nicosia"></option>
+                    <option value="Nicosia_suburb"></option>
+                </select>
+            </div>
+            <div class="fg"><label id="lt"></label>
+                <select id="ft" onchange="render()">
+                    <option value=""></option>
+                    <option value="apt"></option>
+                    <option value="house"></option>
+                    <option value="townhouse"></option>
+                    <option value="land"></option>
+                    <option value="commercial"></option>
+                    <option value="building"></option>
+                </select>
+            </div>
+            <div class="fg"><label id="lm"></label>
+                <select id="fm" onchange="render()">
+                    <option value=""></option>
+                    <option value="new"></option>
+                    <option value="resale"></option>
+                </select>
+            </div>
+            <div class="fg"><label id="lb2"></label>
+                <select id="fb" onchange="render()">
+                    <option value=""></option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4+</option>
+                </select>
+            </div>
+            <div class="fg"><label id="lp"></label>
+                <select id="fp" onchange="render()">
+                    <option value=""></option>
+                    <option value="200">€200 000</option>
+                    <option value="350">€350 000</option>
+                    <option value="600">€600 000</option>
+                    <option value="1000">€1 000 000</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="sort-bar" id="sort-bar"></div>
+        <p class="count" id="rc"></p>
+        <div class="listings" id="lst"></div>
+
+        <div class="bottom-actions">
+            <button class="action-card" onclick="toggleBottomForm('search')">
+                <span class="action-icon">🔍</span>
+                <div class="action-text">
+                    <strong id="ba-search"></strong>
+                    <span id="ba-search-sub"></span>
+                </div>
+            </button>
+            <div id="search-form"></div>
+
+            <button class="action-card" onclick="toggleBottomForm('sell')">
+                <span class="action-icon">🏠</span>
+                <div class="action-text">
+                    <strong id="ba-sell"></strong>
+                    <span id="ba-sell-sub"></span>
+                </div>
+            </button>
+            <div id="sell-form"></div>
+        </div>
+
+    </div>
+    <script>
+        const DATA = [
+            { id: 1, title_ru: 'Апартаменты у моря', title_en: 'Sea-view apartment', title_el: 'Διαμέρισμα με θέα θάλασσα', title_he: 'דירה עם נוף לים', city: 'Limassol', suburb: false, type: 'apt', market: 'new', price: 280, rooms: 2, area: 72, tag_ru: 'Вид на море', tag_en: 'Sea view', tag_el: 'Θέα θάλασσα', tag_he: 'נוף לים', emoji: '🏢', isNew: true, daysAgo: 2 },
+            { id: 2, title_ru: 'Вилла с бассейном', title_en: 'Villa with pool', title_el: 'Βίλα με πισίνα', title_he: 'וילה עם בריכה', city: 'Paphos', suburb: true, type: 'house', market: 'resale', price: 550, rooms: 4, area: 210, tag_ru: 'Бассейн', tag_en: 'Pool', tag_el: 'Πισίνα', tag_he: 'בריכה', emoji: '🏡', isNew: false, daysAgo: 30 },
+            { id: 3, title_ru: 'Студия в Ларнаке', title_en: 'Studio in Larnaca', title_el: 'Στούντιο στη Λάρνακα', title_he: 'סטודיו בלרנקה', city: 'Larnaca', suburb: false, type: 'apt', market: 'new', price: 145, rooms: 1, area: 42, tag_ru: 'Новый дом', tag_en: 'New build', tag_el: 'Νέο κτίριο', tag_he: 'בנייה חדשה', emoji: '🏢', isNew: true, daysAgo: 1 },
+            { id: 4, title_ru: 'Квартира 3 спальни', title_en: '3-bedroom apartment', title_el: 'Διαμέρισμα 3 υπνοδωματίων', title_he: 'דירת 3 חדרים', city: 'Limassol', suburb: false, type: 'apt', market: 'resale', price: 320, rooms: 3, area: 95, tag_ru: 'Инвестиция', tag_en: 'Investment', tag_el: 'Επένδυση', tag_he: 'השקעה', emoji: '🏢', isNew: false, daysAgo: 14 },
+            { id: 5, title_ru: 'Дом у моря', title_en: 'House by the sea', title_el: 'Σπίτι δίπλα στη θάλασσα', title_he: 'בית ליד הים', city: 'Paphos', suburb: false, type: 'house', market: 'resale', price: 390, rooms: 3, area: 160, tag_ru: 'Тихий район', tag_en: 'Quiet area', tag_el: 'Ήσυχη περιοχή', tag_he: 'שכונה שקטה', emoji: '🏡', isNew: false, daysAgo: 7 },
+            { id: 6, title_ru: 'Таунхаус в Никосии', title_en: 'Townhouse in Nicosia', title_el: 'Συγκρότημα κατοικιών Λευκωσία', title_he: 'טאונהאוס בניקוסיה', city: 'Nicosia', suburb: false, type: 'townhouse', market: 'new', price: 310, rooms: 3, area: 130, tag_ru: 'Новый проект', tag_en: 'New project', tag_el: 'Νέο έργο', tag_he: 'פרויקט חדש', emoji: '🏘️', isNew: true, daysAgo: 4 },
+            { id: 7, title_ru: 'Земельный участок', title_en: 'Land plot', title_el: 'Οικόπεδο', title_he: 'מגרש', city: 'Paphos', suburb: true, type: 'land', market: 'resale', price: 180, rooms: 0, area: 500, tag_ru: 'Под строительство', tag_en: 'Building plot', tag_el: 'Για οικοδόμηση', tag_he: 'למגורים', emoji: '🌿', isNew: false, daysAgo: 20 },
+            { id: 8, title_ru: 'Коммерческое помещение', title_en: 'Commercial property', title_el: 'Εμπορικό ακίνητο', title_he: 'נכס מסחרי', city: 'Limassol', suburb: false, type: 'commercial', market: 'resale', price: 420, rooms: 0, area: 85, tag_ru: 'Офис / магазин', tag_en: 'Office / retail', tag_el: 'Γραφείο / κατάστημα', tag_he: 'משרד / חנות', emoji: '🏪', isNew: false, daysAgo: 10 },
+            { id: 9, title_ru: 'Жилое здание целиком', title_en: 'Whole residential building', title_el: 'Ολόκληρο κτίριο', title_he: 'בניין שלם', city: 'Larnaca', suburb: true, type: 'building', market: 'resale', price: 980, rooms: 0, area: 620, tag_ru: 'Инвестиция', tag_en: 'Investment', tag_el: 'Επένδυση', tag_he: 'השקעה', emoji: '🏗️', isNew: false, daysAgo: 5 },
+        ];
+
+        const T = {
+            ru: {
+                h: 'Недвижимость на Кипре', s: 'Лимасол, Пафос, Ларнака, Никосия и пригороды',
+                lc: 'Город', lt: 'Тип недвижимости', lm: 'Первичная / Вторичная', lb2: 'Спальни', lp: 'Цена до',
+                all: 'Все', any: 'Любая', anyB: 'Любое',
+                apt: 'Квартира', house: 'Дом / вилла', townhouse: 'Таунхаус', land: 'Земельный участок', commercial: 'Коммерческая', building: 'Целое здание',
+                newBuild: 'Первичная', resale: 'Вторичная',
+                cities: { Limassol: 'Лимасол', Limassol_suburb: 'Лимасол и пригород', Paphos: 'Пафос', Paphos_suburb: 'Пафос и пригород', Larnaca: 'Ларнака', Larnaca_suburb: 'Ларнака и пригород', Nicosia: 'Никосия', Nicosia_suburb: 'Никосия и пригород' },
+                rooms: 'спал.', area: 'м²', res: n => `Найдено: ${n} объектов`, none: 'Ничего не найдено',
+                wa: 'Написать в WhatsApp', em: 'Написать на email', frm: 'Оставить заявку',
+                fn: 'Ваше имя', fphone: 'Телефон или Telegram', fmsg: 'Сообщение', send: 'Отправить',
+                newBadge: 'Новое',
+                sorts: ['По цене ↑', 'По цене ↓', 'По спальням', 'По метражу', 'Сначала новые'],
+                baSearch: 'Не нашли нужное?', baSearchSub: 'Оставьте заявку — мы подберём',
+                baSell: 'Продаёте недвижимость?', baSellSub: 'Расскажите нам об объекте',
+                sfRooms: 'Кол-во спален', sfBudget: 'Бюджет (€)', sfMsg: 'Пожелания',
+                sellArea: 'Метраж (м²)', sellPrice: 'Цена (€)', sellDesc: 'Описание объекта', rtl: false
+            },
+            en: {
+                h: 'Cyprus Real Estate', s: 'Limassol, Paphos, Larnaca, Nicosia & suburbs',
+                lc: 'City', lt: 'Property type', lm: 'New build / Resale', lb2: 'Bedrooms', lp: 'Price up to',
+                all: 'All', any: 'Any', anyB: 'Any',
+                apt: 'Apartment', house: 'House / villa', townhouse: 'Townhouse', land: 'Land plot', commercial: 'Commercial', building: 'Whole building',
+                newBuild: 'New build', resale: 'Resale',
+                cities: { Limassol: 'Limassol', Limassol_suburb: 'Limassol & suburbs', Paphos: 'Paphos', Paphos_suburb: 'Paphos & suburbs', Larnaca: 'Larnaca', Larnaca_suburb: 'Larnaca & suburbs', Nicosia: 'Nicosia', Nicosia_suburb: 'Nicosia & suburbs' },
+                rooms: 'bed.', area: 'm²', res: n => `Found: ${n} properties`, none: 'No properties found',
+                wa: 'Contact on WhatsApp', em: 'Send email', frm: 'Send enquiry',
+                fn: 'Your name', fphone: 'Phone or Telegram', fmsg: 'Message', send: 'Send',
+                newBadge: 'New',
+                sorts: ['Price ↑', 'Price ↓', 'Bedrooms', 'Area', 'Newest first'],
+                baSearch: "Can't find it?", baSearchSub: "Leave a request — we'll find it",
+                baSell: 'Selling property?', baSellSub: 'Tell us about your property',
+                sfRooms: 'Bedrooms', sfBudget: 'Budget (€)', sfMsg: 'Preferences',
+                sellArea: 'Area (m²)', sellPrice: 'Price (€)', sellDesc: 'Property description', rtl: false
+            },
+            el: {
+                h: 'Ακίνητα στην Κύπρο', s: 'Λεμεσός, Πάφος, Λάρνακα, Λευκωσία και προάστια',
+                lc: 'Πόλη', lt: 'Τύπος ακινήτου', lm: 'Πρωτογενής / Μεταπώληση', lb2: 'Υπνοδωμάτια', lp: 'Τιμή έως',
+                all: 'Όλες', any: 'Οποιαδήποτε', anyB: 'Οποιοσδήποτε',
+                apt: 'Διαμέρισμα', house: 'Σπίτι / Βίλα', townhouse: 'Μεζονέτα', land: 'Οικόπεδο', commercial: 'Εμπορικό', building: 'Ολόκληρο κτίριο',
+                newBuild: 'Πρωτογενής', resale: 'Μεταπώληση',
+                cities: { Limassol: 'Λεμεσός', Limassol_suburb: 'Λεμεσός & προάστια', Paphos: 'Πάφος', Paphos_suburb: 'Πάφος & προάστια', Larnaca: 'Λάρνακα', Larnaca_suburb: 'Λάρνακα & προάστια', Nicosia: 'Λευκωσία', Nicosia_suburb: 'Λευκωσία & προάστια' },
+                rooms: 'υπν.', area: 'τ.μ.', res: n => `Βρέθηκαν: ${n} ακίνητα`, none: 'Δεν βρέθηκαν αποτελέσματα',
+                wa: 'WhatsApp', em: 'Email', frm: 'Αίτημα επικοινωνίας',
+                fn: 'Όνομα', fphone: 'Τηλέφωνο ή Telegram', fmsg: 'Μήνυμα', send: 'Αποστολή',
+                newBadge: 'Νέο',
+                sorts: ['Τιμή ↑', 'Τιμή ↓', 'Υπνοδωμάτια', 'Εμβαδόν', 'Νεότερα πρώτα'],
+                baSearch: 'Δεν βρήκατε;', baSearchSub: 'Αφήστε αίτημα — θα βρούμε',
+                baSell: 'Πουλάτε ακίνητο;', baSellSub: 'Πείτε μας για το ακίνητό σας',
+                sfRooms: 'Υπνοδωμάτια', sfBudget: 'Προϋπολογισμός (€)', sfMsg: 'Προτιμήσεις',
+                sellArea: 'Εμβαδόν (τ.μ.)', sellPrice: 'Τιμή (€)', sellDesc: 'Περιγραφή ακινήτου', rtl: false
+            },
+            he: {
+                h: 'נדל״ן בקפריסין', s: 'לימסול, פאפוס, לרנקה, ניקוסיה ופרברים',
+                lc: 'עיר', lt: 'סוג נכס', lm: 'יד ראשונה / יד שנייה', lb2: 'חדרי שינה', lp: 'מחיר עד',
+                all: 'הכל', any: 'כל מחיר', anyB: 'כל מספר',
+                apt: 'דירה', house: 'בית / וילה', townhouse: 'טאונהאוס', land: 'מגרש', commercial: 'מסחרי', building: 'בניין שלם',
+                newBuild: 'יד ראשונה', resale: 'יד שנייה',
+                cities: { Limassol: 'לימסול', Limassol_suburb: 'לימסול ופרברים', Paphos: 'פאפוס', Paphos_suburb: 'פאפוס ופרברים', Larnaca: 'לרנקה', Larnaca_suburb: 'לרנקה ופרברים', Nicosia: 'ניקוסיה', Nicosia_suburb: 'ניקוסיה ופרברים' },
+                rooms: "חד'", area: 'מ״ר', res: n => `נמצאו: ${n} נכסים`, none: 'לא נמצאו תוצאות',
+                wa: 'וואטסאפ', em: 'אימייל', frm: 'השאר פנייה',
+                fn: 'שם', fphone: 'טלפון או טלגרם', fmsg: 'הודעה', send: 'שלח',
+                newBadge: 'חדש',
+                sorts: ['מחיר ↑', 'מחיר ↓', 'חדרי שינה', 'שטח', 'חדש ראשון'],
+                baSearch: 'לא מצאת?', baSearchSub: 'השאר בקשה — נמצא עבורך',
+                baSell: 'מוכר נכס?', baSellSub: 'ספר לנו על הנכס שלך',
+                sfRooms: 'חדרי שינה', sfBudget: 'תקציב (€)', sfMsg: 'העדפות',
+                sellArea: 'שטח (מ״ר)', sellPrice: 'מחיר (€)', sellDesc: 'תיאור הנכס', rtl: true
+            }
+        };
+
+        let lang = 'ru', sortIdx = 4, favs = new Set(), openForms = new Set(), openBottom = null;
+
+        const SORT_FNS = [
+            (a, b) => a.price - b.price, (a, b) => b.price - a.price,
+            (a, b) => a.rooms - b.rooms, (a, b) => a.area - b.area,
+            (a, b) => a.daysAgo - b.daysAgo,
+        ];
+
+        function setLang(l, btn) {
+            lang = l;
+            const t = T[l];
+            document.querySelectorAll('.lb').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            document.getElementById('app').setAttribute('dir', t.rtl ? 'rtl' : 'ltr');
+            document.getElementById('hn').textContent = t.h;
+            document.getElementById('hs').textContent = t.s;
+            document.getElementById('lc').textContent = t.lc;
+            document.getElementById('lt').textContent = t.lt;
+            document.getElementById('lm').textContent = t.lm;
+            document.getElementById('lb2').textContent = t.lb2;
+            document.getElementById('lp').textContent = t.lp;
+            const cityKeys = ['Limassol', 'Limassol_suburb', 'Paphos', 'Paphos_suburb', 'Larnaca', 'Larnaca_suburb', 'Nicosia', 'Nicosia_suburb'];
+            const fc = document.getElementById('fc');
+            fc.options[0].text = t.all;
+            cityKeys.forEach((c, i) => { if (fc.options[i + 1]) fc.options[i + 1].text = t.cities[c]; });
+            const ft = document.getElementById('ft');
+            ft.options[0].text = t.all;
+            ['apt', 'house', 'townhouse', 'land', 'commercial', 'building'].forEach((v, i) => { if (ft.options[i + 1]) ft.options[i + 1].text = t[v]; });
+            const fmk = document.getElementById('fm');
+            fmk.options[0].text = t.all;
+            if (fmk.options[1]) fmk.options[1].text = t.newBuild;
+            if (fmk.options[2]) fmk.options[2].text = t.resale;
+            document.getElementById('fb').options[0].text = t.anyB;
+            document.getElementById('fp').options[0].text = t.any;
+            document.getElementById('ba-search').textContent = t.baSearch;
+            document.getElementById('ba-search-sub').textContent = t.baSearchSub;
+            document.getElementById('ba-sell').textContent = t.baSell;
+            document.getElementById('ba-sell-sub').textContent = t.baSellSub;
+            openForms.clear(); openBottom = null;
+            document.getElementById('search-form').innerHTML = '';
+            document.getElementById('sell-form').innerHTML = '';
+            renderSorts(); render();
+        }
+
+        function renderSorts() {
+            const t = T[lang];
+            document.getElementById('sort-bar').innerHTML = t.sorts.map((s, i) =>
+                `<button class="sort-btn ${i === sortIdx ? 'active' : ''}" onclick="setSort(${i})">${s}</button>`
+            ).join('');
+        }
+
+        function setSort(i) { sortIdx = i; renderSorts(); render(); }
+        function toggleFav(id) { favs.has(id) ? favs.delete(id) : favs.add(id); render(); }
+        function toggleForm(i) { openForms.has(i) ? openForms.delete(i) : openForms.add(i); render(); }
+
+        function toggleBottomForm(which) {
+            const t = T[lang];
+            openBottom = openBottom === which ? null : which;
+            const sf = document.getElementById('search-form');
+            const sl = document.getElementById('sell-form');
+            if (openBottom === 'search') {
+                sf.innerHTML = `<div class="cform">
+      <input type="text" placeholder="${t.fn}">
+      <input type="text" placeholder="${t.fphone}">
+      <select><option value="">${t.sfRooms}</option><option>1</option><option>2</option><option>3</option><option>4+</option></select>
+      <input type="text" placeholder="${t.sfBudget}">
+      <select><option value="">${t.lm}</option><option value="new">${t.newBuild}</option><option value="resale">${t.resale}</option></select>
+      <textarea rows="3" placeholder="${t.sfMsg}"></textarea>
+      <button class="sbtn">${t.send}</button></div>`;
+                sl.innerHTML = '';
+            } else if (openBottom === 'sell') {
+                sl.innerHTML = `<div class="cform">
+      <input type="text" placeholder="${t.fn}">
+      <input type="text" placeholder="${t.fphone}">
+      <select><option value="">${t.lt}</option><option value="apt">${t.apt}</option><option value="house">${t.house}</option><option value="townhouse">${t.townhouse}</option><option value="land">${t.land}</option><option value="commercial">${t.commercial}</option><option value="building">${t.building}</option></select>
+      <select><option value="">${t.lm}</option><option value="new">${t.newBuild}</option><option value="resale">${t.resale}</option></select>
+      <input type="text" placeholder="${t.sellArea}">
+      <input type="text" placeholder="${t.sellPrice}">
+      <textarea rows="3" placeholder="${t.sellDesc}"></textarea>
+      <button class="sbtn">${t.send}</button></div>`;
+                sf.innerHTML = '';
+            } else {
+                sf.innerHTML = ''; sl.innerHTML = '';
+            }
+        }
+
+        function getCityLabel(d) { return T[lang].cities[d.suburb ? d.city + '_suburb' : d.city]; }
+
+        function render() {
+            const t = T[lang];
+            const cityFilter = document.getElementById('fc').value;
+            const type = document.getElementById('ft').value;
+            const market = document.getElementById('fm').value;
+            const beds = document.getElementById('fb').value;
+            const maxP = parseInt(document.getElementById('fp').value) || Infinity;
+
+            let f = DATA.filter(d => {
+                if (cityFilter) {
+                    if (cityFilter.endsWith('_suburb')) {
+                        const base = cityFilter.replace('_suburb', '');
+                        if (d.city !== base) return false;
+                    } else {
+                        if (d.city !== cityFilter || d.suburb) return false;
+                    }
+                }
+                if (type && d.type !== type) return false;
+                if (market && d.market !== market) return false;
+                if (beds && !(beds === '4' ? d.rooms >= 4 : d.rooms === parseInt(beds))) return false;
+                if (d.price > maxP) return false;
+                return true;
+            });
+
+            f = [...f].sort(SORT_FNS[sortIdx]);
+            document.getElementById('rc').textContent = t.res(f.length);
+            const con = document.getElementById('lst');
+            if (!f.length) { con.innerHTML = `<div class="none">${t.none}</div>`; return; }
+
+            con.innerHTML = f.map((d, i) => `
+    <div class="card">
+      <div class="card-img">
+        ${d.emoji}
+        <button class="fav-btn" onclick="toggleFav(${d.id})">${favs.has(d.id) ? '❤️' : '🤍'}</button>
+        <span class="market-badge ${d.market === 'new' ? 'badge-new-build' : 'badge-resale'}">${d.market === 'new' ? t.newBuild : t.resale}</span>
+      </div>
+      <div class="card-body">
+        <div class="card-top">
+          <span class="card-title">${d['title_' + lang]}${d.isNew ? `<span class="new-badge">${t.newBadge}</span>` : ''}</span>
+          <span class="card-price">€${(d.price * 1000).toLocaleString()}</span>
+        </div>
+        <div class="card-meta">
+          <span>📍 ${getCityLabel(d)}</span>
+          ${d.rooms > 0 ? `<span>🛏️ ${d.rooms} ${t.rooms}</span>` : ''}
+          <span>📐 ${d.area} ${t.area}</span>
+        </div>
+        <span class="tag">${d['tag_' + lang]}</span>
+        <div class="btns">
+          <button class="btn bwa" onclick="location.href='https://wa.me/35799000000?text=${encodeURIComponent(d['title_' + lang])}'">💬 ${t.wa}</button>
+          <button class="btn bem" onclick="location.href='mailto:info@bestcyprusproperties.com?subject=${encodeURIComponent(d['title_' + lang])}'">✉️ ${t.em}</button>
+          <button class="btn bfrm" onclick="toggleForm(${i})">📝 ${t.frm}</button>
+          ${openForms.has(i) ? `<div class="cform">
+            <input type="text" placeholder="${t.fn}">
+            <input type="text" placeholder="${t.fphone}">
+            <textarea rows="2" placeholder="${t.fmsg}"></textarea>
+            <button class="sbtn">${t.send}</button>
+          </div>`: ''}
+        </div>
+      </div>
+    </div>`).join('');
+        }
+
+        setLang('ru', document.querySelector('.lb'));
+    </script>
+</body>
+
+</html>
