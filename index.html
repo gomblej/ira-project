@@ -71,7 +71,6 @@
         .header h1 {
             font-size: 22px;
             font-weight: 700;
-            color: #1a1a1a;
         }
 
         .header p {
@@ -115,10 +114,64 @@
             width: 100%;
         }
 
+        .price-range {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .price-range input {
+            font-size: 13px;
+            padding: 8px 10px;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            background: #f8f8f8;
+            color: #1a1a1a;
+            width: 100%;
+        }
+
+        .price-range span {
+            color: #aaa;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        .beds-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 2px;
+        }
+
+        .bed-pill {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            border: 1px solid #e0e0e0;
+            background: #f8f8f8;
+            color: #666;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .bed-pill.active {
+            background: #0f6e56;
+            color: white;
+            border-color: #0f6e56;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
         .sort-bar {
             display: flex;
             gap: 8px;
-            margin-bottom: 12px;
             flex-wrap: wrap;
         }
 
@@ -138,6 +191,25 @@
             border-color: #0f6e56;
         }
 
+        .fav-toggle {
+            font-size: 13px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            background: white;
+            color: #666;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .fav-toggle.active {
+            background: #fff0f0;
+            color: #c0392b;
+            border-color: #c0392b;
+        }
+
         .count {
             font-size: 13px;
             color: #888;
@@ -154,6 +226,15 @@
             background: white;
             border-radius: 16px;
             overflow: hidden;
+            position: relative;
+        }
+
+        .card.sold {
+            opacity: 0.85;
+        }
+
+        .card.unavailable {
+            opacity: 0.85;
         }
 
         .card-img {
@@ -165,6 +246,14 @@
             justify-content: center;
             font-size: 56px;
             position: relative;
+        }
+
+        .card.sold .card-img {
+            filter: grayscale(60%);
+        }
+
+        .card.unavailable .card-img {
+            filter: grayscale(30%);
         }
 
         .fav-btn {
@@ -181,16 +270,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            z-index: 2;
         }
 
-        .market-badge {
+        .status-badge {
             position: absolute;
             top: 10px;
             left: 10px;
             font-size: 11px;
             padding: 3px 9px;
             border-radius: 20px;
-            font-weight: 600;
+            font-weight: 700;
+            z-index: 2;
         }
 
         .badge-new-build {
@@ -201,6 +292,37 @@
         .badge-resale {
             background: #f3e5f5;
             color: #6a1b9a;
+        }
+
+        .badge-sold {
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .badge-unavailable {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .sold-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .sold-stamp {
+            font-size: 28px;
+            font-weight: 900;
+            color: rgba(0, 0, 0, 0.18);
+            border: 4px solid rgba(0, 0, 0, 0.15);
+            padding: 6px 16px;
+            border-radius: 8px;
+            transform: rotate(-15deg);
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
         .card-body {
@@ -225,6 +347,11 @@
             font-weight: 700;
             color: #0f6e56;
             white-space: nowrap;
+        }
+
+        .card.sold .card-price {
+            color: #888;
+            text-decoration: line-through;
         }
 
         .card-meta {
@@ -293,6 +420,12 @@
             color: #888;
             border: 1px solid #e0e0e0 !important;
             font-size: 13px;
+        }
+
+        .card.sold .bwa,
+        .card.sold .bem {
+            opacity: 0.5;
+            pointer-events: none;
         }
 
         .cform {
@@ -430,27 +563,31 @@
                     <option value="resale"></option>
                 </select>
             </div>
-            <div class="fg"><label id="lb2"></label>
-                <select id="fb" onchange="render()">
-                    <option value=""></option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4+</option>
+            <div class="fg"><label id="lst-label"></label>
+                <select id="fs" onchange="render()">
+                    <option value="all"></option>
+                    <option value="available"></option>
+                    <option value="sold"></option>
+                    <option value="unavailable"></option>
                 </select>
             </div>
+            <div class="fg"><label id="lb2"></label>
+                <div class="beds-pills" id="beds-pills"></div>
+            </div>
             <div class="fg"><label id="lp"></label>
-                <select id="fp" onchange="render()">
-                    <option value=""></option>
-                    <option value="200">€200 000</option>
-                    <option value="350">€350 000</option>
-                    <option value="600">€600 000</option>
-                    <option value="1000">€1 000 000</option>
-                </select>
+                <div class="price-range">
+                    <input type="number" id="pmin" placeholder="от €" min="0" oninput="render()">
+                    <span>—</span>
+                    <input type="number" id="pmax" placeholder="до €" min="0" oninput="render()">
+                </div>
             </div>
         </div>
 
-        <div class="sort-bar" id="sort-bar"></div>
+        <div class="top-bar">
+            <div class="sort-bar" id="sort-bar"></div>
+            <button class="fav-toggle" id="fav-toggle" onclick="toggleFavView()">❤️ <span
+                    id="fav-label"></span></button>
+        </div>
         <p class="count" id="rc"></p>
         <div class="listings" id="lst"></div>
 
@@ -463,7 +600,6 @@
                 </div>
             </button>
             <div id="search-form"></div>
-
             <button class="action-card" onclick="toggleBottomForm('sell')">
                 <span class="action-icon">🏠</span>
                 <div class="action-text">
@@ -477,30 +613,37 @@
     </div>
     <script>
         const DATA = [
-            { id: 1, title_ru: 'Апартаменты у моря', title_en: 'Sea-view apartment', title_el: 'Διαμέρισμα με θέα θάλασσα', title_he: 'דירה עם נוף לים', city: 'Limassol', suburb: false, type: 'apt', market: 'new', price: 280, rooms: 2, area: 72, tag_ru: 'Вид на море', tag_en: 'Sea view', tag_el: 'Θέα θάλασσα', tag_he: 'נוף לים', emoji: '🏢', isNew: true, daysAgo: 2 },
-            { id: 2, title_ru: 'Вилла с бассейном', title_en: 'Villa with pool', title_el: 'Βίλα με πισίνα', title_he: 'וילה עם בריכה', city: 'Paphos', suburb: true, type: 'house', market: 'resale', price: 550, rooms: 4, area: 210, tag_ru: 'Бассейн', tag_en: 'Pool', tag_el: 'Πισίνα', tag_he: 'בריכה', emoji: '🏡', isNew: false, daysAgo: 30 },
-            { id: 3, title_ru: 'Студия в Ларнаке', title_en: 'Studio in Larnaca', title_el: 'Στούντιο στη Λάρνακα', title_he: 'סטודיו בלרנקה', city: 'Larnaca', suburb: false, type: 'apt', market: 'new', price: 145, rooms: 1, area: 42, tag_ru: 'Новый дом', tag_en: 'New build', tag_el: 'Νέο κτίριο', tag_he: 'בנייה חדשה', emoji: '🏢', isNew: true, daysAgo: 1 },
-            { id: 4, title_ru: 'Квартира 3 спальни', title_en: '3-bedroom apartment', title_el: 'Διαμέρισμα 3 υπνοδωματίων', title_he: 'דירת 3 חדרים', city: 'Limassol', suburb: false, type: 'apt', market: 'resale', price: 320, rooms: 3, area: 95, tag_ru: 'Инвестиция', tag_en: 'Investment', tag_el: 'Επένδυση', tag_he: 'השקעה', emoji: '🏢', isNew: false, daysAgo: 14 },
-            { id: 5, title_ru: 'Дом у моря', title_en: 'House by the sea', title_el: 'Σπίτι δίπλα στη θάλασσα', title_he: 'בית ליד הים', city: 'Paphos', suburb: false, type: 'house', market: 'resale', price: 390, rooms: 3, area: 160, tag_ru: 'Тихий район', tag_en: 'Quiet area', tag_el: 'Ήσυχη περιοχή', tag_he: 'שכונה שקטה', emoji: '🏡', isNew: false, daysAgo: 7 },
-            { id: 6, title_ru: 'Таунхаус в Никосии', title_en: 'Townhouse in Nicosia', title_el: 'Συγκρότημα κατοικιών Λευκωσία', title_he: 'טאונהאוס בניקוסיה', city: 'Nicosia', suburb: false, type: 'townhouse', market: 'new', price: 310, rooms: 3, area: 130, tag_ru: 'Новый проект', tag_en: 'New project', tag_el: 'Νέο έργο', tag_he: 'פרויקט חדש', emoji: '🏘️', isNew: true, daysAgo: 4 },
-            { id: 7, title_ru: 'Земельный участок', title_en: 'Land plot', title_el: 'Οικόπεδο', title_he: 'מגרש', city: 'Paphos', suburb: true, type: 'land', market: 'resale', price: 180, rooms: 0, area: 500, tag_ru: 'Под строительство', tag_en: 'Building plot', tag_el: 'Για οικοδόμηση', tag_he: 'למגורים', emoji: '🌿', isNew: false, daysAgo: 20 },
-            { id: 8, title_ru: 'Коммерческое помещение', title_en: 'Commercial property', title_el: 'Εμπορικό ακίνητο', title_he: 'נכס מסחרי', city: 'Limassol', suburb: false, type: 'commercial', market: 'resale', price: 420, rooms: 0, area: 85, tag_ru: 'Офис / магазин', tag_en: 'Office / retail', tag_el: 'Γραφείο / κατάστημα', tag_he: 'משרד / חנות', emoji: '🏪', isNew: false, daysAgo: 10 },
-            { id: 9, title_ru: 'Жилое здание целиком', title_en: 'Whole residential building', title_el: 'Ολόκληρο κτίριο', title_he: 'בניין שלם', city: 'Larnaca', suburb: true, type: 'building', market: 'resale', price: 980, rooms: 0, area: 620, tag_ru: 'Инвестиция', tag_en: 'Investment', tag_el: 'Επένδυση', tag_he: 'השקעה', emoji: '🏗️', isNew: false, daysAgo: 5 },
+            { id: 1, title_ru: 'Апартаменты у моря', title_en: 'Sea-view apartment', title_el: 'Διαμέρισμα με θέα θάλασσα', title_he: 'דירה עם נוף לים', city: 'Limassol', suburb: false, type: 'apt', market: 'new', status: 'available', price: 280, rooms: 2, area: 72, tag_ru: 'Вид на море', tag_en: 'Sea view', tag_el: 'Θέα θάλασσα', tag_he: 'נוף לים', emoji: '🏢', isNew: true, daysAgo: 2 },
+            { id: 2, title_ru: 'Вилла с бассейном', title_en: 'Villa with pool', title_el: 'Βίλα με πισίνα', title_he: 'וילה עם בריכה', city: 'Paphos', suburb: true, type: 'house', market: 'resale', status: 'sold', price: 550, rooms: 4, area: 210, tag_ru: 'Бассейн', tag_en: 'Pool', tag_el: 'Πισίνα', tag_he: 'בריכה', emoji: '🏡', isNew: false, daysAgo: 30 },
+            { id: 3, title_ru: 'Студия в Ларнаке', title_en: 'Studio in Larnaca', title_el: 'Στούντιο στη Λάρνακα', title_he: 'סטודיו בלרנקה', city: 'Larnaca', suburb: false, type: 'apt', market: 'new', status: 'available', price: 145, rooms: 0, area: 42, tag_ru: 'Новый дом', tag_en: 'New build', tag_el: 'Νέο κτίριο', tag_he: 'בנייה חדשה', emoji: '🏢', isNew: true, daysAgo: 1 },
+            { id: 4, title_ru: 'Квартира 3 спальни', title_en: '3-bedroom apartment', title_el: 'Διαμέρισμα 3 υπνοδωματίων', title_he: 'דירת 3 חדרים', city: 'Limassol', suburb: false, type: 'apt', market: 'resale', status: 'unavailable', price: 320, rooms: 3, area: 95, tag_ru: 'Инвестиция', tag_en: 'Investment', tag_el: 'Επένδυση', tag_he: 'השקעה', emoji: '🏢', isNew: false, daysAgo: 14 },
+            { id: 5, title_ru: 'Дом у моря', title_en: 'House by the sea', title_el: 'Σπίτι δίπλα στη θάλασσα', title_he: 'בית ליד הים', city: 'Paphos', suburb: false, type: 'house', market: 'resale', status: 'available', price: 390, rooms: 3, area: 160, tag_ru: 'Тихий район', tag_en: 'Quiet area', tag_el: 'Ήσυχη περιοχή', tag_he: 'שכונה שקטה', emoji: '🏡', isNew: false, daysAgo: 7 },
+            { id: 6, title_ru: 'Таунхаус в Никосии', title_en: 'Townhouse in Nicosia', title_el: 'Συγκρότημα κατοικιών Λευκωσία', title_he: 'טאונהאוס בניקוסיה', city: 'Nicosia', suburb: false, type: 'townhouse', market: 'new', status: 'available', price: 310, rooms: 3, area: 130, tag_ru: 'Новый проект', tag_en: 'New project', tag_el: 'Νέο έργο', tag_he: 'פרויקט חדש', emoji: '🏘️', isNew: true, daysAgo: 4 },
+            { id: 7, title_ru: 'Земельный участок', title_en: 'Land plot', title_el: 'Οικόπεδο', title_he: 'מגרש', city: 'Paphos', suburb: true, type: 'land', market: 'resale', status: 'available', price: 180, rooms: 0, area: 500, tag_ru: 'Под строительство', tag_en: 'Building plot', tag_el: 'Για οικοδόμηση', tag_he: 'למגורים', emoji: '🌿', isNew: false, daysAgo: 20 },
+            { id: 8, title_ru: 'Коммерческое помещение', title_en: 'Commercial property', title_el: 'Εμπορικό ακίνητο', title_he: 'נכס מסחרי', city: 'Limassol', suburb: false, type: 'commercial', market: 'resale', status: 'sold', price: 420, rooms: 0, area: 85, tag_ru: 'Офис / магазин', tag_en: 'Office / retail', tag_el: 'Γραφείο / κατάστημα', tag_he: 'משרד / חנות', emoji: '🏪', isNew: false, daysAgo: 10 },
+            { id: 9, title_ru: 'Жилое здание целиком', title_en: 'Whole residential building', title_el: 'Ολόκληρο κτίριο', title_he: 'בניין שלם', city: 'Larnaca', suburb: true, type: 'building', market: 'resale', status: 'available', price: 980, rooms: 0, area: 620, tag_ru: 'Инвестиция', tag_en: 'Investment', tag_el: 'Επένδυση', tag_he: 'השקעה', emoji: '🏗️', isNew: false, daysAgo: 5 },
+            { id: 10, title_ru: 'Пентхаус 5 спален', title_en: '5-bedroom penthouse', title_el: 'Πεντχάους 5 υπνοδωματίων', title_he: 'פנטהאוס 5 חדרים', city: 'Limassol', suburb: false, type: 'apt', market: 'new', status: 'available', price: 890, rooms: 5, area: 320, tag_ru: 'Пентхаус', tag_en: 'Penthouse', tag_el: 'Πεντχάους', tag_he: 'פנטהאוס', emoji: '🏙️', isNew: true, daysAgo: 3 },
         ];
+
+        const BEDS_OPTIONS = ['studio', '1', '2', '3', '4', '5+'];
 
         const T = {
             ru: {
                 h: 'Недвижимость на Кипре', s: 'Лимасол, Пафос, Ларнака, Никосия и пригороды',
-                lc: 'Город', lt: 'Тип недвижимости', lm: 'Первичная / Вторичная', lb2: 'Спальни', lp: 'Цена до',
-                all: 'Все', any: 'Любая', anyB: 'Любое',
+                lc: 'Город', lt: 'Тип недвижимости', lm: 'Первичная / Вторичная', lstL: 'Статус', lb2: 'Спальни', lp: 'Цена €',
+                all: 'Все', any: 'Любая',
                 apt: 'Квартира', house: 'Дом / вилла', townhouse: 'Таунхаус', land: 'Земельный участок', commercial: 'Коммерческая', building: 'Целое здание',
                 newBuild: 'Первичная', resale: 'Вторичная',
+                statusAvailable: 'В продаже', statusAll: 'Все объекты', statusSold: 'Проданные', statusUnavailable: 'Временно не продаётся',
                 cities: { Limassol: 'Лимасол', Limassol_suburb: 'Лимасол и пригород', Paphos: 'Пафос', Paphos_suburb: 'Пафос и пригород', Larnaca: 'Ларнака', Larnaca_suburb: 'Ларнака и пригород', Nicosia: 'Никосия', Nicosia_suburb: 'Никосия и пригород' },
-                rooms: 'спал.', area: 'м²', res: n => `Найдено: ${n} объектов`, none: 'Ничего не найдено',
+                beds: { studio: 'Студия', '1': '1', '2': '2', '3': '3', '4': '4', '5+': '5+' },
+                rooms: 'спал.', studio: 'Студия', area: 'м²',
+                res: n => `Найдено: ${n} объектов`, none: 'Ничего не найдено',
                 wa: 'Написать в WhatsApp', em: 'Написать на email', frm: 'Оставить заявку',
                 fn: 'Ваше имя', fphone: 'Телефон или Telegram', fmsg: 'Сообщение', send: 'Отправить',
-                newBadge: 'Новое',
+                newBadge: 'Новое', soldBadge: 'Продано', unavailBadge: 'Временно не продаётся',
                 sorts: ['По цене ↑', 'По цене ↓', 'По спальням', 'По метражу', 'Сначала новые'],
+                favLabel: 'Избранное', favEmpty: 'Вы ещё не добавили объекты в избранное',
                 baSearch: 'Не нашли нужное?', baSearchSub: 'Оставьте заявку — мы подберём',
                 baSell: 'Продаёте недвижимость?', baSellSub: 'Расскажите нам об объекте',
                 sfRooms: 'Кол-во спален', sfBudget: 'Бюджет (€)', sfMsg: 'Пожелания',
@@ -508,16 +651,20 @@
             },
             en: {
                 h: 'Cyprus Real Estate', s: 'Limassol, Paphos, Larnaca, Nicosia & suburbs',
-                lc: 'City', lt: 'Property type', lm: 'New build / Resale', lb2: 'Bedrooms', lp: 'Price up to',
-                all: 'All', any: 'Any', anyB: 'Any',
+                lc: 'City', lt: 'Property type', lm: 'New build / Resale', lstL: 'Status', lb2: 'Bedrooms', lp: 'Price €',
+                all: 'All', any: 'Any',
                 apt: 'Apartment', house: 'House / villa', townhouse: 'Townhouse', land: 'Land plot', commercial: 'Commercial', building: 'Whole building',
                 newBuild: 'New build', resale: 'Resale',
+                statusAvailable: 'Available', statusAll: 'All properties', statusSold: 'Sold', statusUnavailable: 'Temporarily unavailable',
                 cities: { Limassol: 'Limassol', Limassol_suburb: 'Limassol & suburbs', Paphos: 'Paphos', Paphos_suburb: 'Paphos & suburbs', Larnaca: 'Larnaca', Larnaca_suburb: 'Larnaca & suburbs', Nicosia: 'Nicosia', Nicosia_suburb: 'Nicosia & suburbs' },
-                rooms: 'bed.', area: 'm²', res: n => `Found: ${n} properties`, none: 'No properties found',
+                beds: { studio: 'Studio', '1': '1', '2': '2', '3': '3', '4': '4', '5+': '5+' },
+                rooms: 'bed.', studio: 'Studio', area: 'm²',
+                res: n => `Found: ${n} properties`, none: 'No properties found',
                 wa: 'Contact on WhatsApp', em: 'Send email', frm: 'Send enquiry',
                 fn: 'Your name', fphone: 'Phone or Telegram', fmsg: 'Message', send: 'Send',
-                newBadge: 'New',
+                newBadge: 'New', soldBadge: 'Sold', unavailBadge: 'Temporarily unavailable',
                 sorts: ['Price ↑', 'Price ↓', 'Bedrooms', 'Area', 'Newest first'],
+                favLabel: 'Favourites', favEmpty: 'You have no saved properties yet',
                 baSearch: "Can't find it?", baSearchSub: "Leave a request — we'll find it",
                 baSell: 'Selling property?', baSellSub: 'Tell us about your property',
                 sfRooms: 'Bedrooms', sfBudget: 'Budget (€)', sfMsg: 'Preferences',
@@ -525,16 +672,20 @@
             },
             el: {
                 h: 'Ακίνητα στην Κύπρο', s: 'Λεμεσός, Πάφος, Λάρνακα, Λευκωσία και προάστια',
-                lc: 'Πόλη', lt: 'Τύπος ακινήτου', lm: 'Πρωτογενής / Μεταπώληση', lb2: 'Υπνοδωμάτια', lp: 'Τιμή έως',
-                all: 'Όλες', any: 'Οποιαδήποτε', anyB: 'Οποιοσδήποτε',
+                lc: 'Πόλη', lt: 'Τύπος ακινήτου', lm: 'Πρωτογενής / Μεταπώληση', lstL: 'Κατάσταση', lb2: 'Υπνοδωμάτια', lp: 'Τιμή €',
+                all: 'Όλες', any: 'Οποιαδήποτε',
                 apt: 'Διαμέρισμα', house: 'Σπίτι / Βίλα', townhouse: 'Μεζονέτα', land: 'Οικόπεδο', commercial: 'Εμπορικό', building: 'Ολόκληρο κτίριο',
                 newBuild: 'Πρωτογενής', resale: 'Μεταπώληση',
+                statusAvailable: 'Διαθέσιμο', statusAll: 'Όλα τα ακίνητα', statusSold: 'Πωλήθηκε', statusUnavailable: 'Προσωρινά μη διαθέσιμο',
                 cities: { Limassol: 'Λεμεσός', Limassol_suburb: 'Λεμεσός & προάστια', Paphos: 'Πάφος', Paphos_suburb: 'Πάφος & προάστια', Larnaca: 'Λάρνακα', Larnaca_suburb: 'Λάρνακα & προάστια', Nicosia: 'Λευκωσία', Nicosia_suburb: 'Λευκωσία & προάστια' },
-                rooms: 'υπν.', area: 'τ.μ.', res: n => `Βρέθηκαν: ${n} ακίνητα`, none: 'Δεν βρέθηκαν αποτελέσματα',
+                beds: { studio: 'Στούντιο', '1': '1', '2': '2', '3': '3', '4': '4', '5+': '5+' },
+                rooms: 'υπν.', studio: 'Στούντιο', area: 'τ.μ.',
+                res: n => `Βρέθηκαν: ${n} ακίνητα`, none: 'Δεν βρέθηκαν αποτελέσματα',
                 wa: 'WhatsApp', em: 'Email', frm: 'Αίτημα επικοινωνίας',
                 fn: 'Όνομα', fphone: 'Τηλέφωνο ή Telegram', fmsg: 'Μήνυμα', send: 'Αποστολή',
-                newBadge: 'Νέο',
+                newBadge: 'Νέο', soldBadge: 'Πωλήθηκε', unavailBadge: 'Προσωρινά μη διαθέσιμο',
                 sorts: ['Τιμή ↑', 'Τιμή ↓', 'Υπνοδωμάτια', 'Εμβαδόν', 'Νεότερα πρώτα'],
+                favLabel: 'Αγαπημένα', favEmpty: 'Δεν έχετε αποθηκεύσει ακίνητα ακόμα',
                 baSearch: 'Δεν βρήκατε;', baSearchSub: 'Αφήστε αίτημα — θα βρούμε',
                 baSell: 'Πουλάτε ακίνητο;', baSellSub: 'Πείτε μας για το ακίνητό σας',
                 sfRooms: 'Υπνοδωμάτια', sfBudget: 'Προϋπολογισμός (€)', sfMsg: 'Προτιμήσεις',
@@ -542,16 +693,20 @@
             },
             he: {
                 h: 'נדל״ן בקפריסין', s: 'לימסול, פאפוס, לרנקה, ניקוסיה ופרברים',
-                lc: 'עיר', lt: 'סוג נכס', lm: 'יד ראשונה / יד שנייה', lb2: 'חדרי שינה', lp: 'מחיר עד',
-                all: 'הכל', any: 'כל מחיר', anyB: 'כל מספר',
+                lc: 'עיר', lt: 'סוג נכס', lm: 'יד ראשונה / יד שנייה', lstL: 'סטטוס', lb2: 'חדרי שינה', lp: 'מחיר €',
+                all: 'הכל', any: 'כל מחיר',
                 apt: 'דירה', house: 'בית / וילה', townhouse: 'טאונהאוס', land: 'מגרש', commercial: 'מסחרי', building: 'בניין שלם',
                 newBuild: 'יד ראשונה', resale: 'יד שנייה',
+                statusAvailable: 'למכירה', statusAll: 'כל הנכסים', statusSold: 'נמכר', statusUnavailable: 'זמנית לא למכירה',
                 cities: { Limassol: 'לימסול', Limassol_suburb: 'לימסול ופרברים', Paphos: 'פאפוס', Paphos_suburb: 'פאפוס ופרברים', Larnaca: 'לרנקה', Larnaca_suburb: 'לרנקה ופרברים', Nicosia: 'ניקוסיה', Nicosia_suburb: 'ניקוסיה ופרברים' },
-                rooms: "חד'", area: 'מ״ר', res: n => `נמצאו: ${n} נכסים`, none: 'לא נמצאו תוצאות',
+                beds: { studio: 'סטודיו', '1': '1', '2': '2', '3': '3', '4': '4', '5+': '5+' },
+                rooms: "חד'", studio: 'סטודיו', area: 'מ״ר',
+                res: n => `נמצאו: ${n} נכסים`, none: 'לא נמצאו תוצאות',
                 wa: 'וואטסאפ', em: 'אימייל', frm: 'השאר פנייה',
                 fn: 'שם', fphone: 'טלפון או טלגרם', fmsg: 'הודעה', send: 'שלח',
-                newBadge: 'חדש',
+                newBadge: 'חדש', soldBadge: 'נמכר', unavailBadge: 'זמנית לא למכירה',
                 sorts: ['מחיר ↑', 'מחיר ↓', 'חדרי שינה', 'שטח', 'חדש ראשון'],
+                favLabel: 'מועדפים', favEmpty: 'עדיין לא שמרת נכסים',
                 baSearch: 'לא מצאת?', baSearchSub: 'השאר בקשה — נמצא עבורך',
                 baSell: 'מוכר נכס?', baSellSub: 'ספר לנו על הנכס שלך',
                 sfRooms: 'חדרי שינה', sfBudget: 'תקציב (€)', sfMsg: 'העדפות',
@@ -560,6 +715,8 @@
         };
 
         let lang = 'ru', sortIdx = 4, favs = new Set(), openForms = new Set(), openBottom = null;
+        let showFavOnly = false;
+        let selectedBeds = new Set();
 
         const SORT_FNS = [
             (a, b) => a.price - b.price, (a, b) => b.price - a.price,
@@ -578,29 +735,51 @@
             document.getElementById('lc').textContent = t.lc;
             document.getElementById('lt').textContent = t.lt;
             document.getElementById('lm').textContent = t.lm;
+            document.getElementById('lst-label').textContent = t.lstL;
             document.getElementById('lb2').textContent = t.lb2;
             document.getElementById('lp').textContent = t.lp;
+            document.getElementById('pmin').placeholder = 'от €';
+            document.getElementById('pmax').placeholder = 'до €';
+
             const cityKeys = ['Limassol', 'Limassol_suburb', 'Paphos', 'Paphos_suburb', 'Larnaca', 'Larnaca_suburb', 'Nicosia', 'Nicosia_suburb'];
             const fc = document.getElementById('fc');
             fc.options[0].text = t.all;
             cityKeys.forEach((c, i) => { if (fc.options[i + 1]) fc.options[i + 1].text = t.cities[c]; });
+
             const ft = document.getElementById('ft');
             ft.options[0].text = t.all;
             ['apt', 'house', 'townhouse', 'land', 'commercial', 'building'].forEach((v, i) => { if (ft.options[i + 1]) ft.options[i + 1].text = t[v]; });
+
             const fmk = document.getElementById('fm');
             fmk.options[0].text = t.all;
             if (fmk.options[1]) fmk.options[1].text = t.newBuild;
             if (fmk.options[2]) fmk.options[2].text = t.resale;
-            document.getElementById('fb').options[0].text = t.anyB;
-            document.getElementById('fp').options[0].text = t.any;
+
+            const fs = document.getElementById('fs');
+            if (fs.options[0]) fs.options[0].text = t.statusAll;
+            if (fs.options[1]) fs.options[1].text = t.statusAvailable;
+            if (fs.options[2]) fs.options[2].text = t.statusSold;
+            if (fs.options[3]) fs.options[3].text = t.statusUnavailable;
+
+            document.getElementById('fav-label').textContent = t.favLabel;
             document.getElementById('ba-search').textContent = t.baSearch;
             document.getElementById('ba-search-sub').textContent = t.baSearchSub;
             document.getElementById('ba-sell').textContent = t.baSell;
             document.getElementById('ba-sell-sub').textContent = t.baSellSub;
-            openForms.clear(); openBottom = null;
-            document.getElementById('search-form').innerHTML = '';
-            document.getElementById('sell-form').innerHTML = '';
-            renderSorts(); render();
+
+            renderBeds(); renderSorts(); render();
+        }
+
+        function renderBeds() {
+            const t = T[lang];
+            document.getElementById('beds-pills').innerHTML = BEDS_OPTIONS.map(b => `
+    <span class="bed-pill ${selectedBeds.has(b) ? 'active' : ''}" onclick="toggleBed('${b}')">${t.beds[b]}</span>
+  `).join('');
+        }
+
+        function toggleBed(b) {
+            selectedBeds.has(b) ? selectedBeds.delete(b) : selectedBeds.add(b);
+            renderBeds(); render();
         }
 
         function renderSorts() {
@@ -613,6 +792,11 @@
         function setSort(i) { sortIdx = i; renderSorts(); render(); }
         function toggleFav(id) { favs.has(id) ? favs.delete(id) : favs.add(id); render(); }
         function toggleForm(i) { openForms.has(i) ? openForms.delete(i) : openForms.add(i); render(); }
+        function toggleFavView() {
+            showFavOnly = !showFavOnly;
+            document.getElementById('fav-toggle').classList.toggle('active', showFavOnly);
+            render();
+        }
 
         function toggleBottomForm(which) {
             const t = T[lang];
@@ -623,7 +807,7 @@
                 sf.innerHTML = `<div class="cform">
       <input type="text" placeholder="${t.fn}">
       <input type="text" placeholder="${t.fphone}">
-      <select><option value="">${t.sfRooms}</option><option>1</option><option>2</option><option>3</option><option>4+</option></select>
+      <select><option value="">${t.sfRooms}</option><option>Студия</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5+</option></select>
       <input type="text" placeholder="${t.sfBudget}">
       <select><option value="">${t.lm}</option><option value="new">${t.newBuild}</option><option value="resale">${t.resale}</option></select>
       <textarea rows="3" placeholder="${t.sfMsg}"></textarea>
@@ -640,57 +824,78 @@
       <textarea rows="3" placeholder="${t.sellDesc}"></textarea>
       <button class="sbtn">${t.send}</button></div>`;
                 sf.innerHTML = '';
-            } else {
-                sf.innerHTML = ''; sl.innerHTML = '';
-            }
+            } else { sf.innerHTML = ''; sl.innerHTML = ''; }
         }
 
         function getCityLabel(d) { return T[lang].cities[d.suburb ? d.city + '_suburb' : d.city]; }
+        function roomsLabel(d) {
+            const t = T[lang];
+            if (d.rooms === 0 && (d.type === 'apt' || d.type === 'townhouse')) return t.studio;
+            if (d.rooms === 0) return '';
+            if (d.rooms >= 5) return `5+ ${t.rooms}`;
+            return `${d.rooms} ${t.rooms}`;
+        }
 
         function render() {
             const t = T[lang];
             const cityFilter = document.getElementById('fc').value;
             const type = document.getElementById('ft').value;
             const market = document.getElementById('fm').value;
-            const beds = document.getElementById('fb').value;
-            const maxP = parseInt(document.getElementById('fp').value) || Infinity;
+            const statusFilter = document.getElementById('fs').value;
+            const pmin = (parseFloat(document.getElementById('pmin').value) || 0) / 1000;
+            const pmax = (parseFloat(document.getElementById('pmax').value) || Infinity) / 1000;
 
             let f = DATA.filter(d => {
+                if (showFavOnly && !favs.has(d.id)) return false;
                 if (cityFilter) {
-                    if (cityFilter.endsWith('_suburb')) {
-                        const base = cityFilter.replace('_suburb', '');
-                        if (d.city !== base) return false;
-                    } else {
-                        if (d.city !== cityFilter || d.suburb) return false;
-                    }
+                    if (cityFilter.endsWith('_suburb')) { if (d.city !== cityFilter.replace('_suburb', '')) return false; }
+                    else { if (d.city !== cityFilter || d.suburb) return false; }
                 }
                 if (type && d.type !== type) return false;
                 if (market && d.market !== market) return false;
-                if (beds && !(beds === '4' ? d.rooms >= 4 : d.rooms === parseInt(beds))) return false;
-                if (d.price > maxP) return false;
+                if (statusFilter === 'available' && d.status !== 'available') return false;
+                if (statusFilter === 'sold' && d.status !== 'sold') return false;
+                if (statusFilter === 'unavailable' && d.status !== 'unavailable') return false;
+                if (selectedBeds.size > 0) {
+                    const bedKey = d.rooms === 0 ? 'studio' : d.rooms >= 5 ? '5+' : String(d.rooms);
+                    if (!selectedBeds.has(bedKey)) return false;
+                }
+                if (d.price < pmin) return false;
+                if (d.price > pmax) return false;
                 return true;
             });
 
             f = [...f].sort(SORT_FNS[sortIdx]);
             document.getElementById('rc').textContent = t.res(f.length);
             const con = document.getElementById('lst');
-            if (!f.length) { con.innerHTML = `<div class="none">${t.none}</div>`; return; }
+            if (!f.length) { con.innerHTML = `<div class="none">${showFavOnly ? t.favEmpty : t.none}</div>`; return; }
 
-            con.innerHTML = f.map((d, i) => `
-    <div class="card">
+            con.innerHTML = f.map((d, i) => {
+                const isSold = d.status === 'sold';
+                const isUnavail = d.status === 'unavailable';
+                let badgeClass = '', badgeText = '';
+                if (isSold) { badgeClass = 'badge-sold'; badgeText = t.soldBadge; }
+                else if (isUnavail) { badgeClass = 'badge-unavailable'; badgeText = t.unavailBadge; }
+                else if (d.market === 'new') { badgeClass = 'badge-new-build'; badgeText = t.newBuild; }
+                else { badgeClass = 'badge-resale'; badgeText = t.resale; }
+
+                const rl = roomsLabel(d);
+                return `
+    <div class="card ${d.status}">
       <div class="card-img">
         ${d.emoji}
+        ${isSold ? `<div class="sold-overlay"><div class="sold-stamp">${t.soldBadge}</div></div>` : ''}
         <button class="fav-btn" onclick="toggleFav(${d.id})">${favs.has(d.id) ? '❤️' : '🤍'}</button>
-        <span class="market-badge ${d.market === 'new' ? 'badge-new-build' : 'badge-resale'}">${d.market === 'new' ? t.newBuild : t.resale}</span>
+        <span class="status-badge ${badgeClass}">${badgeText}</span>
       </div>
       <div class="card-body">
         <div class="card-top">
-          <span class="card-title">${d['title_' + lang]}${d.isNew ? `<span class="new-badge">${t.newBadge}</span>` : ''}</span>
+          <span class="card-title">${d['title_' + lang]}${d.isNew && !isSold ? `<span class="new-badge">${t.newBadge}</span>` : ''}</span>
           <span class="card-price">€${(d.price * 1000).toLocaleString()}</span>
         </div>
         <div class="card-meta">
           <span>📍 ${getCityLabel(d)}</span>
-          ${d.rooms > 0 ? `<span>🛏️ ${d.rooms} ${t.rooms}</span>` : ''}
+          ${rl ? `<span>🛏️ ${rl}</span>` : ''}
           <span>📐 ${d.area} ${t.area}</span>
         </div>
         <span class="tag">${d['tag_' + lang]}</span>
@@ -706,7 +911,8 @@
           </div>`: ''}
         </div>
       </div>
-    </div>`).join('');
+    </div>`;
+            }).join('');
         }
 
         setLang('ru', document.querySelector('.lb'));
