@@ -28,14 +28,15 @@
   .form-card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 16px; display: none; }
   .form-card.open { display: block; }
   .form-card h2 { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
+  .section-title { font-size: 13px; font-weight: 600; color: #0f6e56; margin: 16px 0 8px; grid-column: 1/-1; border-bottom: 1px solid #e6f7f2; padding-bottom: 6px; }
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   @media(max-width:600px){ .form-grid { grid-template-columns: 1fr; } }
   .form-group { display: flex; flex-direction: column; gap: 4px; }
   .form-group.full { grid-column: 1/-1; }
   .form-group label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
   .form-group input, .form-group select, .form-group textarea { font-size: 14px; padding: 9px 12px; border-radius: 10px; border: 1px solid #e0e0e0; background: #f8f8f8; color: #1a1a1a; font-family: inherit; resize: none; width: 100%; }
+  .form-group textarea { resize: vertical; min-height: 80px; }
 
-  /* Фото */
   .photo-section { grid-column: 1/-1; margin-top: 8px; }
   .photo-section label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 8px; }
   .photo-upload-area { border: 2px dashed #e0e0e0; border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; background: #f8f8f8; position: relative; }
@@ -44,7 +45,6 @@
   .photo-upload-area p { font-size: 14px; color: #888; }
   .photo-upload-area .upload-icon { font-size: 28px; margin-bottom: 6px; }
   .upload-progress { font-size: 13px; color: #0f6e56; margin-top: 8px; display: none; }
-
   .photos-preview { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
   .photo-thumb { position: relative; width: 80px; height: 80px; border-radius: 10px; overflow: hidden; }
   .photo-thumb img { width: 100%; height: 100%; object-fit: cover; }
@@ -57,8 +57,8 @@
 
   .properties-list { display: flex; flex-direction: column; gap: 10px; }
   .prop-card { background: white; border-radius: 14px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; }
-  .prop-thumb { width: 56px; height: 56px; border-radius: 10px; object-fit: cover; flex-shrink: 0; background: #e6f7f2; display: flex; align-items: center; justify-content: center; font-size: 24px; }
-  .prop-thumb img { width: 56px; height: 56px; border-radius: 10px; object-fit: cover; }
+  .prop-thumb { width: 56px; height: 56px; border-radius: 10px; object-fit: cover; flex-shrink: 0; background: #e6f7f2; display: flex; align-items: center; justify-content: center; font-size: 24px; overflow: hidden; }
+  .prop-thumb img { width: 100%; height: 100%; object-fit: cover; }
   .prop-info { flex: 1; min-width: 0; }
   .prop-title { font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .prop-meta { font-size: 13px; color: #888; margin-top: 3px; }
@@ -105,11 +105,8 @@
     <h2 id="form-title">Новый объект</h2>
     <input type="hidden" id="edit-id">
     <div class="form-grid">
-      <div class="form-group full"><label>Название (RU) *</label><input type="text" id="f-title-ru" placeholder="Апартаменты у моря"></div>
-      <div class="form-group full"><label>Название (EN)</label><input type="text" id="f-title-en" placeholder="Sea-view apartment"></div>
-      <div class="form-group full"><label>Название (греческий)</label><input type="text" id="f-title-el" placeholder="Διαμέρισμα με θέα θάλασσα"></div>
-      <div class="form-group full"><label>Название (иврит)</label><input type="text" id="f-title-he" placeholder="דירה עם נוף לים"></div>
 
+      <div class="section-title">📋 Основная информация</div>
       <div class="form-group"><label>Город</label>
         <select id="f-city">
           <option value="Limassol">Лимасол</option>
@@ -125,7 +122,6 @@
           <option value="true">Да — дистрикт / пригород</option>
         </select>
       </div>
-
       <div class="form-group"><label>Тип недвижимости</label>
         <select id="f-type">
           <option value="apt">Квартира</option>
@@ -144,7 +140,6 @@
           <option value="resale">Вторичная</option>
         </select>
       </div>
-
       <div class="form-group"><label>Статус</label>
         <select id="f-status">
           <option value="available">В продаже</option>
@@ -155,19 +150,12 @@
       <div class="form-group"><label>Цена (тысяч €, например 280)</label>
         <input type="number" id="f-price" placeholder="280" min="0">
       </div>
-
       <div class="form-group"><label>Спальни (0 = студия)</label>
         <input type="number" id="f-rooms" placeholder="2" min="0">
       </div>
       <div class="form-group"><label>Площадь (м²)</label>
         <input type="number" id="f-area" placeholder="72" min="0">
       </div>
-
-      <div class="form-group"><label>Тег (RU), напр. "Вид на море"</label><input type="text" id="f-tag-ru" placeholder="Вид на море"></div>
-      <div class="form-group"><label>Тег (EN)</label><input type="text" id="f-tag-en" placeholder="Sea view"></div>
-      <div class="form-group"><label>Тег (греческий)</label><input type="text" id="f-tag-el" placeholder="Θέα θάλασσα"></div>
-      <div class="form-group"><label>Тег (иврит)</label><input type="text" id="f-tag-he" placeholder="נוף לים"></div>
-
       <div class="form-group"><label>Эмодзи</label>
         <select id="f-emoji">
           <option value="🏢">🏢 Квартира / апартаменты</option>
@@ -187,9 +175,26 @@
         </select>
       </div>
 
-      <!-- Фотографии -->
+      <div class="section-title">🌐 Названия</div>
+      <div class="form-group full"><label>Название (RU) *</label><input type="text" id="f-title-ru" placeholder="Апартаменты у моря"></div>
+      <div class="form-group full"><label>Название (EN)</label><input type="text" id="f-title-en" placeholder="Sea-view apartment"></div>
+      <div class="form-group full"><label>Название (греческий)</label><input type="text" id="f-title-el" placeholder="Διαμέρισμα με θέα θάλασσα"></div>
+      <div class="form-group full"><label>Название (иврит)</label><input type="text" id="f-title-he" placeholder="דירה עם נוף לים"></div>
+
+      <div class="section-title">🏷️ Теги (короткая характеристика)</div>
+      <div class="form-group"><label>Тег (RU)</label><input type="text" id="f-tag-ru" placeholder="Вид на море"></div>
+      <div class="form-group"><label>Тег (EN)</label><input type="text" id="f-tag-en" placeholder="Sea view"></div>
+      <div class="form-group"><label>Тег (греческий)</label><input type="text" id="f-tag-el" placeholder="Θέα θάλασσα"></div>
+      <div class="form-group"><label>Тег (иврит)</label><input type="text" id="f-tag-he" placeholder="נוף לים"></div>
+
+      <div class="section-title">📝 Описание (показывается на странице объекта)</div>
+      <div class="form-group full"><label>Описание (RU)</label><textarea id="f-desc-ru" rows="4" placeholder="Подробное описание объекта на русском..."></textarea></div>
+      <div class="form-group full"><label>Описание (EN)</label><textarea id="f-desc-en" rows="4" placeholder="Detailed property description in English..."></textarea></div>
+      <div class="form-group full"><label>Описание (греческий)</label><textarea id="f-desc-el" rows="4" placeholder="Λεπτομερής περιγραφή ακινήτου..."></textarea></div>
+      <div class="form-group full"><label>Описание (иврит)</label><textarea id="f-desc-he" rows="4" placeholder="תיאור מפורט של הנכס..."></textarea></div>
+
+      <div class="section-title">📷 Фотографии</div>
       <div class="photo-section">
-        <label>Фотографии объекта</label>
         <div class="photo-upload-area">
           <input type="file" id="f-photos" accept="image/*" multiple onchange="handlePhotoUpload(this)">
           <div class="upload-icon">📷</div>
@@ -226,7 +231,7 @@ const HEADERS = {
 };
 
 let allProps = [];
-let currentImages = []; // ссылки на фото текущего объекта
+let currentImages = [];
 
 function login(){
   const val = document.getElementById('password-input').value;
@@ -301,6 +306,10 @@ function openForm(prop){
   document.getElementById('f-tag-en').value = prop?.tag_en||'';
   document.getElementById('f-tag-el').value = prop?.tag_el||'';
   document.getElementById('f-tag-he').value = prop?.tag_he||'';
+  document.getElementById('f-desc-ru').value = prop?.description_ru||'';
+  document.getElementById('f-desc-en').value = prop?.description_en||'';
+  document.getElementById('f-desc-el').value = prop?.description_el||'';
+  document.getElementById('f-desc-he').value = prop?.description_he||'';
   document.getElementById('f-emoji').value = prop?.emoji||'🏢';
   document.getElementById('f-isnew').value = prop?.is_new?'true':'false';
   renderPhotosPreview();
@@ -339,31 +348,21 @@ function removePhoto(index){
 async function handlePhotoUpload(input){
   const files = Array.from(input.files);
   if(!files.length) return;
-
   const progress = document.getElementById('upload-progress');
   const saveBtn = document.getElementById('save-btn');
   progress.style.display = 'block';
   saveBtn.disabled = true;
-
   for(let i=0; i<files.length; i++){
     const file = files[i];
     progress.textContent = `Загружаем фото ${i+1} из ${files.length}...`;
     const fileName = `${Date.now()}-${Math.random().toString(36).substr(2,6)}-${file.name.replace(/[^a-zA-Z0-9.]/g,'_')}`;
     const res = await fetch(`${SUPABASE_URL}/storage/v1/object/${BUCKET}/${fileName}`, {
       method: 'POST',
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
-        'Content-Type': file.type,
-      },
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': file.type },
       body: file
     });
-    if(res.ok){
-      const url = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${fileName}`;
-      currentImages.push(url);
-    }
+    if(res.ok){ currentImages.push(`${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${fileName}`); }
   }
-
   progress.style.display = 'none';
   saveBtn.disabled = false;
   input.value = '';
@@ -372,9 +371,7 @@ async function handlePhotoUpload(input){
 
 async function deleteProperty(id){
   if(!confirm('Удалить этот объект?')) return;
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?id=eq.${id}`, {
-    method: 'DELETE', headers: HEADERS
-  });
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?id=eq.${id}`, { method: 'DELETE', headers: HEADERS });
   if(res.ok){ showMsg('Объект удалён', 'success'); await loadProperties(); }
   else showMsg('Ошибка удаления', 'error');
 }
@@ -398,42 +395,30 @@ async function saveProperty(){
     tag_en: document.getElementById('f-tag-en').value.trim(),
     tag_el: document.getElementById('f-tag-el').value.trim(),
     tag_he: document.getElementById('f-tag-he').value.trim(),
+    description_ru: document.getElementById('f-desc-ru').value.trim(),
+    description_en: document.getElementById('f-desc-en').value.trim(),
+    description_el: document.getElementById('f-desc-el').value.trim(),
+    description_he: document.getElementById('f-desc-he').value.trim(),
     emoji: document.getElementById('f-emoji').value,
     is_new: document.getElementById('f-isnew').value === 'true',
     days_ago: 0,
     images: currentImages,
   };
-
   if(!data.title_ru){ showMsg('Введите название на русском', 'error'); return; }
   if(!data.price){ showMsg('Введите цену', 'error'); return; }
-
   let res;
   if(id){
-    res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?id=eq.${id}`, {
-      method: 'PATCH', headers: HEADERS, body: JSON.stringify(data)
-    });
+    res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?id=eq.${id}`, { method: 'PATCH', headers: HEADERS, body: JSON.stringify(data) });
   } else {
-    res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}`, {
-      method: 'POST', headers: HEADERS, body: JSON.stringify(data)
-    });
+    res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}`, { method: 'POST', headers: HEADERS, body: JSON.stringify(data) });
   }
-
-  if(res.ok){
-    showMsg(id ? 'Объект обновлён' : 'Объект добавлен', 'success');
-    closeForm();
-    await loadProperties();
-  } else {
-    const err = await res.text();
-    console.error(err);
-    showMsg('Ошибка сохранения', 'error');
-  }
+  if(res.ok){ showMsg(id ? 'Объект обновлён' : 'Объект добавлен', 'success'); closeForm(); await loadProperties(); }
+  else showMsg('Ошибка сохранения', 'error');
 }
 
 function showMsg(text, type){
   const el = document.getElementById('msg');
-  el.textContent = text;
-  el.className = `msg ${type}`;
-  el.style.display = 'block';
+  el.textContent = text; el.className = `msg ${type}`; el.style.display = 'block';
   setTimeout(()=>{ el.style.display='none'; }, 3000);
 }
 </script>

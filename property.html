@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Best Cyprus Properties</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a; }
+  .page { max-width: 800px; margin: 0 auto; padding: 16px; }
+
+  .back-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: #666; background: white; border: none; border-radius: 20px; padding: 8px 16px; cursor: pointer; margin-bottom: 16px; text-decoration: none; }
+  .back-btn:hover { background: #f0f0f0; }
+
+  /* Галерея */
+  .gallery { background: white; border-radius: 16px; overflow: hidden; margin-bottom: 16px; }
+  .gallery-main { position: relative; width: 100%; height: 320px; background: linear-gradient(135deg, #e6f7f2, #b2e0d0); }
+  .gallery-main img { width: 100%; height: 100%; object-fit: cover; cursor: zoom-in; }
+  .gallery-main .no-photo { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 80px; }
+  .gallery-prev, .gallery-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.4); color: white; border: none; border-radius: 50%; width: 38px; height: 38px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .gallery-prev { left: 10px; }
+  .gallery-next { right: 10px; }
+  .gallery-counter { position: absolute; bottom: 10px; right: 12px; background: rgba(0,0,0,0.5); color: white; font-size: 12px; padding: 3px 9px; border-radius: 20px; }
+  .gallery-thumbs { display: flex; gap: 6px; padding: 10px; overflow-x: auto; }
+  .gallery-thumb { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; cursor: pointer; opacity: 0.6; flex-shrink: 0; border: 2px solid transparent; }
+  .gallery-thumb.active { opacity: 1; border-color: #0f6e56; }
+
+  /* Инфо */
+  .info-card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 14px; }
+  .prop-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+  .prop-title { font-size: 22px; font-weight: 700; line-height: 1.3; }
+  .prop-price { font-size: 24px; font-weight: 700; color: #0f6e56; white-space: nowrap; }
+  .prop-price.sold { color: #888; text-decoration: line-through; }
+
+  .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+  .badge { font-size: 12px; padding: 4px 12px; border-radius: 20px; font-weight: 600; }
+  .badge-new-build { background: #e3f2fd; color: #1565c0; }
+  .badge-resale { background: #f3e5f5; color: #6a1b9a; }
+  .badge-sold { background: #1a1a1a; color: white; }
+  .badge-unavailable { background: #fff3cd; color: #856404; }
+  .badge-tag { background: #e6f7f2; color: #0f6e56; }
+  .badge-new { background: #fff3e0; color: #e65100; }
+
+  .params { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 16px; }
+  .param { background: #f8f8f8; border-radius: 12px; padding: 12px; text-align: center; }
+  .param-icon { font-size: 20px; margin-bottom: 4px; }
+  .param-value { font-size: 16px; font-weight: 600; }
+  .param-label { font-size: 11px; color: #888; margin-top: 2px; }
+
+  .description { font-size: 15px; line-height: 1.6; color: #444; white-space: pre-wrap; }
+
+  /* Контакты */
+  .contact-card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 14px; }
+  .contact-card h2 { font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+  .btns { display: flex; flex-direction: column; gap: 10px; }
+  .btn { width: 100%; padding: 14px; border-radius: 14px; font-size: 15px; font-weight: 500; cursor: pointer; border: none; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .bwa { background: #25D366; color: white; }
+  .bem { background: #f0f0f0; color: #1a1a1a; }
+  .bfrm { background: white; color: #888; border: 1px solid #e0e0e0 !important; }
+
+  .cform { margin-top: 6px; padding: 14px; background: #f8f8f8; border-radius: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .cform input, .cform textarea { font-size: 14px; padding: 10px 12px; border-radius: 10px; border: 1px solid #e0e0e0; background: white; color: #1a1a1a; width: 100%; font-family: inherit; resize: none; }
+  .sbtn { background: #0f6e56; color: white; border: none; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; width: 100%; }
+
+  /* Лайтбокс */
+  .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 1000; align-items: center; justify-content: center; }
+  .lightbox.open { display: flex; }
+  .lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 10px; object-fit: contain; }
+  .lightbox-close { position: absolute; top: 16px; right: 20px; color: white; font-size: 32px; cursor: pointer; background: none; border: none; }
+  .lightbox-prev, .lightbox-next { position: absolute; top: 50%; transform: translateY(-50%); color: white; font-size: 28px; cursor: pointer; background: rgba(255,255,255,0.1); border: none; border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
+  .lightbox-prev { left: 16px; }
+  .lightbox-next { right: 16px; }
+
+  .lang-switch { display: flex; gap: 8px; justify-content: center; margin-bottom: 14px; flex-wrap: wrap; }
+  .lb { padding: 6px 10px; border-radius: 20px; border: 1px solid #ccc; background: white; cursor: pointer; display: flex; align-items: center; }
+  .lb.active { border: 2px solid #1a1a1a; }
+  .lb img { display: block; border-radius: 2px; }
+
+  .loading { text-align: center; padding: 60px; color: #888; font-size: 16px; }
+  .error { text-align: center; padding: 60px; color: #c0392b; font-size: 16px; }
+</style>
+</head>
+<body>
+
+<div class="page" id="page">
+  <div class="lang-switch">
+    <button class="lb active" onclick="setLang('ru',this)"><img src="https://flagcdn.com/24x18/ru.png" alt="RU"></button>
+    <button class="lb" onclick="setLang('en',this)"><img src="https://flagcdn.com/24x18/gb.png" alt="EN"></button>
+    <button class="lb" onclick="setLang('el',this)"><img src="https://flagcdn.com/24x18/cy.png" alt="ΕΛ"></button>
+    <button class="lb" onclick="setLang('he',this)"><img src="https://flagcdn.com/24x18/il.png" alt="HE"></button>
+  </div>
+  <div class="loading" id="content">⏳ Загружаем объект...</div>
+</div>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close">×</button>
+  <button class="lightbox-prev" onclick="event.stopPropagation();lbNav(-1)">‹</button>
+  <img id="lightbox-img" src="" alt="">
+  <button class="lightbox-next" onclick="event.stopPropagation();lbNav(1)">›</button>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://lfgqhprihykoxqfnubhc.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_-E46ER3EDjD4TTMMiTRaCQ_9xAe36q_';
+const TABLE = 'Properties';
+
+let lang = 'ru';
+let prop = null;
+let galleryIdx = 0;
+let lbImages = [], lbIdx = 0;
+let showForm = false;
+
+const T = {
+  ru: { back:'← Все объекты', contact:'Связаться', wa:'Написать в WhatsApp', em:'Написать на email', frm:'Оставить заявку', fn:'Ваше имя', fphone:'Телефон или Telegram', fmsg:'Сообщение', send:'Отправить', rooms:'спал.', studio:'Студия', area:'м²', noDesc:'Описание скоро появится.', soldBadge:'Продано', unavailBadge:'Временно не продаётся', newBuild:'Первичная', resale:'Вторичная', newBadge:'Новое', city:'Город', type:'Тип', market:'Рынок', rtl:false,
+    cities:{ Limassol:'Лимасол', Limassol_district:'Лимасол дистрикт', Paphos:'Пафос', Paphos_district:'Пафос дистрикт', Larnaca:'Ларнака', Larnaca_district:'Ларнака дистрикт', Nicosia:'Никосия', Nicosia_district:'Никосия дистрикт', Famagusta_district:'Фамагуста дистрикт' },
+    types:{ apt:'Квартира', penthouse:'Пентхаус', house:'Дом / вилла', townhouse:'Таунхаус', land_res:'Участок под жильё', land_other:'Земельный участок', commercial:'Коммерческая', building:'Целое здание' }
+  },
+  en: { back:'← All properties', contact:'Contact us', wa:'Contact on WhatsApp', em:'Send email', frm:'Send enquiry', fn:'Your name', fphone:'Phone or Telegram', fmsg:'Message', send:'Send', rooms:'bed.', studio:'Studio', area:'m²', noDesc:'Description coming soon.', soldBadge:'Sold', unavailBadge:'Temporarily unavailable', newBuild:'New build', resale:'Resale', newBadge:'New', city:'City', type:'Type', market:'Market', rtl:false,
+    cities:{ Limassol:'Limassol', Limassol_district:'Limassol District', Paphos:'Paphos', Paphos_district:'Paphos District', Larnaca:'Larnaca', Larnaca_district:'Larnaca District', Nicosia:'Nicosia', Nicosia_district:'Nicosia District', Famagusta_district:'Famagusta District' },
+    types:{ apt:'Apartment', penthouse:'Penthouse', house:'House / villa', townhouse:'Townhouse', land_res:'Residential land', land_other:'Land plot', commercial:'Commercial', building:'Whole building' }
+  },
+  el: { back:'← Όλα τα ακίνητα', contact:'Επικοινωνία', wa:'WhatsApp', em:'Email', frm:'Αίτημα επικοινωνίας', fn:'Όνομα', fphone:'Τηλέφωνο ή Telegram', fmsg:'Μήνυμα', send:'Αποστολή', rooms:'υπν.', studio:'Στούντιο', area:'τ.μ.', noDesc:'Περιγραφή σύντομα.', soldBadge:'Πωλήθηκε', unavailBadge:'Προσωρινά μη διαθέσιμο', newBuild:'Πρωτογενής', resale:'Μεταπώληση', newBadge:'Νέο', city:'Πόλη', type:'Τύπος', market:'Αγορά', rtl:false,
+    cities:{ Limassol:'Λεμεσός', Limassol_district:'Επαρχία Λεμεσού', Paphos:'Πάφος', Paphos_district:'Επαρχία Πάφου', Larnaca:'Λάρνακα', Larnaca_district:'Επαρχία Λάρνακας', Nicosia:'Λευκωσία', Nicosia_district:'Επαρχία Λευκωσίας', Famagusta_district:'Επαρχία Αμμοχώστου' },
+    types:{ apt:'Διαμέρισμα', penthouse:'Πεντχάους', house:'Σπίτι / Βίλα', townhouse:'Μεζονέτα', land_res:'Οικόπεδο κατοικίας', land_other:'Οικόπεδο', commercial:'Εμπορικό', building:'Ολόκληρο κτίριο' }
+  },
+  he: { back:'← כל הנכסים', contact:'צור קשר', wa:'וואטסאפ', em:'אימייל', frm:'השאר פנייה', fn:'שם', fphone:'טלפון או טלגרם', fmsg:'הודעה', send:'שלח', rooms:"חד'", studio:'סטודיו', area:'מ״ר', noDesc:'תיאור בקרוב.', soldBadge:'נמכר', unavailBadge:'זמנית לא למכירה', newBuild:'יד ראשונה', resale:'יד שנייה', newBadge:'חדש', city:'עיר', type:'סוג', market:'שוק', rtl:true,
+    cities:{ Limassol:'לימסול', Limassol_district:'מחוז לימסול', Paphos:'פאפוס', Paphos_district:'מחוז פאפוס', Larnaca:'לרנקה', Larnaca_district:'מחוז לרנקה', Nicosia:'ניקוסיה', Nicosia_district:'מחוז ניקוסיה', Famagusta_district:'מחוז פמגוסטה' },
+    types:{ apt:'דירה', penthouse:'פנטהאוס', house:'בית / וילה', townhouse:'טאונהאוס', land_res:'מגרש למגורים', land_other:'מגרש', commercial:'מסחרי', building:'בניין שלם' }
+  }
+};
+
+function setLang(l, btn){
+  lang=l;
+  document.querySelectorAll('.lb').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  document.getElementById('page').setAttribute('dir', T[l].rtl?'rtl':'ltr');
+  if(prop) renderProp();
+}
+
+function getCityLabel(d){ return T[lang].cities[d.district?d.city+'_district':d.city]||d.city; }
+function roomsLabel(d){ const t=T[lang]; if(['apt','penthouse','house','townhouse'].includes(d.type)&&d.rooms===0) return t.studio; if(d.rooms===0) return ''; if(d.rooms>=5) return `5+ ${t.rooms}`; return `${d.rooms} ${t.rooms}`; }
+
+function openLightbox(idx){ lbImages=prop.images||[]; lbIdx=idx; document.getElementById('lightbox-img').src=lbImages[idx]; document.getElementById('lightbox').classList.add('open'); }
+function closeLightbox(){ document.getElementById('lightbox').classList.remove('open'); }
+function lbNav(dir){ lbIdx=(lbIdx+dir+lbImages.length)%lbImages.length; document.getElementById('lightbox-img').src=lbImages[lbIdx]; }
+
+function setGallery(idx){
+  galleryIdx=idx;
+  const imgs=prop.images||[];
+  if(!imgs.length) return;
+  document.getElementById('main-img').src=imgs[idx];
+  document.querySelectorAll('.gallery-thumb').forEach((t,i)=>t.classList.toggle('active',i===idx));
+  document.getElementById('gallery-counter').textContent=`${idx+1}/${imgs.length}`;
+}
+
+function galleryNav(dir){ const imgs=prop.images||[]; if(!imgs.length) return; setGallery((galleryIdx+dir+imgs.length)%imgs.length); }
+
+function renderProp(){
+  const t=T[lang];
+  const d=prop;
+  const imgs=d.images&&d.images.length>0?d.images:[];
+  const rl=roomsLabel(d);
+  const desc=d['description_'+lang]||'';
+  const isSold=d.status==='sold', isUnavail=d.status==='unavailable';
+
+  let statusBadge='';
+  if(isSold) statusBadge=`<span class="badge badge-sold">${t.soldBadge}</span>`;
+  else if(isUnavail) statusBadge=`<span class="badge badge-unavailable">${t.unavailBadge}</span>`;
+  else if(d.market==='new') statusBadge=`<span class="badge badge-new-build">${t.newBuild}</span>`;
+  else statusBadge=`<span class="badge badge-resale">${t.resale}</span>`;
+
+  const galleryHtml = imgs.length > 0 ? `
+    <div class="gallery-main">
+      <img id="main-img" src="${imgs[0]}" alt="фото" onclick="openLightbox(${galleryIdx})">
+      ${imgs.length>1?`<button class="gallery-prev" onclick="galleryNav(-1)">‹</button><button class="gallery-next" onclick="galleryNav(1)">›</button><span class="gallery-counter" id="gallery-counter">1/${imgs.length}</span>`:''}
+    </div>
+    ${imgs.length>1?`<div class="gallery-thumbs">${imgs.map((url,i)=>`<img class="gallery-thumb ${i===0?'active':''}" src="${url}" onclick="setGallery(${i})" alt="фото ${i+1}">`).join('')}</div>`:''}
+  ` : `<div class="gallery-main"><div class="no-photo">${d.emoji}</div></div>`;
+
+  document.getElementById('content').innerHTML = `
+    <a class="back-btn" href="index.html">← ${t.back.replace('← ','')}</a>
+
+    <div class="gallery">${galleryHtml}</div>
+
+    <div class="info-card">
+      <div class="prop-header">
+        <h1 class="prop-title">${d['title_'+lang]}</h1>
+        <div class="prop-price ${isSold?'sold':''}">€${(d.price*1000).toLocaleString()}</div>
+      </div>
+      <div class="badges">
+        ${statusBadge}
+        ${d.is_new&&!isSold?`<span class="badge badge-new">${t.newBadge}</span>`:''}
+        <span class="badge badge-tag">${d['tag_'+lang]}</span>
+      </div>
+      <div class="params">
+        <div class="param"><div class="param-icon">📍</div><div class="param-value">${getCityLabel(d)}</div><div class="param-label">${t.city}</div></div>
+        ${rl?`<div class="param"><div class="param-icon">🛏️</div><div class="param-value">${rl}</div><div class="param-label">${t.rooms}</div></div>`:''}
+        <div class="param"><div class="param-icon">📐</div><div class="param-value">${d.area}</div><div class="param-label">${t.area}</div></div>
+        <div class="param"><div class="param-icon">🏠</div><div class="param-value">${t.types[d.type]||d.type}</div><div class="param-label">${t.type}</div></div>
+      </div>
+      ${desc?`<p class="description">${desc}</p>`:`<p class="description" style="color:#aaa">${t.noDesc}</p>`}
+    </div>
+
+    <div class="contact-card">
+      <h2>${t.contact}</h2>
+      <div class="btns">
+        <button class="btn bwa" onclick="location.href='https://wa.me/35799000000?text=${encodeURIComponent(d['title_'+lang])}'">💬 ${t.wa}</button>
+        <button class="btn bem" onclick="location.href='mailto:info@bestcyprusproperties.com?subject=${encodeURIComponent(d['title_'+lang])}'">✉️ ${t.em}</button>
+        <button class="btn bfrm" style="border:1px solid #e0e0e0" onclick="toggleForm()">📝 ${t.frm}</button>
+        <div id="contact-form"></div>
+      </div>
+    </div>
+  `;
+}
+
+function toggleForm(){
+  showForm=!showForm;
+  const t=T[lang], d=prop;
+  document.getElementById('contact-form').innerHTML=showForm?`<div class="cform">
+    <input type="text" placeholder="${t.fn}">
+    <input type="text" placeholder="${t.fphone}">
+    <textarea rows="3" placeholder="${t.fmsg}"></textarea>
+    <button class="sbtn">${t.send}</button>
+  </div>`:'';
+}
+
+window.onload = async function(){
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+  if(!id){ document.getElementById('content').innerHTML='<div class="error">Объект не найден</div>'; return; }
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?id=eq.${id}&select=*`, {
+      headers:{ 'apikey':SUPABASE_KEY, 'Authorization':`Bearer ${SUPABASE_KEY}` }
+    });
+    const data = await res.json();
+    if(!data.length){ document.getElementById('content').innerHTML='<div class="error">Объект не найден</div>'; return; }
+    prop=data[0];
+    setLang('ru', document.querySelector('.lb'));
+  } catch(e){
+    document.getElementById('content').innerHTML='<div class="error">Ошибка загрузки</div>';
+  }
+};
+</script>
+</body>
+</html>
