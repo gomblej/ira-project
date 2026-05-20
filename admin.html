@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Best Cyprus Properties</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a; }
+
+  /* LOGIN */
+  .login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .login-box { background: white; border-radius: 20px; padding: 32px; width: 100%; max-width: 360px; text-align: center; }
+  .login-box .logo { font-size: 12px; color: #888; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+  .login-box h1 { font-size: 20px; font-weight: 700; margin-bottom: 24px; }
+  .login-box input { width: 100%; font-size: 15px; padding: 12px 14px; border-radius: 12px; border: 1px solid #e0e0e0; background: #f8f8f8; color: #1a1a1a; font-family: inherit; margin-bottom: 12px; }
+  .login-box button { width: 100%; padding: 13px; border-radius: 12px; border: none; background: #0f6e56; color: white; font-size: 15px; font-weight: 600; cursor: pointer; }
+  .login-error { color: #c0392b; font-size: 13px; margin-top: 10px; }
+
+  /* ADMIN */
+  .admin { display: none; max-width: 900px; margin: 0 auto; padding: 16px; }
+  .admin-header { background: white; border-radius: 16px; padding: 16px 20px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+  .admin-header h1 { font-size: 18px; font-weight: 700; }
+  .admin-header span { font-size: 13px; color: #888; }
+  .logout-btn { font-size: 13px; padding: 6px 14px; border-radius: 20px; border: 1px solid #ddd; background: white; color: #666; cursor: pointer; }
+
+  .add-btn { width: 100%; padding: 14px; border-radius: 14px; border: 2px dashed #0f6e56; background: white; color: #0f6e56; font-size: 15px; font-weight: 600; cursor: pointer; margin-bottom: 16px; }
+  .add-btn:hover { background: #f0faf7; }
+
+  /* FORM */
+  .form-card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 16px; display: none; }
+  .form-card.open { display: block; }
+  .form-card h2 { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media(max-width:600px){ .form-grid { grid-template-columns: 1fr; } }
+  .form-group { display: flex; flex-direction: column; gap: 4px; }
+  .form-group.full { grid-column: 1/-1; }
+  .form-group label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+  .form-group input, .form-group select, .form-group textarea { font-size: 14px; padding: 9px 12px; border-radius: 10px; border: 1px solid #e0e0e0; background: #f8f8f8; color: #1a1a1a; font-family: inherit; resize: none; width: 100%; }
+  .form-group textarea { resize: vertical; }
+  .form-actions { display: flex; gap: 10px; margin-top: 16px; }
+  .save-btn { flex: 1; padding: 12px; border-radius: 12px; border: none; background: #0f6e56; color: white; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .cancel-btn { padding: 12px 20px; border-radius: 12px; border: 1px solid #ddd; background: white; color: #666; font-size: 14px; cursor: pointer; }
+
+  /* LIST */
+  .properties-list { display: flex; flex-direction: column; gap: 10px; }
+  .prop-card { background: white; border-radius: 14px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; }
+  .prop-emoji { font-size: 32px; flex-shrink: 0; }
+  .prop-info { flex: 1; min-width: 0; }
+  .prop-title { font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .prop-meta { font-size: 13px; color: #888; margin-top: 3px; }
+  .prop-status { font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 600; display: inline-block; margin-top: 4px; }
+  .status-available { background: #e6f7f2; color: #0f6e56; }
+  .status-sold { background: #1a1a1a; color: white; }
+  .status-unavailable { background: #fff3cd; color: #856404; }
+  .prop-actions { display: flex; gap: 8px; flex-shrink: 0; }
+  .edit-btn { font-size: 13px; padding: 6px 12px; border-radius: 10px; border: 1px solid #ddd; background: white; color: #1a1a1a; cursor: pointer; }
+  .delete-btn { font-size: 13px; padding: 6px 12px; border-radius: 10px; border: none; background: #fff0f0; color: #c0392b; cursor: pointer; }
+
+  .loading { text-align: center; padding: 40px; color: #888; }
+  .msg { text-align: center; padding: 10px; border-radius: 10px; margin-bottom: 12px; font-size: 14px; display: none; }
+  .msg.success { background: #e6f7f2; color: #0f6e56; }
+  .msg.error { background: #fff0f0; color: #c0392b; }
+</style>
+</head>
+<body>
+
+<!-- Экран входа -->
+<div class="login-screen" id="login-screen">
+  <div class="login-box">
+    <div class="logo">Best Cyprus Properties</div>
+    <h1>Вход для риелтора</h1>
+    <input type="password" id="password-input" placeholder="Введите пароль" onkeydown="if(event.key==='Enter') login()">
+    <button onclick="login()">Войти</button>
+    <div class="login-error" id="login-error"></div>
+  </div>
+</div>
+
+<!-- Админ панель -->
+<div class="admin" id="admin">
+  <div class="admin-header">
+    <div>
+      <h1>Управление объектами</h1>
+      <span id="props-count"></span>
+    </div>
+    <button class="logout-btn" onclick="logout()">Выйти</button>
+  </div>
+
+  <div class="msg" id="msg"></div>
+
+  <button class="add-btn" onclick="openForm()">+ Добавить новый объект</button>
+
+  <!-- Форма добавления/редактирования -->
+  <div class="form-card" id="form-card">
+    <h2 id="form-title">Новый объект</h2>
+    <input type="hidden" id="edit-id">
+    <div class="form-grid">
+      <div class="form-group full"><label>Название (RU)</label><input type="text" id="f-title-ru" placeholder="Апартаменты у моря"></div>
+      <div class="form-group full"><label>Название (EN)</label><input type="text" id="f-title-en" placeholder="Sea-view apartment"></div>
+      <div class="form-group full"><label>Название (греческий)</label><input type="text" id="f-title-el" placeholder="Διαμέρισμα με θέα θάλασσα"></div>
+      <div class="form-group full"><label>Название (иврит)</label><input type="text" id="f-title-he" placeholder="דירה עם נוף לים"></div>
+
+      <div class="form-group"><label>Город</label>
+        <select id="f-city">
+          <option value="Limassol">Лимасол</option>
+          <option value="Paphos">Пафос</option>
+          <option value="Larnaca">Ларнака</option>
+          <option value="Nicosia">Никосия</option>
+          <option value="Famagusta">Фамагуста</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Дистрикт?</label>
+        <select id="f-district">
+          <option value="false">Нет — сам город</option>
+          <option value="true">Да — дистрикт / пригород</option>
+        </select>
+      </div>
+
+      <div class="form-group"><label>Тип недвижимости</label>
+        <select id="f-type">
+          <option value="apt">Квартира</option>
+          <option value="penthouse">Пентхаус</option>
+          <option value="house">Дом / вилла</option>
+          <option value="townhouse">Таунхаус</option>
+          <option value="land_res">Участок под жильё</option>
+          <option value="land_other">Земельный участок (прочее)</option>
+          <option value="commercial">Коммерческая</option>
+          <option value="building">Целое здание</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Первичная / Вторичная</label>
+        <select id="f-market">
+          <option value="new">Первичная</option>
+          <option value="resale">Вторичная</option>
+        </select>
+      </div>
+
+      <div class="form-group"><label>Статус</label>
+        <select id="f-status">
+          <option value="available">В продаже</option>
+          <option value="unavailable">Временно не продаётся</option>
+          <option value="sold">Продано</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Цена (тысяч €, например 280)</label>
+        <input type="number" id="f-price" placeholder="280" min="0">
+      </div>
+
+      <div class="form-group"><label>Спальни (0 = студия)</label>
+        <input type="number" id="f-rooms" placeholder="2" min="0">
+      </div>
+      <div class="form-group"><label>Площадь (м²)</label>
+        <input type="number" id="f-area" placeholder="72" min="0">
+      </div>
+
+      <div class="form-group"><label>Тег (RU), напр. "Вид на море"</label>
+        <input type="text" id="f-tag-ru" placeholder="Вид на море"></div>
+      <div class="form-group"><label>Тег (EN)</label>
+        <input type="text" id="f-tag-en" placeholder="Sea view"></div>
+      <div class="form-group"><label>Тег (греческий)</label>
+        <input type="text" id="f-tag-el" placeholder="Θέα θάλασσα"></div>
+      <div class="form-group"><label>Тег (иврит)</label>
+        <input type="text" id="f-tag-he" placeholder="נוף לים"></div>
+
+      <div class="form-group"><label>Эмодзи</label>
+        <select id="f-emoji">
+          <option value="🏢">🏢 Квартира / апартаменты</option>
+          <option value="🏙️">🏙️ Пентхаус</option>
+          <option value="🏡">🏡 Дом / вилла</option>
+          <option value="🏘️">🏘️ Таунхаус</option>
+          <option value="🌿">🌿 Участок под жильё</option>
+          <option value="🌾">🌾 Земельный участок</option>
+          <option value="🏪">🏪 Коммерческая</option>
+          <option value="🏗️">🏗️ Здание целиком</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Новый объект?</label>
+        <select id="f-isnew">
+          <option value="true">Да — показывать бейдж "Новое"</option>
+          <option value="false">Нет</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="save-btn" onclick="saveProperty()">Сохранить</button>
+      <button class="cancel-btn" onclick="closeForm()">Отмена</button>
+    </div>
+  </div>
+
+  <div class="properties-list" id="properties-list">
+    <div class="loading">Загружаем объекты...</div>
+  </div>
+</div>
+
+<script>
+// ====== CONFIG ======
+const PASSWORD = 'admin123'; // ← сюда вставить пароль Иры
+const SUPABASE_URL = 'https://lfgqhprihykoxqfnubhc.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_-E46ER3EDjD4TTMMiTRaCQ_9xAe36q_';
+const TABLE = 'Properties';
+// ====================
+
+const HEADERS = {
+  'apikey': SUPABASE_KEY,
+  'Authorization': `Bearer ${SUPABASE_KEY}`,
+  'Content-Type': 'application/json',
+  'Prefer': 'return=representation'
+};
+
+let allProps = [];
+
+function login(){
+  const val = document.getElementById('password-input').value;
+  if(val === PASSWORD){
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin').style.display = 'block';
+    loadProperties();
+  } else {
+    document.getElementById('login-error').textContent = 'Неверный пароль';
+  }
+}
+
+function logout(){
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('admin').style.display = 'none';
+  document.getElementById('password-input').value = '';
+}
+
+async function loadProperties(){
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?select=*&order=id.desc`, { headers: HEADERS });
+  allProps = await res.json();
+  document.getElementById('props-count').textContent = `Всего объектов: ${allProps.length}`;
+  renderList();
+}
+
+function renderList(){
+  const statusLabels = { available:'В продаже', sold:'Продано', unavailable:'Временно не продаётся' };
+  const con = document.getElementById('properties-list');
+  if(!allProps.length){ con.innerHTML='<div class="loading">Объектов пока нет</div>'; return; }
+  con.innerHTML = allProps.map(d=>`
+    <div class="prop-card">
+      <div class="prop-emoji">${d.emoji}</div>
+      <div class="prop-info">
+        <div class="prop-title">${d.title_ru}</div>
+        <div class="prop-meta">${d.city}${d.district?' (дистрикт)':''} · ${d.type} · €${(d.price*1000).toLocaleString()} · ${d.area} м²</div>
+        <span class="prop-status status-${d.status}">${statusLabels[d.status]||d.status}</span>
+      </div>
+      <div class="prop-actions">
+        <button class="edit-btn" onclick="editProperty(${d.id})">✏️</button>
+        <button class="delete-btn" onclick="deleteProperty(${d.id})">🗑️</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openForm(prop){
+  const card = document.getElementById('form-card');
+  card.classList.add('open');
+  document.getElementById('form-title').textContent = prop ? 'Редактировать объект' : 'Новый объект';
+  document.getElementById('edit-id').value = prop ? prop.id : '';
+  document.getElementById('f-title-ru').value = prop?.title_ru||'';
+  document.getElementById('f-title-en').value = prop?.title_en||'';
+  document.getElementById('f-title-el').value = prop?.title_el||'';
+  document.getElementById('f-title-he').value = prop?.title_he||'';
+  document.getElementById('f-city').value = prop?.city||'Limassol';
+  document.getElementById('f-district').value = prop?.district?'true':'false';
+  document.getElementById('f-type').value = prop?.type||'apt';
+  document.getElementById('f-market').value = prop?.market||'new';
+  document.getElementById('f-status').value = prop?.status||'available';
+  document.getElementById('f-price').value = prop?.price||'';
+  document.getElementById('f-rooms').value = prop?.rooms??'';
+  document.getElementById('f-area').value = prop?.area||'';
+  document.getElementById('f-tag-ru').value = prop?.tag_ru||'';
+  document.getElementById('f-tag-en').value = prop?.tag_en||'';
+  document.getElementById('f-tag-el').value = prop?.tag_el||'';
+  document.getElementById('f-tag-he').value = prop?.tag_he||'';
+  document.getElementById('f-emoji').value = prop?.emoji||'🏢';
+  document.getElementById('f-isnew').value = prop?.is_new?'true':'false';
+  card.scrollIntoView({ behavior:'smooth' });
+}
+
+function closeForm(){
+  document.getElementById('form-card').classList.remove('open');
+  document.getElementById('edit-id').value = '';
+}
+
+function editProperty(id){
+  const prop = allProps.find(p=>p.id===id);
+  if(prop) openForm(prop);
+}
+
+async function deleteProperty(id){
+  if(!confirm('Удалить этот объект?')) return;
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?id=eq.${id}`, {
+    method: 'DELETE', headers: HEADERS
+  });
+  if(res.ok){ showMsg('Объект удалён', 'success'); await loadProperties(); }
+  else showMsg('Ошибка удаления', 'error');
+}
+
+async function saveProperty(){
+  const id = document.getElementById('edit-id').value;
+  const data = {
+    title_ru: document.getElementById('f-title-ru').value.trim(),
+    title_en: document.getElementById('f-title-en').value.trim(),
+    title_el: document.getElementById('f-title-el').value.trim(),
+    title_he: document.getElementById('f-title-he').value.trim(),
+    city: document.getElementById('f-city').value,
+    district: document.getElementById('f-district').value === 'true',
+    type: document.getElementById('f-type').value,
+    market: document.getElementById('f-market').value,
+    status: document.getElementById('f-status').value,
+    price: parseFloat(document.getElementById('f-price').value)||0,
+    rooms: parseInt(document.getElementById('f-rooms').value)||0,
+    area: parseInt(document.getElementById('f-area').value)||0,
+    tag_ru: document.getElementById('f-tag-ru').value.trim(),
+    tag_en: document.getElementById('f-tag-en').value.trim(),
+    tag_el: document.getElementById('f-tag-el').value.trim(),
+    tag_he: document.getElementById('f-tag-he').value.trim(),
+    emoji: document.getElementById('f-emoji').value,
+    is_new: document.getElementById('f-isnew').value === 'true',
+    days_ago: 0,
+  };
+
+  if(!data.title_ru){ showMsg('Введите название на русском', 'error'); return; }
+  if(!data.price){ showMsg('Введите цену', 'error'); return; }
+
+  let res;
+  if(id){
+    res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?id=eq.${id}`, {
+      method: 'PATCH', headers: HEADERS, body: JSON.stringify(data)
+    });
+  } else {
+    res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}`, {
+      method: 'POST', headers: HEADERS, body: JSON.stringify(data)
+    });
+  }
+
+  if(res.ok){
+    showMsg(id ? 'Объект обновлён' : 'Объект добавлен', 'success');
+    closeForm();
+    await loadProperties();
+  } else {
+    showMsg('Ошибка сохранения', 'error');
+  }
+}
+
+function showMsg(text, type){
+  const el = document.getElementById('msg');
+  el.textContent = text;
+  el.className = `msg ${type}`;
+  el.style.display = 'block';
+  setTimeout(()=>{ el.style.display='none'; }, 3000);
+}
+</script>
+</body>
+</html>
