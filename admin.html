@@ -8,7 +8,6 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a; }
 
-  /* LOGIN */
   .login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
   .login-box { background: white; border-radius: 20px; padding: 32px; width: 100%; max-width: 360px; text-align: center; }
   .login-box .logo { font-size: 12px; color: #888; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
@@ -17,7 +16,6 @@
   .login-box button { width: 100%; padding: 13px; border-radius: 12px; border: none; background: #0f6e56; color: white; font-size: 15px; font-weight: 600; cursor: pointer; }
   .login-error { color: #c0392b; font-size: 13px; margin-top: 10px; }
 
-  /* ADMIN */
   .admin { display: none; max-width: 900px; margin: 0 auto; padding: 16px; }
   .admin-header { background: white; border-radius: 16px; padding: 16px 20px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
   .admin-header h1 { font-size: 18px; font-weight: 700; }
@@ -27,7 +25,6 @@
   .add-btn { width: 100%; padding: 14px; border-radius: 14px; border: 2px dashed #0f6e56; background: white; color: #0f6e56; font-size: 15px; font-weight: 600; cursor: pointer; margin-bottom: 16px; }
   .add-btn:hover { background: #f0faf7; }
 
-  /* FORM */
   .form-card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 16px; display: none; }
   .form-card.open { display: block; }
   .form-card h2 { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
@@ -37,18 +34,35 @@
   .form-group.full { grid-column: 1/-1; }
   .form-group label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
   .form-group input, .form-group select, .form-group textarea { font-size: 14px; padding: 9px 12px; border-radius: 10px; border: 1px solid #e0e0e0; background: #f8f8f8; color: #1a1a1a; font-family: inherit; resize: none; width: 100%; }
-  .form-group textarea { resize: vertical; }
+
+  /* Фото */
+  .photo-section { grid-column: 1/-1; margin-top: 8px; }
+  .photo-section label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 8px; }
+  .photo-upload-area { border: 2px dashed #e0e0e0; border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; background: #f8f8f8; position: relative; }
+  .photo-upload-area:hover { border-color: #0f6e56; background: #f0faf7; }
+  .photo-upload-area input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .photo-upload-area p { font-size: 14px; color: #888; }
+  .photo-upload-area .upload-icon { font-size: 28px; margin-bottom: 6px; }
+  .upload-progress { font-size: 13px; color: #0f6e56; margin-top: 8px; display: none; }
+
+  .photos-preview { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .photo-thumb { position: relative; width: 80px; height: 80px; border-radius: 10px; overflow: hidden; }
+  .photo-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .photo-thumb .remove-photo { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
   .form-actions { display: flex; gap: 10px; margin-top: 16px; }
   .save-btn { flex: 1; padding: 12px; border-radius: 12px; border: none; background: #0f6e56; color: white; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .save-btn:disabled { opacity: 0.6; cursor: not-allowed; }
   .cancel-btn { padding: 12px 20px; border-radius: 12px; border: 1px solid #ddd; background: white; color: #666; font-size: 14px; cursor: pointer; }
 
-  /* LIST */
   .properties-list { display: flex; flex-direction: column; gap: 10px; }
   .prop-card { background: white; border-radius: 14px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; }
-  .prop-emoji { font-size: 32px; flex-shrink: 0; }
+  .prop-thumb { width: 56px; height: 56px; border-radius: 10px; object-fit: cover; flex-shrink: 0; background: #e6f7f2; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+  .prop-thumb img { width: 56px; height: 56px; border-radius: 10px; object-fit: cover; }
   .prop-info { flex: 1; min-width: 0; }
   .prop-title { font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .prop-meta { font-size: 13px; color: #888; margin-top: 3px; }
+  .prop-photos-count { font-size: 12px; color: #0f6e56; margin-top: 2px; }
   .prop-status { font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 600; display: inline-block; margin-top: 4px; }
   .status-available { background: #e6f7f2; color: #0f6e56; }
   .status-sold { background: #1a1a1a; color: white; }
@@ -65,7 +79,6 @@
 </head>
 <body>
 
-<!-- Экран входа -->
 <div class="login-screen" id="login-screen">
   <div class="login-box">
     <div class="logo">Best Cyprus Properties</div>
@@ -76,7 +89,6 @@
   </div>
 </div>
 
-<!-- Админ панель -->
 <div class="admin" id="admin">
   <div class="admin-header">
     <div>
@@ -87,15 +99,13 @@
   </div>
 
   <div class="msg" id="msg"></div>
-
   <button class="add-btn" onclick="openForm()">+ Добавить новый объект</button>
 
-  <!-- Форма добавления/редактирования -->
   <div class="form-card" id="form-card">
     <h2 id="form-title">Новый объект</h2>
     <input type="hidden" id="edit-id">
     <div class="form-grid">
-      <div class="form-group full"><label>Название (RU)</label><input type="text" id="f-title-ru" placeholder="Апартаменты у моря"></div>
+      <div class="form-group full"><label>Название (RU) *</label><input type="text" id="f-title-ru" placeholder="Апартаменты у моря"></div>
       <div class="form-group full"><label>Название (EN)</label><input type="text" id="f-title-en" placeholder="Sea-view apartment"></div>
       <div class="form-group full"><label>Название (греческий)</label><input type="text" id="f-title-el" placeholder="Διαμέρισμα με θέα θάλασσα"></div>
       <div class="form-group full"><label>Название (иврит)</label><input type="text" id="f-title-he" placeholder="דירה עם נוף לים"></div>
@@ -153,14 +163,10 @@
         <input type="number" id="f-area" placeholder="72" min="0">
       </div>
 
-      <div class="form-group"><label>Тег (RU), напр. "Вид на море"</label>
-        <input type="text" id="f-tag-ru" placeholder="Вид на море"></div>
-      <div class="form-group"><label>Тег (EN)</label>
-        <input type="text" id="f-tag-en" placeholder="Sea view"></div>
-      <div class="form-group"><label>Тег (греческий)</label>
-        <input type="text" id="f-tag-el" placeholder="Θέα θάλασσα"></div>
-      <div class="form-group"><label>Тег (иврит)</label>
-        <input type="text" id="f-tag-he" placeholder="נוף לים"></div>
+      <div class="form-group"><label>Тег (RU), напр. "Вид на море"</label><input type="text" id="f-tag-ru" placeholder="Вид на море"></div>
+      <div class="form-group"><label>Тег (EN)</label><input type="text" id="f-tag-en" placeholder="Sea view"></div>
+      <div class="form-group"><label>Тег (греческий)</label><input type="text" id="f-tag-el" placeholder="Θέα θάλασσα"></div>
+      <div class="form-group"><label>Тег (иврит)</label><input type="text" id="f-tag-he" placeholder="נוף לים"></div>
 
       <div class="form-group"><label>Эмодзи</label>
         <select id="f-emoji">
@@ -180,9 +186,22 @@
           <option value="false">Нет</option>
         </select>
       </div>
+
+      <!-- Фотографии -->
+      <div class="photo-section">
+        <label>Фотографии объекта</label>
+        <div class="photo-upload-area">
+          <input type="file" id="f-photos" accept="image/*" multiple onchange="handlePhotoUpload(this)">
+          <div class="upload-icon">📷</div>
+          <p>Нажмите чтобы выбрать фото<br><small>Можно выбрать несколько сразу</small></p>
+        </div>
+        <div class="upload-progress" id="upload-progress">Загружаем фото...</div>
+        <div class="photos-preview" id="photos-preview"></div>
+      </div>
     </div>
+
     <div class="form-actions">
-      <button class="save-btn" onclick="saveProperty()">Сохранить</button>
+      <button class="save-btn" id="save-btn" onclick="saveProperty()">Сохранить</button>
       <button class="cancel-btn" onclick="closeForm()">Отмена</button>
     </div>
   </div>
@@ -193,12 +212,11 @@
 </div>
 
 <script>
-// ====== CONFIG ======
-const PASSWORD = 'admin123'; // ← сюда вставить пароль Иры
+const PASSWORD = 'admin123';
 const SUPABASE_URL = 'https://lfgqhprihykoxqfnubhc.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_-E46ER3EDjD4TTMMiTRaCQ_9xAe36q_';
 const TABLE = 'Properties';
-// ====================
+const BUCKET = 'property-images';
 
 const HEADERS = {
   'apikey': SUPABASE_KEY,
@@ -208,6 +226,7 @@ const HEADERS = {
 };
 
 let allProps = [];
+let currentImages = []; // ссылки на фото текущего объекта
 
 function login(){
   const val = document.getElementById('password-input').value;
@@ -237,23 +256,31 @@ function renderList(){
   const statusLabels = { available:'В продаже', sold:'Продано', unavailable:'Временно не продаётся' };
   const con = document.getElementById('properties-list');
   if(!allProps.length){ con.innerHTML='<div class="loading">Объектов пока нет</div>'; return; }
-  con.innerHTML = allProps.map(d=>`
+  con.innerHTML = allProps.map(d=>{
+    const firstPhoto = d.images && d.images.length > 0 ? d.images[0] : null;
+    const thumbHtml = firstPhoto
+      ? `<div class="prop-thumb"><img src="${firstPhoto}" alt="фото"></div>`
+      : `<div class="prop-thumb">${d.emoji}</div>`;
+    const photoCount = d.images ? d.images.length : 0;
+    return `
     <div class="prop-card">
-      <div class="prop-emoji">${d.emoji}</div>
+      ${thumbHtml}
       <div class="prop-info">
         <div class="prop-title">${d.title_ru}</div>
-        <div class="prop-meta">${d.city}${d.district?' (дистрикт)':''} · ${d.type} · €${(d.price*1000).toLocaleString()} · ${d.area} м²</div>
+        <div class="prop-meta">${d.city}${d.district?' (дистрикт)':''} · €${(d.price*1000).toLocaleString()} · ${d.area} м²</div>
+        <div class="prop-photos-count">${photoCount > 0 ? `📷 ${photoCount} фото` : '📷 Нет фото'}</div>
         <span class="prop-status status-${d.status}">${statusLabels[d.status]||d.status}</span>
       </div>
       <div class="prop-actions">
         <button class="edit-btn" onclick="editProperty(${d.id})">✏️</button>
         <button class="delete-btn" onclick="deleteProperty(${d.id})">🗑️</button>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 
 function openForm(prop){
+  currentImages = prop?.images ? [...prop.images] : [];
   const card = document.getElementById('form-card');
   card.classList.add('open');
   document.getElementById('form-title').textContent = prop ? 'Редактировать объект' : 'Новый объект';
@@ -276,17 +303,71 @@ function openForm(prop){
   document.getElementById('f-tag-he').value = prop?.tag_he||'';
   document.getElementById('f-emoji').value = prop?.emoji||'🏢';
   document.getElementById('f-isnew').value = prop?.is_new?'true':'false';
+  renderPhotosPreview();
   card.scrollIntoView({ behavior:'smooth' });
 }
 
 function closeForm(){
   document.getElementById('form-card').classList.remove('open');
   document.getElementById('edit-id').value = '';
+  currentImages = [];
+  document.getElementById('photos-preview').innerHTML = '';
+  document.getElementById('f-photos').value = '';
 }
 
 function editProperty(id){
   const prop = allProps.find(p=>p.id===id);
   if(prop) openForm(prop);
+}
+
+function renderPhotosPreview(){
+  const con = document.getElementById('photos-preview');
+  if(!currentImages.length){ con.innerHTML=''; return; }
+  con.innerHTML = currentImages.map((url, i)=>`
+    <div class="photo-thumb">
+      <img src="${url}" alt="фото ${i+1}">
+      <button class="remove-photo" onclick="removePhoto(${i})">×</button>
+    </div>
+  `).join('');
+}
+
+function removePhoto(index){
+  currentImages.splice(index, 1);
+  renderPhotosPreview();
+}
+
+async function handlePhotoUpload(input){
+  const files = Array.from(input.files);
+  if(!files.length) return;
+
+  const progress = document.getElementById('upload-progress');
+  const saveBtn = document.getElementById('save-btn');
+  progress.style.display = 'block';
+  saveBtn.disabled = true;
+
+  for(let i=0; i<files.length; i++){
+    const file = files[i];
+    progress.textContent = `Загружаем фото ${i+1} из ${files.length}...`;
+    const fileName = `${Date.now()}-${Math.random().toString(36).substr(2,6)}-${file.name.replace(/[^a-zA-Z0-9.]/g,'_')}`;
+    const res = await fetch(`${SUPABASE_URL}/storage/v1/object/${BUCKET}/${fileName}`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': file.type,
+      },
+      body: file
+    });
+    if(res.ok){
+      const url = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${fileName}`;
+      currentImages.push(url);
+    }
+  }
+
+  progress.style.display = 'none';
+  saveBtn.disabled = false;
+  input.value = '';
+  renderPhotosPreview();
 }
 
 async function deleteProperty(id){
@@ -320,6 +401,7 @@ async function saveProperty(){
     emoji: document.getElementById('f-emoji').value,
     is_new: document.getElementById('f-isnew').value === 'true',
     days_ago: 0,
+    images: currentImages,
   };
 
   if(!data.title_ru){ showMsg('Введите название на русском', 'error'); return; }
@@ -341,6 +423,8 @@ async function saveProperty(){
     closeForm();
     await loadProperties();
   } else {
+    const err = await res.text();
+    console.error(err);
     showMsg('Ошибка сохранения', 'error');
   }
 }
