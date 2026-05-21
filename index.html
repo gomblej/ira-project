@@ -14,27 +14,23 @@
   .lb.active { border: 2px solid #1a1a1a; }
   .lb img { display: block; border-radius: 2px; }
 
-  /* Шапка с табами */
   .header { background: white; border-radius: 16px; margin-bottom: 14px; overflow: hidden; }
   .header-top { padding: 20px 20px 0; text-align: center; }
   .logo { font-size: 13px; color: #888; margin-bottom: 6px; letter-spacing: 1px; text-transform: uppercase; }
   .header h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
   .header p { font-size: 13px; color: #888; margin-bottom: 16px; }
 
-  /* Табы */
   .tabs { display: flex; border-top: 1px solid #f0f0f0; }
   .tab { flex: 1; padding: 14px; text-align: center; font-size: 15px; font-weight: 600; cursor: pointer; color: #888; border: none; background: transparent; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
   .tab.active { color: #0f6e56; border-bottom: 3px solid #0f6e56; }
   .tab:first-child { border-right: 1px solid #f0f0f0; }
   .tab.sell-tab.active { color: #e8a020; border-bottom-color: #e8a020; }
 
-  /* Панель покупки */
   .buy-panel { display: block; }
   .sell-panel { display: none; }
   .sell-panel.active { display: block; }
   .buy-panel.hidden { display: none; }
 
-  /* Форма продажи */
   .sell-card { background: white; border-radius: 16px; padding: 24px; margin-bottom: 14px; }
   .sell-card h2 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
   .sell-card p { font-size: 14px; color: #888; margin-bottom: 20px; }
@@ -67,6 +63,9 @@
   .sort-bar { display: flex; gap: 8px; flex-wrap: wrap; }
   .sort-btn { font-size: 12px; padding: 5px 12px; border-radius: 20px; border: 1px solid #ddd; background: white; color: #666; cursor: pointer; }
   .sort-btn.active { background: #0f6e56; color: white; border-color: #0f6e56; }
+  .top-bar-right { display: flex; gap: 8px; align-items: center; }
+  .reset-btn { font-size: 12px; padding: 6px 12px; border-radius: 20px; border: 1px solid #c0392b; background: white; color: #c0392b; cursor: pointer; display: none; white-space: nowrap; }
+  .reset-btn:hover { background: #fff0f0; }
   .fav-toggle { font-size: 13px; padding: 7px 16px; border-radius: 20px; border: 1px solid #ddd; background: white; color: #666; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; transition: all 0.2s; }
   .fav-toggle.active { background: #fce4ec; color: #ad1457; border-color: #ad1457; font-weight: 500; }
 
@@ -205,7 +204,10 @@
     <div class="sticky-bar">
       <div class="top-bar">
         <div class="sort-bar" id="sort-bar"></div>
-        <button class="fav-toggle" id="fav-toggle" onclick="toggleFavView()">❤️ <span id="fav-label"></span></button>
+        <div class="top-bar-right">
+          <button class="reset-btn" id="reset-btn" onclick="resetFilters()">✕ <span id="reset-label"></span></button>
+          <button class="fav-toggle" id="fav-toggle" onclick="toggleFavView()">❤️ <span id="fav-label"></span></button>
+        </div>
       </div>
     </div>
 
@@ -317,7 +319,7 @@ const T = {
     beds:{ studio:'Студия','1':'1','2':'2','3':'3','4':'4','5+':'5+' },
     rooms:'спал.', studio:'Студия', area:'м²',
     res:n=>`Найдено: ${n} объектов`, none:'Ничего не найдено', error:'Ошибка загрузки.',
-    wa:'WhatsApp', viewMore:'Подробнее →',
+    wa:'WhatsApp', viewMore:'Подробнее →', resetLabel:'Сбросить фильтры',
     newBadge:'Новое', soldBadge:'Продано', unavailBadge:'Временно не продаётся',
     sorts:['По цене ↑','По цене ↓','По спальням','По метражу','Сначала новые'],
     favLabel:'Избранное', favLabelExit:'Выйти из избранного', favEmpty:'Вы ещё не добавили объекты в избранное',
@@ -343,7 +345,7 @@ const T = {
     beds:{ studio:'Studio','1':'1','2':'2','3':'3','4':'4','5+':'5+' },
     rooms:'bed.', studio:'Studio', area:'m²',
     res:n=>`Found: ${n} properties`, none:'No properties found', error:'Loading error.',
-    wa:'WhatsApp', viewMore:'View details →',
+    wa:'WhatsApp', viewMore:'View details →', resetLabel:'Reset filters',
     newBadge:'New', soldBadge:'Sold', unavailBadge:'Temporarily unavailable',
     sorts:['Price ↑','Price ↓','Bedrooms','Area','Newest first'],
     favLabel:'Favourites', favLabelExit:'Exit favourites', favEmpty:'No saved properties yet',
@@ -369,7 +371,7 @@ const T = {
     beds:{ studio:'Στούντιο','1':'1','2':'2','3':'3','4':'4','5+':'5+' },
     rooms:'υπν.', studio:'Στούντιο', area:'τ.μ.',
     res:n=>`Βρέθηκαν: ${n} ακίνητα`, none:'Δεν βρέθηκαν αποτελέσματα', error:'Σφάλμα.',
-    wa:'WhatsApp', viewMore:'Περισσότερα →',
+    wa:'WhatsApp', viewMore:'Περισσότερα →', resetLabel:'Επαναφορά φίλτρων',
     newBadge:'Νέο', soldBadge:'Πωλήθηκε', unavailBadge:'Προσωρινά μη διαθέσιμο',
     sorts:['Τιμή ↑','Τιμή ↓','Υπνοδωμάτια','Εμβαδόν','Νεότερα πρώτα'],
     favLabel:'Αγαπημένα', favLabelExit:'Έξοδος', favEmpty:'Δεν έχετε αποθηκεύσει ακίνητα',
@@ -395,7 +397,7 @@ const T = {
     beds:{ studio:'סטודיו','1':'1','2':'2','3':'3','4':'4','5+':'5+' },
     rooms:"חד'", studio:'סטודיו', area:'מ״ר',
     res:n=>`נמצאו: ${n} נכסים`, none:'לא נמצאו תוצאות', error:'שגיאת טעינה.',
-    wa:'וואטסאפ', viewMore:'פרטים נוספים →',
+    wa:'וואטסאפ', viewMore:'פרטים נוספים →', resetLabel:'איפוס פילטרים',
     newBadge:'חדש', soldBadge:'נמכר', unavailBadge:'זמנית לא למכירה',
     sorts:['מחיר ↑','מחיר ↓','חדרי שינה','שטח','חדש ראשון'],
     favLabel:'מועדפים', favLabelExit:'צא ממועדפים', favEmpty:'עדיין לא שמרת נכסים',
@@ -413,8 +415,7 @@ const T = {
 let lang='ru', sortIdx=4, favs=new Set(), notes={}, openForms=new Set(), editingNote=null;
 let showFavOnly=false, selectedBeds=new Set();
 let ALL_DATA=[], galleryIndex={};
-let searchFormOpen=false;
-let currentTab='buy';
+let searchFormOpen=false, currentTab='buy';
 
 const SORT_FNS=[
   (a,b)=>a.price-b.price,(a,b)=>b.price-a.price,
@@ -433,17 +434,41 @@ function switchTab(tab){
 function submitSellForm(){
   document.getElementById('sell-form-inner').style.display='none';
   const t=T[lang];
-  const success=document.getElementById('sell-success');
   document.getElementById('sell-success-title').textContent=t.sfSuccessTitle;
   document.getElementById('sell-success-text').textContent=t.sfSuccessText;
-  success.classList.add('show');
+  document.getElementById('sell-success').classList.add('show');
 }
 
-function onFilter(){ if(showFavOnly) exitFavView(); else render(); }
+function onFilter(){ if(showFavOnly) exitFavView(); else render(); updateResetBtn(); }
 function exitFavView(){ showFavOnly=false; updateFavBtn(); render(); }
 function updateFavBtn(){ const t=T[lang]; document.getElementById('fav-toggle').classList.toggle('active',showFavOnly); document.getElementById('fav-label').textContent=showFavOnly?t.favLabelExit:t.favLabel; }
 function toggleSearchForm(){ searchFormOpen=!searchFormOpen; document.getElementById('search-form-wrap').classList.toggle('open', searchFormOpen); }
 function goToProperty(id){ window.location.href=`property.html?id=${id}`; }
+
+function updateResetBtn(){
+  const hasFilters =
+    document.getElementById('fc').value ||
+    document.getElementById('ft').value ||
+    document.getElementById('fm').value ||
+    document.getElementById('fs').value !== 'all' ||
+    document.getElementById('pmin').value ||
+    document.getElementById('pmax').value ||
+    selectedBeds.size > 0;
+  document.getElementById('reset-btn').style.display = hasFilters ? 'block' : 'none';
+}
+
+function resetFilters(){
+  document.getElementById('fc').value = '';
+  document.getElementById('ft').value = '';
+  document.getElementById('fm').value = '';
+  document.getElementById('fs').value = 'all';
+  document.getElementById('pmin').value = '';
+  document.getElementById('pmax').value = '';
+  selectedBeds.clear();
+  renderBeds();
+  document.getElementById('reset-btn').style.display = 'none';
+  render();
+}
 
 function updateTexts(){
   const t=T[lang];
@@ -460,6 +485,7 @@ function updateTexts(){
   document.getElementById('lp').textContent=t.lp;
   document.getElementById('pmin').placeholder=t.priceFrom;
   document.getElementById('pmax').placeholder=t.priceTo;
+  document.getElementById('reset-label').textContent=t.resetLabel;
 
   const cityKeys=['Limassol','Limassol_district','Paphos','Paphos_district','Larnaca','Larnaca_district','Nicosia','Nicosia_district','Famagusta_district'];
   const fc=document.getElementById('fc'); fc.options[0].text=t.all;
@@ -514,7 +540,7 @@ function setLang(l, btn){
 }
 
 function renderBeds(){ const t=T[lang]; document.getElementById('beds-pills').innerHTML=BEDS_OPTIONS.map(b=>`<span class="bed-pill ${selectedBeds.has(b)?'active':''}" onclick="toggleBed('${b}')">${t.beds[b]}</span>`).join(''); }
-function toggleBed(b){ if(showFavOnly) exitFavView(); selectedBeds.has(b)?selectedBeds.delete(b):selectedBeds.add(b); renderBeds(); render(); }
+function toggleBed(b){ if(showFavOnly) exitFavView(); selectedBeds.has(b)?selectedBeds.delete(b):selectedBeds.add(b); renderBeds(); render(); updateResetBtn(); }
 function renderSorts(){ const t=T[lang]; document.getElementById('sort-bar').innerHTML=t.sorts.map((s,i)=>`<button class="sort-btn ${i===sortIdx?'active':''}" onclick="setSort(${i})">${s}</button>`).join(''); }
 function setSort(i){ sortIdx=i; renderSorts(); render(); }
 function toggleFav(id,e){ e.stopPropagation(); if(favs.has(id)){ favs.delete(id); delete notes[id]; } else favs.add(id); render(); }
