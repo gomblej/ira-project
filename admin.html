@@ -28,6 +28,7 @@
   .form-card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 16px; display: none; }
   .form-card.open { display: block; }
   .form-card h2 { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
+
   .section-title { font-size: 13px; font-weight: 600; color: #0f6e56; margin: 16px 0 8px; grid-column: 1/-1; border-bottom: 1px solid #e6f7f2; padding-bottom: 6px; }
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   @media(max-width:600px){ .form-grid { grid-template-columns: 1fr; } }
@@ -37,13 +38,20 @@
   .form-group input, .form-group select, .form-group textarea { font-size: 14px; padding: 9px 12px; border-radius: 10px; border: 1px solid #e0e0e0; background: #f8f8f8; color: #1a1a1a; font-family: inherit; resize: none; width: 100%; }
   .form-group textarea { resize: vertical; min-height: 80px; }
 
+  /* Автоперевод */
+  .translate-wrap { grid-column: 1/-1; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .translate-btn { display: flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: 10px; border: none; background: #0f6e56; color: white; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .translate-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+  .translate-btn.loading { background: #888; }
+  .translate-note { font-size: 12px; color: #888; }
+
   .photo-section { grid-column: 1/-1; margin-top: 8px; }
   .photo-section label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 8px; }
   .photo-upload-area { border: 2px dashed #e0e0e0; border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; background: #f8f8f8; position: relative; }
   .photo-upload-area:hover { border-color: #0f6e56; background: #f0faf7; }
   .photo-upload-area input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
   .photo-upload-area p { font-size: 14px; color: #888; }
-  .photo-upload-area .upload-icon { font-size: 28px; margin-bottom: 6px; }
+  .upload-icon { font-size: 28px; margin-bottom: 6px; }
   .upload-progress { font-size: 13px; color: #0f6e56; margin-top: 8px; display: none; }
   .photos-preview { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
   .photo-thumb { position: relative; width: 80px; height: 80px; border-radius: 10px; overflow: hidden; }
@@ -57,7 +65,7 @@
 
   .properties-list { display: flex; flex-direction: column; gap: 10px; }
   .prop-card { background: white; border-radius: 14px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; }
-  .prop-thumb { width: 56px; height: 56px; border-radius: 10px; object-fit: cover; flex-shrink: 0; background: #e6f7f2; display: flex; align-items: center; justify-content: center; font-size: 24px; overflow: hidden; }
+  .prop-thumb { width: 56px; height: 56px; border-radius: 10px; flex-shrink: 0; background: #e6f7f2; display: flex; align-items: center; justify-content: center; font-size: 24px; overflow: hidden; }
   .prop-thumb img { width: 100%; height: 100%; object-fit: cover; }
   .prop-info { flex: 1; min-width: 0; }
   .prop-title { font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -91,10 +99,7 @@
 
 <div class="admin" id="admin">
   <div class="admin-header">
-    <div>
-      <h1>Управление объектами</h1>
-      <span id="props-count"></span>
-    </div>
+    <div><h1>Управление объектами</h1><span id="props-count"></span></div>
     <button class="logout-btn" onclick="logout()">Выйти</button>
   </div>
 
@@ -109,10 +114,8 @@
       <div class="section-title">📋 Основная информация</div>
       <div class="form-group"><label>Город</label>
         <select id="f-city">
-          <option value="Limassol">Лимасол</option>
-          <option value="Paphos">Пафос</option>
-          <option value="Larnaca">Ларнака</option>
-          <option value="Nicosia">Никосия</option>
+          <option value="Limassol">Лимасол</option><option value="Paphos">Пафос</option>
+          <option value="Larnaca">Ларнака</option><option value="Nicosia">Никосия</option>
           <option value="Famagusta">Фамагуста</option>
         </select>
       </div>
@@ -124,21 +127,14 @@
       </div>
       <div class="form-group"><label>Тип недвижимости</label>
         <select id="f-type">
-          <option value="apt">Квартира</option>
-          <option value="penthouse">Пентхаус</option>
-          <option value="house">Дом / вилла</option>
-          <option value="townhouse">Таунхаус</option>
-          <option value="land_res">Участок под жильё</option>
-          <option value="land_other">Земельный участок (прочее)</option>
-          <option value="commercial">Коммерческая</option>
-          <option value="building">Целое здание</option>
+          <option value="apt">Квартира</option><option value="penthouse">Пентхаус</option>
+          <option value="house">Дом / вилла</option><option value="townhouse">Таунхаус</option>
+          <option value="land_res">Участок под жильё</option><option value="land_other">Земельный участок (прочее)</option>
+          <option value="commercial">Коммерческая</option><option value="building">Целое здание</option>
         </select>
       </div>
       <div class="form-group"><label>Первичная / Вторичная</label>
-        <select id="f-market">
-          <option value="new">Первичная</option>
-          <option value="resale">Вторичная</option>
-        </select>
+        <select id="f-market"><option value="new">Первичная</option><option value="resale">Вторичная</option></select>
       </div>
       <div class="form-group"><label>Статус</label>
         <select id="f-status">
@@ -153,8 +149,30 @@
       <div class="form-group"><label>Спальни (0 = студия)</label>
         <input type="number" id="f-rooms" placeholder="2" min="0">
       </div>
-      <div class="form-group"><label>Площадь (м²)</label>
+      <div class="form-group"><label>Общая площадь (м²)</label>
         <input type="number" id="f-area" placeholder="72" min="0">
+      </div>
+      <div class="form-group"><label>Внутренняя площадь / Internal area (м²)</label>
+        <input type="number" id="f-internal" placeholder="65" min="0">
+      </div>
+      <div class="form-group"><label>Размер участка (м²)</label>
+        <input type="number" id="f-plot" placeholder="500" min="0">
+      </div>
+      <div class="form-group"><label>Год постройки</label>
+        <input type="number" id="f-year" placeholder="2020" min="1900" max="2030">
+      </div>
+      <div class="form-group"><label>Бассейн</label>
+        <select id="f-pool">
+          <option value="none">Нет бассейна</option>
+          <option value="yes">Есть бассейн</option>
+          <option value="possible">Можно построить</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Море в шаговой доступности</label>
+        <select id="f-sea">
+          <option value="false">Нет</option>
+          <option value="true">Да</option>
+        </select>
       </div>
       <div class="form-group"><label>Эмодзи</label>
         <select id="f-emoji">
@@ -178,20 +196,29 @@
       <div class="section-title">🌐 Названия</div>
       <div class="form-group full"><label>Название (RU) *</label><input type="text" id="f-title-ru" placeholder="Апартаменты у моря"></div>
       <div class="form-group full"><label>Название (EN)</label><input type="text" id="f-title-en" placeholder="Sea-view apartment"></div>
-      <div class="form-group full"><label>Название (греческий)</label><input type="text" id="f-title-el" placeholder="Διαμέρισμα με θέα θάλασσα"></div>
-      <div class="form-group full"><label>Название (иврит)</label><input type="text" id="f-title-he" placeholder="דירה עם נוף לים"></div>
+      <div class="form-group full"><label>Название (греческий)</label><input type="text" id="f-title-el"></div>
+      <div class="form-group full"><label>Название (иврит)</label><input type="text" id="f-title-he"></div>
 
-      <div class="section-title">🏷️ Теги (короткая характеристика)</div>
+      <div class="section-title">🏷️ Теги</div>
       <div class="form-group"><label>Тег (RU)</label><input type="text" id="f-tag-ru" placeholder="Вид на море"></div>
       <div class="form-group"><label>Тег (EN)</label><input type="text" id="f-tag-en" placeholder="Sea view"></div>
-      <div class="form-group"><label>Тег (греческий)</label><input type="text" id="f-tag-el" placeholder="Θέα θάλασσα"></div>
-      <div class="form-group"><label>Тег (иврит)</label><input type="text" id="f-tag-he" placeholder="נוף לים"></div>
+      <div class="form-group"><label>Тег (греческий)</label><input type="text" id="f-tag-el"></div>
+      <div class="form-group"><label>Тег (иврит)</label><input type="text" id="f-tag-he"></div>
 
-      <div class="section-title">📝 Описание (показывается на странице объекта)</div>
-      <div class="form-group full"><label>Описание (RU)</label><textarea id="f-desc-ru" rows="4" placeholder="Подробное описание объекта на русском..."></textarea></div>
-      <div class="form-group full"><label>Описание (EN)</label><textarea id="f-desc-en" rows="4" placeholder="Detailed property description in English..."></textarea></div>
-      <div class="form-group full"><label>Описание (греческий)</label><textarea id="f-desc-el" rows="4" placeholder="Λεπτομερής περιγραφή ακινήτου..."></textarea></div>
-      <div class="form-group full"><label>Описание (иврит)</label><textarea id="f-desc-he" rows="4" placeholder="תיאור מפורט של הנכס..."></textarea></div>
+      <div class="section-title">📝 Описание</div>
+      <div class="form-group full"><label>Описание (RU)</label><textarea id="f-desc-ru" rows="4" placeholder="Подробное описание на русском..."></textarea></div>
+      <div class="form-group full"><label>Описание (EN)</label><textarea id="f-desc-en" rows="4" placeholder="Description in English..."></textarea></div>
+
+      <!-- Кнопка автоперевода -->
+      <div class="translate-wrap">
+        <button class="translate-btn" id="translate-btn" onclick="autoTranslate()">
+          ✨ Перевести на греческий и иврит
+        </button>
+        <span class="translate-note">Переводит RU/EN описание и названия через Claude AI</span>
+      </div>
+
+      <div class="form-group full"><label>Описание (греческий)</label><textarea id="f-desc-el" rows="4"></textarea></div>
+      <div class="form-group full"><label>Описание (иврит)</label><textarea id="f-desc-he" rows="4"></textarea></div>
 
       <div class="section-title">📷 Фотографии</div>
       <div class="photo-section">
@@ -230,8 +257,7 @@ const HEADERS = {
   'Prefer': 'return=representation'
 };
 
-let allProps = [];
-let currentImages = [];
+let allProps = [], currentImages = [];
 
 function login(){
   const val = document.getElementById('password-input').value;
@@ -302,6 +328,11 @@ function openForm(prop){
   document.getElementById('f-price').value = prop?.price||'';
   document.getElementById('f-rooms').value = prop?.rooms??'';
   document.getElementById('f-area').value = prop?.area||'';
+  document.getElementById('f-internal').value = prop?.internal_area||'';
+  document.getElementById('f-plot').value = prop?.plot_size||'';
+  document.getElementById('f-year').value = prop?.year_built||'';
+  document.getElementById('f-pool').value = prop?.pool||'none';
+  document.getElementById('f-sea').value = prop?.sea_walking?'true':'false';
   document.getElementById('f-tag-ru').value = prop?.tag_ru||'';
   document.getElementById('f-tag-en').value = prop?.tag_en||'';
   document.getElementById('f-tag-el').value = prop?.tag_el||'';
@@ -340,18 +371,14 @@ function renderPhotosPreview(){
   `).join('');
 }
 
-function removePhoto(index){
-  currentImages.splice(index, 1);
-  renderPhotosPreview();
-}
+function removePhoto(index){ currentImages.splice(index, 1); renderPhotosPreview(); }
 
 async function handlePhotoUpload(input){
   const files = Array.from(input.files);
   if(!files.length) return;
   const progress = document.getElementById('upload-progress');
   const saveBtn = document.getElementById('save-btn');
-  progress.style.display = 'block';
-  saveBtn.disabled = true;
+  progress.style.display = 'block'; saveBtn.disabled = true;
   for(let i=0; i<files.length; i++){
     const file = files[i];
     progress.textContent = `Загружаем фото ${i+1} из ${files.length}...`;
@@ -361,12 +388,78 @@ async function handlePhotoUpload(input){
       headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': file.type },
       body: file
     });
-    if(res.ok){ currentImages.push(`${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${fileName}`); }
+    if(res.ok) currentImages.push(`${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${fileName}`);
   }
-  progress.style.display = 'none';
-  saveBtn.disabled = false;
-  input.value = '';
-  renderPhotosPreview();
+  progress.style.display = 'none'; saveBtn.disabled = false;
+  input.value = ''; renderPhotosPreview();
+}
+
+// ====== АВТОПЕРЕВОД ======
+async function autoTranslate(){
+  const titleRu = document.getElementById('f-title-ru').value.trim();
+  const titleEn = document.getElementById('f-title-en').value.trim();
+  const descRu = document.getElementById('f-desc-ru').value.trim();
+  const descEn = document.getElementById('f-desc-en').value.trim();
+  const tagRu = document.getElementById('f-tag-ru').value.trim();
+  const tagEn = document.getElementById('f-tag-en').value.trim();
+
+  if(!titleRu && !titleEn && !descRu && !descEn){
+    showMsg('Заполните хотя бы название или описание на RU или EN', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('translate-btn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Переводим...';
+
+  const sourceText = `
+Переведи следующие тексты на греческий (el) и иврит (he) языки.
+Верни ТОЛЬКО JSON без дополнительного текста, строго в формате:
+{
+  "title_el": "...",
+  "title_he": "...",
+  "tag_el": "...",
+  "tag_he": "...",
+  "description_el": "...",
+  "description_he": "..."
+}
+
+Исходные данные:
+- Название (RU): ${titleRu || titleEn}
+- Тег (RU): ${tagRu || tagEn}
+- Описание (RU/EN): ${descRu || descEn}
+`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: sourceText }]
+      })
+    });
+
+    const data = await res.json();
+    const text = data.content?.[0]?.text || '';
+    const clean = text.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(clean);
+
+    if(parsed.title_el) document.getElementById('f-title-el').value = parsed.title_el;
+    if(parsed.title_he) document.getElementById('f-title-he').value = parsed.title_he;
+    if(parsed.tag_el) document.getElementById('f-tag-el').value = parsed.tag_el;
+    if(parsed.tag_he) document.getElementById('f-tag-he').value = parsed.tag_he;
+    if(parsed.description_el) document.getElementById('f-desc-el').value = parsed.description_el;
+    if(parsed.description_he) document.getElementById('f-desc-he').value = parsed.description_he;
+
+    showMsg('Перевод готов! Проверьте текст перед сохранением.', 'success');
+  } catch(e) {
+    showMsg('Ошибка перевода. Попробуйте ещё раз.', 'error');
+  }
+
+  btn.disabled = false;
+  btn.textContent = '✨ Перевести на греческий и иврит';
 }
 
 async function deleteProperty(id){
@@ -391,6 +484,11 @@ async function saveProperty(){
     price: parseFloat(document.getElementById('f-price').value)||0,
     rooms: parseInt(document.getElementById('f-rooms').value)||0,
     area: parseInt(document.getElementById('f-area').value)||0,
+    internal_area: parseInt(document.getElementById('f-internal').value)||null,
+    plot_size: parseInt(document.getElementById('f-plot').value)||null,
+    year_built: parseInt(document.getElementById('f-year').value)||null,
+    pool: document.getElementById('f-pool').value,
+    sea_walking: document.getElementById('f-sea').value === 'true',
     tag_ru: document.getElementById('f-tag-ru').value.trim(),
     tag_en: document.getElementById('f-tag-en').value.trim(),
     tag_el: document.getElementById('f-tag-el').value.trim(),
@@ -419,7 +517,7 @@ async function saveProperty(){
 function showMsg(text, type){
   const el = document.getElementById('msg');
   el.textContent = text; el.className = `msg ${type}`; el.style.display = 'block';
-  setTimeout(()=>{ el.style.display='none'; }, 3000);
+  setTimeout(()=>{ el.style.display='none'; }, 4000);
 }
 </script>
 </body>
