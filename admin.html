@@ -16,11 +16,18 @@
   .login-box button { width: 100%; padding: 13px; border-radius: 12px; border: none; background: #0f6e56; color: white; font-size: 15px; font-weight: 600; cursor: pointer; }
   .login-error { color: #c0392b; font-size: 13px; margin-top: 10px; }
 
-  .admin { display: none; max-width: 900px; margin: 0 auto; padding: 16px; }
+  .admin { display: none; max-width: 960px; margin: 0 auto; padding: 16px; }
   .admin-header { background: white; border-radius: 16px; padding: 16px 20px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
   .admin-header h1 { font-size: 18px; font-weight: 700; }
-  .admin-header span { font-size: 13px; color: #888; }
   .logout-btn { font-size: 13px; padding: 6px 14px; border-radius: 20px; border: 1px solid #ddd; background: white; color: #666; cursor: pointer; }
+
+  /* Табы */
+  .admin-tabs { display: flex; background: white; border-radius: 16px; padding: 6px; margin-bottom: 16px; gap: 4px; }
+  .admin-tab { flex: 1; padding: 10px; text-align: center; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; color: #888; border: none; background: transparent; transition: all 0.2s; }
+  .admin-tab.active { background: #0f6e56; color: white; }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
 
   .add-btn { width: 100%; padding: 14px; border-radius: 14px; border: 2px dashed #0f6e56; background: white; color: #0f6e56; font-size: 15px; font-weight: 600; cursor: pointer; margin-bottom: 16px; }
   .add-btn:hover { background: #f0faf7; }
@@ -28,7 +35,6 @@
   .form-card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 16px; display: none; }
   .form-card.open { display: block; }
   .form-card h2 { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
-
   .section-title { font-size: 13px; font-weight: 600; color: #0f6e56; margin: 16px 0 8px; grid-column: 1/-1; border-bottom: 1px solid #e6f7f2; padding-bottom: 6px; }
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   @media(max-width:600px){ .form-grid { grid-template-columns: 1fr; } }
@@ -38,35 +44,32 @@
   .form-group input, .form-group select, .form-group textarea { font-size: 14px; padding: 9px 12px; border-radius: 10px; border: 1px solid #e0e0e0; background: #f8f8f8; color: #1a1a1a; font-family: inherit; resize: none; width: 100%; }
   .form-group textarea { resize: vertical; min-height: 80px; }
 
-  /* Автоперевод */
-  .translate-wrap { grid-column: 1/-1; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .translate-wrap { grid-column: 1/-1; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 4px 0; }
   .translate-btn { display: flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: 10px; border: none; background: #0f6e56; color: white; font-size: 14px; font-weight: 600; cursor: pointer; }
   .translate-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-  .translate-btn.loading { background: #888; }
   .translate-note { font-size: 12px; color: #888; }
 
-  .photo-section { grid-column: 1/-1; margin-top: 8px; }
-  .photo-section label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 8px; }
+  .photo-section { grid-column: 1/-1; }
   .photo-upload-area { border: 2px dashed #e0e0e0; border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; background: #f8f8f8; position: relative; }
   .photo-upload-area:hover { border-color: #0f6e56; background: #f0faf7; }
   .photo-upload-area input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-  .photo-upload-area p { font-size: 14px; color: #888; }
   .upload-icon { font-size: 28px; margin-bottom: 6px; }
   .upload-progress { font-size: 13px; color: #0f6e56; margin-top: 8px; display: none; }
   .photos-preview { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
   .photo-thumb { position: relative; width: 80px; height: 80px; border-radius: 10px; overflow: hidden; }
   .photo-thumb img { width: 100%; height: 100%; object-fit: cover; }
-  .photo-thumb .remove-photo { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .remove-photo { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
   .form-actions { display: flex; gap: 10px; margin-top: 16px; }
   .save-btn { flex: 1; padding: 12px; border-radius: 12px; border: none; background: #0f6e56; color: white; font-size: 14px; font-weight: 600; cursor: pointer; }
   .save-btn:disabled { opacity: 0.6; cursor: not-allowed; }
   .cancel-btn { padding: 12px 20px; border-radius: 12px; border: 1px solid #ddd; background: white; color: #666; font-size: 14px; cursor: pointer; }
 
-  .properties-list { display: flex; flex-direction: column; gap: 10px; }
+  /* Список объектов */
+  .props-list { display: flex; flex-direction: column; gap: 10px; }
   .prop-card { background: white; border-radius: 14px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; }
   .prop-thumb { width: 56px; height: 56px; border-radius: 10px; flex-shrink: 0; background: #e6f7f2; display: flex; align-items: center; justify-content: center; font-size: 24px; overflow: hidden; }
-  .prop-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .prop-thumb img { width: 56px; height: 56px; border-radius: 10px; object-fit: cover; }
   .prop-info { flex: 1; min-width: 0; }
   .prop-title { font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .prop-meta { font-size: 13px; color: #888; margin-top: 3px; }
@@ -78,6 +81,23 @@
   .prop-actions { display: flex; gap: 8px; flex-shrink: 0; }
   .edit-btn { font-size: 13px; padding: 6px 12px; border-radius: 10px; border: 1px solid #ddd; background: white; color: #1a1a1a; cursor: pointer; }
   .delete-btn { font-size: 13px; padding: 6px 12px; border-radius: 10px; border: none; background: #fff0f0; color: #c0392b; cursor: pointer; }
+
+  /* Список пользователей */
+  .users-list { display: flex; flex-direction: column; gap: 10px; }
+  .user-card { background: white; border-radius: 14px; padding: 16px; display: flex; align-items: center; gap: 14px; }
+  .user-avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #0f6e56, #1a9070); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; font-weight: 700; flex-shrink: 0; }
+  .user-info { flex: 1; min-width: 0; }
+  .user-name { font-size: 15px; font-weight: 600; }
+  .user-email { font-size: 13px; color: #888; margin-top: 2px; }
+  .user-meta { font-size: 12px; color: #aaa; margin-top: 3px; display: flex; gap: 12px; flex-wrap: wrap; }
+  .user-badge { font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
+  .badge-confirmed { background: #e6f7f2; color: #0f6e56; }
+  .badge-pending { background: #fff3cd; color: #856404; }
+
+  .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 16px; }
+  .stat-card { background: white; border-radius: 14px; padding: 16px; text-align: center; }
+  .stat-num { font-size: 28px; font-weight: 700; color: #0f6e56; }
+  .stat-label { font-size: 13px; color: #888; margin-top: 4px; }
 
   .loading { text-align: center; padding: 40px; color: #888; }
   .msg { text-align: center; padding: 10px; border-radius: 10px; margin-bottom: 12px; font-size: 14px; display: none; }
@@ -99,147 +119,161 @@
 
 <div class="admin" id="admin">
   <div class="admin-header">
-    <div><h1>Управление объектами</h1><span id="props-count"></span></div>
+    <h1>Best Cyprus Properties — Админка</h1>
     <button class="logout-btn" onclick="logout()">Выйти</button>
   </div>
 
-  <div class="msg" id="msg"></div>
-  <button class="add-btn" onclick="openForm()">+ Добавить новый объект</button>
-
-  <div class="form-card" id="form-card">
-    <h2 id="form-title">Новый объект</h2>
-    <input type="hidden" id="edit-id">
-    <div class="form-grid">
-
-      <div class="section-title">📋 Основная информация</div>
-      <div class="form-group"><label>Город</label>
-        <select id="f-city">
-          <option value="Limassol">Лимасол</option><option value="Paphos">Пафос</option>
-          <option value="Larnaca">Ларнака</option><option value="Nicosia">Никосия</option>
-          <option value="Famagusta">Фамагуста</option>
-        </select>
-      </div>
-      <div class="form-group"><label>Дистрикт?</label>
-        <select id="f-district">
-          <option value="false">Нет — сам город</option>
-          <option value="true">Да — дистрикт / пригород</option>
-        </select>
-      </div>
-      <div class="form-group"><label>Тип недвижимости</label>
-        <select id="f-type">
-          <option value="apt">Квартира</option><option value="penthouse">Пентхаус</option>
-          <option value="house">Дом / вилла</option><option value="townhouse">Таунхаус</option>
-          <option value="land_res">Участок под жильё</option><option value="land_other">Земельный участок (прочее)</option>
-          <option value="commercial">Коммерческая</option><option value="building">Целое здание</option>
-        </select>
-      </div>
-      <div class="form-group"><label>Первичная / Вторичная</label>
-        <select id="f-market"><option value="new">Первичная</option><option value="resale">Вторичная</option></select>
-      </div>
-      <div class="form-group"><label>Статус</label>
-        <select id="f-status">
-          <option value="available">В продаже</option>
-          <option value="unavailable">Временно не продаётся</option>
-          <option value="sold">Продано</option>
-        </select>
-      </div>
-      <div class="form-group"><label>Цена (тысяч €, например 280)</label>
-        <input type="number" id="f-price" placeholder="280" min="0">
-      </div>
-      <div class="form-group"><label>Спальни (0 = студия)</label>
-        <input type="number" id="f-rooms" placeholder="2" min="0">
-      </div>
-      <div class="form-group"><label>Общая площадь (м²)</label>
-        <input type="number" id="f-area" placeholder="72" min="0">
-      </div>
-      <div class="form-group"><label>Внутренняя площадь / Internal area (м²)</label>
-        <input type="number" id="f-internal" placeholder="65" min="0">
-      </div>
-      <div class="form-group"><label>Размер участка (м²)</label>
-        <input type="number" id="f-plot" placeholder="500" min="0">
-      </div>
-      <div class="form-group"><label>Год постройки</label>
-        <input type="number" id="f-year" placeholder="2020" min="1900" max="2030">
-      </div>
-      <div class="form-group"><label>Бассейн</label>
-        <select id="f-pool">
-          <option value="none">Нет бассейна</option>
-          <option value="yes">Есть бассейн</option>
-          <option value="possible">Можно построить</option>
-        </select>
-      </div>
-      <div class="form-group"><label>Море в шаговой доступности</label>
-        <select id="f-sea">
-          <option value="false">Нет</option>
-          <option value="true">Да</option>
-        </select>
-      </div>
-      <div class="form-group"><label>Эмодзи</label>
-        <select id="f-emoji">
-          <option value="🏢">🏢 Квартира / апартаменты</option>
-          <option value="🏙️">🏙️ Пентхаус</option>
-          <option value="🏡">🏡 Дом / вилла</option>
-          <option value="🏘️">🏘️ Таунхаус</option>
-          <option value="🌿">🌿 Участок под жильё</option>
-          <option value="🌾">🌾 Земельный участок</option>
-          <option value="🏪">🏪 Коммерческая</option>
-          <option value="🏗️">🏗️ Здание целиком</option>
-        </select>
-      </div>
-      <div class="form-group"><label>Новый объект?</label>
-        <select id="f-isnew">
-          <option value="true">Да — показывать бейдж "Новое"</option>
-          <option value="false">Нет</option>
-        </select>
-      </div>
-
-      <div class="section-title">🌐 Названия</div>
-      <div class="form-group full"><label>Название (RU) *</label><input type="text" id="f-title-ru" placeholder="Апартаменты у моря"></div>
-      <div class="form-group full"><label>Название (EN)</label><input type="text" id="f-title-en" placeholder="Sea-view apartment"></div>
-      <div class="form-group full"><label>Название (греческий)</label><input type="text" id="f-title-el"></div>
-      <div class="form-group full"><label>Название (иврит)</label><input type="text" id="f-title-he"></div>
-
-      <div class="section-title">🏷️ Теги</div>
-      <div class="form-group"><label>Тег (RU)</label><input type="text" id="f-tag-ru" placeholder="Вид на море"></div>
-      <div class="form-group"><label>Тег (EN)</label><input type="text" id="f-tag-en" placeholder="Sea view"></div>
-      <div class="form-group"><label>Тег (греческий)</label><input type="text" id="f-tag-el"></div>
-      <div class="form-group"><label>Тег (иврит)</label><input type="text" id="f-tag-he"></div>
-
-      <div class="section-title">📝 Описание</div>
-      <div class="form-group full"><label>Описание (RU)</label><textarea id="f-desc-ru" rows="4" placeholder="Подробное описание на русском..."></textarea></div>
-      <div class="form-group full"><label>Описание (EN)</label><textarea id="f-desc-en" rows="4" placeholder="Description in English..."></textarea></div>
-
-      <!-- Кнопка автоперевода -->
-      <div class="translate-wrap">
-        <button class="translate-btn" id="translate-btn" onclick="autoTranslate()">
-          ✨ Перевести на греческий и иврит
-        </button>
-        <span class="translate-note">Переводит RU/EN описание и названия через Claude AI</span>
-      </div>
-
-      <div class="form-group full"><label>Описание (греческий)</label><textarea id="f-desc-el" rows="4"></textarea></div>
-      <div class="form-group full"><label>Описание (иврит)</label><textarea id="f-desc-he" rows="4"></textarea></div>
-
-      <div class="section-title">📷 Фотографии</div>
-      <div class="photo-section">
-        <div class="photo-upload-area">
-          <input type="file" id="f-photos" accept="image/*" multiple onchange="handlePhotoUpload(this)">
-          <div class="upload-icon">📷</div>
-          <p>Нажмите чтобы выбрать фото<br><small>Можно выбрать несколько сразу</small></p>
-        </div>
-        <div class="upload-progress" id="upload-progress">Загружаем фото...</div>
-        <div class="photos-preview" id="photos-preview"></div>
-      </div>
-    </div>
-
-    <div class="form-actions">
-      <button class="save-btn" id="save-btn" onclick="saveProperty()">Сохранить</button>
-      <button class="cancel-btn" onclick="closeForm()">Отмена</button>
-    </div>
+  <div class="stats-row" id="stats-row">
+    <div class="stat-card"><div class="stat-num" id="stat-props">—</div><div class="stat-label">Объектов</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-users">—</div><div class="stat-label">Пользователей</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-favs">—</div><div class="stat-label">Сохранений</div></div>
   </div>
 
-  <div class="properties-list" id="properties-list">
-    <div class="loading">Загружаем объекты...</div>
+  <div class="admin-tabs">
+    <button class="admin-tab active" id="atab-props" onclick="switchAdminTab('props')">🏠 Объекты</button>
+    <button class="admin-tab" id="atab-users" onclick="switchAdminTab('users')">👥 Пользователи</button>
+  </div>
+
+  <div class="msg" id="msg"></div>
+
+  <!-- Объекты -->
+  <div class="tab-panel active" id="panel-props">
+    <button class="add-btn" onclick="openForm()">+ Добавить новый объект</button>
+
+    <div class="form-card" id="form-card">
+      <h2 id="form-title">Новый объект</h2>
+      <input type="hidden" id="edit-id">
+      <div class="form-grid">
+        <div class="section-title">📋 Основная информация</div>
+        <div class="form-group"><label>Город</label>
+          <select id="f-city">
+            <option value="Limassol">Лимасол</option><option value="Paphos">Пафос</option>
+            <option value="Larnaca">Ларнака</option><option value="Nicosia">Никосия</option>
+            <option value="Famagusta">Фамагуста</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Дистрикт?</label>
+          <select id="f-district">
+            <option value="false">Нет — сам город</option>
+            <option value="true">Да — дистрикт / пригород</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Тип недвижимости</label>
+          <select id="f-type">
+            <option value="apt">Квартира</option><option value="penthouse">Пентхаус</option>
+            <option value="house">Дом / вилла</option><option value="townhouse">Таунхаус</option>
+            <option value="land_res">Участок под жильё</option><option value="land_other">Земельный участок (прочее)</option>
+            <option value="commercial">Коммерческая</option><option value="building">Целое здание</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Первичная / Вторичная</label>
+          <select id="f-market"><option value="new">Первичная</option><option value="resale">Вторичная</option></select>
+        </div>
+        <div class="form-group"><label>Статус</label>
+          <select id="f-status">
+            <option value="available">В продаже</option>
+            <option value="unavailable">Временно не продаётся</option>
+            <option value="sold">Продано</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Цена (тысяч €)</label>
+          <input type="number" id="f-price" placeholder="280" min="0">
+        </div>
+        <div class="form-group"><label>Спальни (0 = студия)</label>
+          <input type="number" id="f-rooms" placeholder="2" min="0">
+        </div>
+        <div class="form-group"><label>Общая площадь (м²)</label>
+          <input type="number" id="f-area" placeholder="72" min="0">
+        </div>
+        <div class="form-group"><label>Внутренняя площадь / Internal area (м²)</label>
+          <input type="number" id="f-internal" placeholder="65" min="0">
+        </div>
+        <div class="form-group"><label>Размер участка (м²)</label>
+          <input type="number" id="f-plot" placeholder="500" min="0">
+        </div>
+        <div class="form-group"><label>Год постройки</label>
+          <input type="number" id="f-year" placeholder="2020" min="1900" max="2030">
+        </div>
+        <div class="form-group"><label>Бассейн</label>
+          <select id="f-pool">
+            <option value="none">Нет бассейна</option>
+            <option value="yes">Есть бассейн</option>
+            <option value="possible">Можно построить</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Море в шаговой доступности</label>
+          <select id="f-sea">
+            <option value="false">Нет</option>
+            <option value="true">Да</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Эмодзи</label>
+          <select id="f-emoji">
+            <option value="🏢">🏢 Квартира / апартаменты</option>
+            <option value="🏙️">🏙️ Пентхаус</option>
+            <option value="🏡">🏡 Дом / вилла</option>
+            <option value="🏘️">🏘️ Таунхаус</option>
+            <option value="🌿">🌿 Участок под жильё</option>
+            <option value="🌾">🌾 Земельный участок</option>
+            <option value="🏪">🏪 Коммерческая</option>
+            <option value="🏗️">🏗️ Здание целиком</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Новый объект?</label>
+          <select id="f-isnew">
+            <option value="true">Да — показывать бейдж "Новое"</option>
+            <option value="false">Нет</option>
+          </select>
+        </div>
+
+        <div class="section-title">🌐 Названия</div>
+        <div class="form-group full"><label>Название (RU) *</label><input type="text" id="f-title-ru" placeholder="Апартаменты у моря"></div>
+        <div class="form-group full"><label>Название (EN)</label><input type="text" id="f-title-en" placeholder="Sea-view apartment"></div>
+        <div class="form-group full"><label>Название (греческий)</label><input type="text" id="f-title-el"></div>
+        <div class="form-group full"><label>Название (иврит)</label><input type="text" id="f-title-he"></div>
+
+        <div class="section-title">🏷️ Теги</div>
+        <div class="form-group"><label>Тег (RU)</label><input type="text" id="f-tag-ru" placeholder="Вид на море"></div>
+        <div class="form-group"><label>Тег (EN)</label><input type="text" id="f-tag-en" placeholder="Sea view"></div>
+        <div class="form-group"><label>Тег (греческий)</label><input type="text" id="f-tag-el"></div>
+        <div class="form-group"><label>Тег (иврит)</label><input type="text" id="f-tag-he"></div>
+
+        <div class="section-title">📝 Описание</div>
+        <div class="form-group full"><label>Описание (RU)</label><textarea id="f-desc-ru" rows="4" placeholder="Подробное описание на русском..."></textarea></div>
+        <div class="form-group full"><label>Описание (EN)</label><textarea id="f-desc-en" rows="4" placeholder="Description in English..."></textarea></div>
+
+        <div class="translate-wrap">
+          <button class="translate-btn" id="translate-btn" onclick="autoTranslate()">✨ Перевести на греческий и иврит</button>
+          <span class="translate-note">Переводит описания и названия через Claude AI</span>
+        </div>
+
+        <div class="form-group full"><label>Описание (греческий)</label><textarea id="f-desc-el" rows="4"></textarea></div>
+        <div class="form-group full"><label>Описание (иврит)</label><textarea id="f-desc-he" rows="4"></textarea></div>
+
+        <div class="section-title">📷 Фотографии</div>
+        <div class="photo-section">
+          <div class="photo-upload-area">
+            <input type="file" id="f-photos" accept="image/*" multiple onchange="handlePhotoUpload(this)">
+            <div class="upload-icon">📷</div>
+            <p>Нажмите чтобы выбрать фото<br><small>Можно выбрать несколько сразу</small></p>
+          </div>
+          <div class="upload-progress" id="upload-progress"></div>
+          <div class="photos-preview" id="photos-preview"></div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="save-btn" id="save-btn" onclick="saveProperty()">Сохранить</button>
+        <button class="cancel-btn" onclick="closeForm()">Отмена</button>
+      </div>
+    </div>
+
+    <div class="props-list" id="props-list"><div class="loading">Загружаем объекты...</div></div>
+  </div>
+
+  <!-- Пользователи -->
+  <div class="tab-panel" id="panel-users">
+    <div class="users-list" id="users-list"><div class="loading">Загружаем пользователей...</div></div>
   </div>
 </div>
 
@@ -264,7 +298,7 @@ function login(){
   if(val === PASSWORD){
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('admin').style.display = 'block';
-    loadProperties();
+    loadAll();
   } else {
     document.getElementById('login-error').textContent = 'Неверный пароль';
   }
@@ -276,35 +310,93 @@ function logout(){
   document.getElementById('password-input').value = '';
 }
 
+function switchAdminTab(tab){
+  ['props','users'].forEach(t=>{
+    document.getElementById(`atab-${t}`).classList.toggle('active', t===tab);
+    document.getElementById(`panel-${t}`).classList.toggle('active', t===tab);
+  });
+}
+
+async function loadAll(){
+  await Promise.all([loadProperties(), loadUsers(), loadStats()]);
+}
+
+async function loadStats(){
+  const [propsRes, favsRes] = await Promise.all([
+    fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?select=id`, { headers: HEADERS }),
+    fetch(`${SUPABASE_URL}/rest/v1/user_favourites?select=id`, { headers: HEADERS }),
+  ]);
+  const props = await propsRes.json();
+  const favs = await favsRes.json();
+  document.getElementById('stat-props').textContent = props.length;
+  document.getElementById('stat-favs').textContent = favs.length;
+}
+
 async function loadProperties(){
   const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?select=*&order=id.desc`, { headers: HEADERS });
   allProps = await res.json();
-  document.getElementById('props-count').textContent = `Всего объектов: ${allProps.length}`;
-  renderList();
+  renderPropsList();
 }
 
-function renderList(){
+function renderPropsList(){
   const statusLabels = { available:'В продаже', sold:'Продано', unavailable:'Временно не продаётся' };
-  const con = document.getElementById('properties-list');
+  const con = document.getElementById('props-list');
   if(!allProps.length){ con.innerHTML='<div class="loading">Объектов пока нет</div>'; return; }
   con.innerHTML = allProps.map(d=>{
-    const firstPhoto = d.images && d.images.length > 0 ? d.images[0] : null;
+    const firstPhoto = d.images&&d.images.length>0 ? d.images[0] : null;
     const thumbHtml = firstPhoto
       ? `<div class="prop-thumb"><img src="${firstPhoto}" alt="фото"></div>`
       : `<div class="prop-thumb">${d.emoji}</div>`;
-    const photoCount = d.images ? d.images.length : 0;
     return `
     <div class="prop-card">
       ${thumbHtml}
       <div class="prop-info">
         <div class="prop-title">${d.title_ru}</div>
         <div class="prop-meta">${d.city}${d.district?' (дистрикт)':''} · €${(d.price*1000).toLocaleString()} · ${d.area} м²</div>
-        <div class="prop-photos-count">${photoCount > 0 ? `📷 ${photoCount} фото` : '📷 Нет фото'}</div>
+        <div class="prop-photos-count">${d.images?.length>0?`📷 ${d.images.length} фото`:'📷 Нет фото'}</div>
         <span class="prop-status status-${d.status}">${statusLabels[d.status]||d.status}</span>
       </div>
       <div class="prop-actions">
         <button class="edit-btn" onclick="editProperty(${d.id})">✏️</button>
         <button class="delete-btn" onclick="deleteProperty(${d.id})">🗑️</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function loadUsers(){
+  // Загружаем профили + данные об избранном
+  const [profRes, favsRes] = await Promise.all([
+    fetch(`${SUPABASE_URL}/rest/v1/user_profiles?select=*&order=created_at.desc`, { headers: HEADERS }),
+    fetch(`${SUPABASE_URL}/rest/v1/user_favourites?select=user_id`, { headers: HEADERS }),
+  ]);
+  const profiles = await profRes.json();
+  const favs = await favsRes.json();
+
+  document.getElementById('stat-users').textContent = profiles.length;
+
+  // Считаем избранное по пользователям
+  const favCounts = {};
+  favs.forEach(f=>{ favCounts[f.user_id]=(favCounts[f.user_id]||0)+1; });
+
+  const con = document.getElementById('users-list');
+  if(!profiles.length){ con.innerHTML='<div class="loading" style="color:#aaa">Пользователей пока нет</div>'; return; }
+
+  con.innerHTML = profiles.map(p=>{
+    const name = p.name || '—';
+    const initial = name && name!=='—' ? name[0].toUpperCase() : '?';
+    const favCount = favCounts[p.id]||0;
+    const registered = new Date(p.created_at).toLocaleDateString('ru-RU', {day:'numeric',month:'long',year:'numeric'});
+    return `
+    <div class="user-card">
+      <div class="user-avatar">${initial}</div>
+      <div class="user-info">
+        <div class="user-name">${name}</div>
+        <div class="user-email">${p.phone||''}</div>
+        <div class="user-meta">
+          <span>📅 ${registered}</span>
+          ${favCount>0?`<span>❤️ ${favCount} в избранном</span>`:''}
+        </div>
       </div>
     </div>`;
   }).join('');
@@ -316,31 +408,24 @@ function openForm(prop){
   card.classList.add('open');
   document.getElementById('form-title').textContent = prop ? 'Редактировать объект' : 'Новый объект';
   document.getElementById('edit-id').value = prop ? prop.id : '';
-  document.getElementById('f-title-ru').value = prop?.title_ru||'';
-  document.getElementById('f-title-en').value = prop?.title_en||'';
-  document.getElementById('f-title-el').value = prop?.title_el||'';
-  document.getElementById('f-title-he').value = prop?.title_he||'';
+  const fields = {
+    'f-title-ru': prop?.title_ru||'', 'f-title-en': prop?.title_en||'',
+    'f-title-el': prop?.title_el||'', 'f-title-he': prop?.title_he||'',
+    'f-tag-ru': prop?.tag_ru||'', 'f-tag-en': prop?.tag_en||'',
+    'f-tag-el': prop?.tag_el||'', 'f-tag-he': prop?.tag_he||'',
+    'f-desc-ru': prop?.description_ru||'', 'f-desc-en': prop?.description_en||'',
+    'f-desc-el': prop?.description_el||'', 'f-desc-he': prop?.description_he||'',
+    'f-price': prop?.price||'', 'f-rooms': prop?.rooms??'', 'f-area': prop?.area||'',
+    'f-internal': prop?.internal_area||'', 'f-plot': prop?.plot_size||'', 'f-year': prop?.year_built||'',
+  };
+  Object.entries(fields).forEach(([id,val])=>{ document.getElementById(id).value=val; });
   document.getElementById('f-city').value = prop?.city||'Limassol';
   document.getElementById('f-district').value = prop?.district?'true':'false';
   document.getElementById('f-type').value = prop?.type||'apt';
   document.getElementById('f-market').value = prop?.market||'new';
   document.getElementById('f-status').value = prop?.status||'available';
-  document.getElementById('f-price').value = prop?.price||'';
-  document.getElementById('f-rooms').value = prop?.rooms??'';
-  document.getElementById('f-area').value = prop?.area||'';
-  document.getElementById('f-internal').value = prop?.internal_area||'';
-  document.getElementById('f-plot').value = prop?.plot_size||'';
-  document.getElementById('f-year').value = prop?.year_built||'';
   document.getElementById('f-pool').value = prop?.pool||'none';
   document.getElementById('f-sea').value = prop?.sea_walking?'true':'false';
-  document.getElementById('f-tag-ru').value = prop?.tag_ru||'';
-  document.getElementById('f-tag-en').value = prop?.tag_en||'';
-  document.getElementById('f-tag-el').value = prop?.tag_el||'';
-  document.getElementById('f-tag-he').value = prop?.tag_he||'';
-  document.getElementById('f-desc-ru').value = prop?.description_ru||'';
-  document.getElementById('f-desc-en').value = prop?.description_en||'';
-  document.getElementById('f-desc-el').value = prop?.description_el||'';
-  document.getElementById('f-desc-he').value = prop?.description_he||'';
   document.getElementById('f-emoji').value = prop?.emoji||'🏢';
   document.getElementById('f-isnew').value = prop?.is_new?'true':'false';
   renderPhotosPreview();
@@ -355,66 +440,54 @@ function closeForm(){
   document.getElementById('f-photos').value = '';
 }
 
-function editProperty(id){
-  const prop = allProps.find(p=>p.id===id);
-  if(prop) openForm(prop);
-}
+function editProperty(id){ const prop=allProps.find(p=>p.id===id); if(prop) openForm(prop); }
 
 function renderPhotosPreview(){
   const con = document.getElementById('photos-preview');
-  if(!currentImages.length){ con.innerHTML=''; return; }
-  con.innerHTML = currentImages.map((url, i)=>`
+  con.innerHTML = currentImages.map((url,i)=>`
     <div class="photo-thumb">
       <img src="${url}" alt="фото ${i+1}">
       <button class="remove-photo" onclick="removePhoto(${i})">×</button>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
-function removePhoto(index){ currentImages.splice(index, 1); renderPhotosPreview(); }
+function removePhoto(index){ currentImages.splice(index,1); renderPhotosPreview(); }
 
 async function handlePhotoUpload(input){
   const files = Array.from(input.files);
   if(!files.length) return;
-  const progress = document.getElementById('upload-progress');
-  const saveBtn = document.getElementById('save-btn');
-  progress.style.display = 'block'; saveBtn.disabled = true;
-  for(let i=0; i<files.length; i++){
-    const file = files[i];
-    progress.textContent = `Загружаем фото ${i+1} из ${files.length}...`;
-    const fileName = `${Date.now()}-${Math.random().toString(36).substr(2,6)}-${file.name.replace(/[^a-zA-Z0-9.]/g,'_')}`;
-    const res = await fetch(`${SUPABASE_URL}/storage/v1/object/${BUCKET}/${fileName}`, {
-      method: 'POST',
-      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': file.type },
-      body: file
+  const progress=document.getElementById('upload-progress');
+  const saveBtn=document.getElementById('save-btn');
+  progress.style.display='block'; saveBtn.disabled=true;
+  for(let i=0;i<files.length;i++){
+    const file=files[i];
+    progress.textContent=`Загружаем фото ${i+1} из ${files.length}...`;
+    const fileName=`${Date.now()}-${Math.random().toString(36).substr(2,6)}-${file.name.replace(/[^a-zA-Z0-9.]/g,'_')}`;
+    const res=await fetch(`${SUPABASE_URL}/storage/v1/object/${BUCKET}/${fileName}`,{
+      method:'POST',
+      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':file.type},
+      body:file
     });
     if(res.ok) currentImages.push(`${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${fileName}`);
   }
-  progress.style.display = 'none'; saveBtn.disabled = false;
-  input.value = ''; renderPhotosPreview();
+  progress.style.display='none'; saveBtn.disabled=false;
+  input.value=''; renderPhotosPreview();
 }
 
-// ====== АВТОПЕРЕВОД ======
 async function autoTranslate(){
-  const titleRu = document.getElementById('f-title-ru').value.trim();
-  const titleEn = document.getElementById('f-title-en').value.trim();
-  const descRu = document.getElementById('f-desc-ru').value.trim();
-  const descEn = document.getElementById('f-desc-en').value.trim();
-  const tagRu = document.getElementById('f-tag-ru').value.trim();
-  const tagEn = document.getElementById('f-tag-en').value.trim();
+  const titleRu=document.getElementById('f-title-ru').value.trim();
+  const titleEn=document.getElementById('f-title-en').value.trim();
+  const descRu=document.getElementById('f-desc-ru').value.trim();
+  const descEn=document.getElementById('f-desc-en').value.trim();
+  const tagRu=document.getElementById('f-tag-ru').value.trim();
+  const tagEn=document.getElementById('f-tag-en').value.trim();
+  if(!titleRu&&!titleEn&&!descRu&&!descEn){ showMsg('Заполните хотя бы название или описание на RU или EN','error'); return; }
 
-  if(!titleRu && !titleEn && !descRu && !descEn){
-    showMsg('Заполните хотя бы название или описание на RU или EN', 'error');
-    return;
-  }
+  const btn=document.getElementById('translate-btn');
+  btn.disabled=true; btn.textContent='⏳ Переводим...';
 
-  const btn = document.getElementById('translate-btn');
-  btn.disabled = true;
-  btn.textContent = '⏳ Переводим...';
-
-  const sourceText = `
-Переведи следующие тексты на греческий (el) и иврит (he) языки.
-Верни ТОЛЬКО JSON без дополнительного текста, строго в формате:
+  const sourceText=`Переведи следующие тексты на греческий (el) и иврит (he) языки.
+Верни ТОЛЬКО JSON без дополнительного текста:
 {
   "title_el": "...",
   "title_he": "...",
@@ -423,101 +496,83 @@ async function autoTranslate(){
   "description_el": "...",
   "description_he": "..."
 }
-
-Исходные данные:
-- Название (RU): ${titleRu || titleEn}
-- Тег (RU): ${tagRu || tagEn}
-- Описание (RU/EN): ${descRu || descEn}
-`;
+Название (RU/EN): ${titleRu||titleEn}
+Тег (RU/EN): ${tagRu||tagEn}
+Описание (RU/EN): ${descRu||descEn}`;
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: sourceText }]
-      })
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1000, messages:[{role:'user',content:sourceText}] })
     });
+    const data=await res.json();
+    const text=data.content?.[0]?.text||'';
+    const parsed=JSON.parse(text.replace(/```json|```/g,'').trim());
+    if(parsed.title_el) document.getElementById('f-title-el').value=parsed.title_el;
+    if(parsed.title_he) document.getElementById('f-title-he').value=parsed.title_he;
+    if(parsed.tag_el) document.getElementById('f-tag-el').value=parsed.tag_el;
+    if(parsed.tag_he) document.getElementById('f-tag-he').value=parsed.tag_he;
+    if(parsed.description_el) document.getElementById('f-desc-el').value=parsed.description_el;
+    if(parsed.description_he) document.getElementById('f-desc-he').value=parsed.description_he;
+    showMsg('Перевод готов! Проверьте текст перед сохранением.','success');
+  } catch(e){ showMsg('Ошибка перевода. Попробуйте ещё раз.','error'); }
 
-    const data = await res.json();
-    const text = data.content?.[0]?.text || '';
-    const clean = text.replace(/```json|```/g, '').trim();
-    const parsed = JSON.parse(clean);
-
-    if(parsed.title_el) document.getElementById('f-title-el').value = parsed.title_el;
-    if(parsed.title_he) document.getElementById('f-title-he').value = parsed.title_he;
-    if(parsed.tag_el) document.getElementById('f-tag-el').value = parsed.tag_el;
-    if(parsed.tag_he) document.getElementById('f-tag-he').value = parsed.tag_he;
-    if(parsed.description_el) document.getElementById('f-desc-el').value = parsed.description_el;
-    if(parsed.description_he) document.getElementById('f-desc-he').value = parsed.description_he;
-
-    showMsg('Перевод готов! Проверьте текст перед сохранением.', 'success');
-  } catch(e) {
-    showMsg('Ошибка перевода. Попробуйте ещё раз.', 'error');
-  }
-
-  btn.disabled = false;
-  btn.textContent = '✨ Перевести на греческий и иврит';
+  btn.disabled=false; btn.textContent='✨ Перевести на греческий и иврит';
 }
 
 async function deleteProperty(id){
   if(!confirm('Удалить этот объект?')) return;
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?id=eq.${id}`, { method: 'DELETE', headers: HEADERS });
-  if(res.ok){ showMsg('Объект удалён', 'success'); await loadProperties(); }
-  else showMsg('Ошибка удаления', 'error');
+  const res=await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?id=eq.${id}`,{method:'DELETE',headers:HEADERS});
+  if(res.ok){ showMsg('Объект удалён','success'); await loadProperties(); await loadStats(); }
+  else showMsg('Ошибка удаления','error');
 }
 
 async function saveProperty(){
-  const id = document.getElementById('edit-id').value;
-  const data = {
-    title_ru: document.getElementById('f-title-ru').value.trim(),
-    title_en: document.getElementById('f-title-en').value.trim(),
-    title_el: document.getElementById('f-title-el').value.trim(),
-    title_he: document.getElementById('f-title-he').value.trim(),
-    city: document.getElementById('f-city').value,
-    district: document.getElementById('f-district').value === 'true',
-    type: document.getElementById('f-type').value,
-    market: document.getElementById('f-market').value,
-    status: document.getElementById('f-status').value,
-    price: parseFloat(document.getElementById('f-price').value)||0,
-    rooms: parseInt(document.getElementById('f-rooms').value)||0,
-    area: parseInt(document.getElementById('f-area').value)||0,
-    internal_area: parseInt(document.getElementById('f-internal').value)||null,
-    plot_size: parseInt(document.getElementById('f-plot').value)||null,
-    year_built: parseInt(document.getElementById('f-year').value)||null,
-    pool: document.getElementById('f-pool').value,
-    sea_walking: document.getElementById('f-sea').value === 'true',
-    tag_ru: document.getElementById('f-tag-ru').value.trim(),
-    tag_en: document.getElementById('f-tag-en').value.trim(),
-    tag_el: document.getElementById('f-tag-el').value.trim(),
-    tag_he: document.getElementById('f-tag-he').value.trim(),
-    description_ru: document.getElementById('f-desc-ru').value.trim(),
-    description_en: document.getElementById('f-desc-en').value.trim(),
-    description_el: document.getElementById('f-desc-el').value.trim(),
-    description_he: document.getElementById('f-desc-he').value.trim(),
-    emoji: document.getElementById('f-emoji').value,
-    is_new: document.getElementById('f-isnew').value === 'true',
-    days_ago: 0,
-    images: currentImages,
+  const id=document.getElementById('edit-id').value;
+  const data={
+    title_ru:document.getElementById('f-title-ru').value.trim(),
+    title_en:document.getElementById('f-title-en').value.trim(),
+    title_el:document.getElementById('f-title-el').value.trim(),
+    title_he:document.getElementById('f-title-he').value.trim(),
+    city:document.getElementById('f-city').value,
+    district:document.getElementById('f-district').value==='true',
+    type:document.getElementById('f-type').value,
+    market:document.getElementById('f-market').value,
+    status:document.getElementById('f-status').value,
+    price:parseFloat(document.getElementById('f-price').value)||0,
+    rooms:parseInt(document.getElementById('f-rooms').value)||0,
+    area:parseInt(document.getElementById('f-area').value)||0,
+    internal_area:parseInt(document.getElementById('f-internal').value)||null,
+    plot_size:parseInt(document.getElementById('f-plot').value)||null,
+    year_built:parseInt(document.getElementById('f-year').value)||null,
+    pool:document.getElementById('f-pool').value,
+    sea_walking:document.getElementById('f-sea').value==='true',
+    tag_ru:document.getElementById('f-tag-ru').value.trim(),
+    tag_en:document.getElementById('f-tag-en').value.trim(),
+    tag_el:document.getElementById('f-tag-el').value.trim(),
+    tag_he:document.getElementById('f-tag-he').value.trim(),
+    description_ru:document.getElementById('f-desc-ru').value.trim(),
+    description_en:document.getElementById('f-desc-en').value.trim(),
+    description_el:document.getElementById('f-desc-el').value.trim(),
+    description_he:document.getElementById('f-desc-he').value.trim(),
+    emoji:document.getElementById('f-emoji').value,
+    is_new:document.getElementById('f-isnew').value==='true',
+    days_ago:0, images:currentImages,
   };
-  if(!data.title_ru){ showMsg('Введите название на русском', 'error'); return; }
-  if(!data.price){ showMsg('Введите цену', 'error'); return; }
-  let res;
-  if(id){
-    res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?id=eq.${id}`, { method: 'PATCH', headers: HEADERS, body: JSON.stringify(data) });
-  } else {
-    res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}`, { method: 'POST', headers: HEADERS, body: JSON.stringify(data) });
-  }
-  if(res.ok){ showMsg(id ? 'Объект обновлён' : 'Объект добавлен', 'success'); closeForm(); await loadProperties(); }
-  else showMsg('Ошибка сохранения', 'error');
+  if(!data.title_ru){ showMsg('Введите название на русском','error'); return; }
+  if(!data.price){ showMsg('Введите цену','error'); return; }
+  const res=id
+    ? await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?id=eq.${id}`,{method:'PATCH',headers:HEADERS,body:JSON.stringify(data)})
+    : await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}`,{method:'POST',headers:HEADERS,body:JSON.stringify(data)});
+  if(res.ok){ showMsg(id?'Объект обновлён':'Объект добавлен','success'); closeForm(); await loadProperties(); await loadStats(); }
+  else showMsg('Ошибка сохранения','error');
 }
 
-function showMsg(text, type){
-  const el = document.getElementById('msg');
-  el.textContent = text; el.className = `msg ${type}`; el.style.display = 'block';
-  setTimeout(()=>{ el.style.display='none'; }, 4000);
+function showMsg(text,type){
+  const el=document.getElementById('msg');
+  el.textContent=text; el.className=`msg ${type}`; el.style.display='block';
+  setTimeout(()=>{ el.style.display='none'; },4000);
 }
 </script>
 </body>
