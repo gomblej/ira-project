@@ -14,7 +14,13 @@
   .card { background: white; border-radius: 16px; padding: 24px; margin-bottom: 14px; }
   .card h2 { font-size: 17px; font-weight: 700; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
 
-  .avatar { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, #0f6e56, #1a9070); display: flex; align-items: center; justify-content: center; font-size: 28px; color: white; font-weight: 700; margin: 0 auto 16px; }
+  /* Аватар */
+  .avatar-wrap { position: relative; width: 88px; height: 88px; margin: 0 auto 16px; cursor: pointer; }
+  .avatar { width: 88px; height: 88px; border-radius: 50%; background: linear-gradient(135deg, #0f6e56, #1a9070); display: flex; align-items: center; justify-content: center; font-size: 36px; color: white; font-weight: 700; overflow: hidden; }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .avatar-edit-badge { position: absolute; bottom: 0; right: 0; background: #0f6e56; color: white; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; font-size: 13px; border: 2px solid white; }
+  .avatar-input { display: none; }
+  .avatar-uploading { opacity: 0.6; }
 
   .user-name { text-align: center; font-size: 20px; font-weight: 700; margin-bottom: 4px; }
   .user-email { text-align: center; font-size: 14px; color: #888; margin-bottom: 20px; }
@@ -23,7 +29,7 @@
   .form-group label { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.4px; }
   .form-group input { font-size: 15px; padding: 11px 14px; border-radius: 12px; border: 1px solid #e0e0e0; background: #f8f8f8; color: #1a1a1a; font-family: inherit; width: 100%; }
   .form-group input:focus { outline: none; border-color: #0f6e56; background: white; }
-  .form-group input:disabled { color: #aaa; }
+  .form-group input:disabled { color: #aaa; cursor: not-allowed; }
 
   .save-btn { width: 100%; padding: 13px; border-radius: 12px; border: none; background: #0f6e56; color: white; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 4px; }
   .save-btn:disabled { opacity: 0.6; cursor: not-allowed; }
@@ -41,7 +47,7 @@
   .fav-list { display: flex; flex-direction: column; gap: 8px; }
   .fav-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; background: #f8f8f8; border-radius: 12px; cursor: pointer; text-decoration: none; color: #1a1a1a; }
   .fav-item:hover { background: #e6f7f2; }
-  .fav-thumb { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; flex-shrink: 0; background: #e0e0e0; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+  .fav-thumb { width: 44px; height: 44px; border-radius: 8px; flex-shrink: 0; background: #e0e0e0; display: flex; align-items: center; justify-content: center; font-size: 20px; overflow: hidden; }
   .fav-thumb img { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; }
   .fav-info { flex: 1; min-width: 0; }
   .fav-title { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -52,11 +58,14 @@
 <body>
 <div class="page">
   <a class="back-btn" href="index.html">← На главную</a>
-
   <div class="msg" id="msg"></div>
 
   <div class="card" style="text-align:center">
-    <div class="avatar" id="avatar">?</div>
+    <div class="avatar-wrap" onclick="document.getElementById('avatar-input').click()">
+      <div class="avatar" id="avatar-display">?</div>
+      <div class="avatar-edit-badge">✏️</div>
+    </div>
+    <input type="file" id="avatar-input" class="avatar-input" accept="image/*" onchange="uploadAvatar(this)">
     <div class="user-name" id="user-name">Загружаем...</div>
     <div class="user-email" id="user-email"></div>
     <div class="stat-row">
@@ -93,9 +102,12 @@
 <script>
 const SUPABASE_URL = 'https://lfgqhprihykoxqfnubhc.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_-E46ER3EDjD4TTMMiTRaCQ_9xAe36q_';
+const BUCKET_AVATARS = 'avatars';
 
 function getToken(){ return localStorage.getItem('bcp_token')||''; }
 function authHeaders(){ return { 'apikey':SUPABASE_KEY, 'Authorization':`Bearer ${getToken()}`, 'Content-Type':'application/json' }; }
+
+let currentUserId = null;
 
 function showMsg(text, type){
   const el=document.getElementById('msg');
@@ -104,78 +116,109 @@ function showMsg(text, type){
 }
 
 function logout(){
-  localStorage.removeItem('bcp_token');
-  localStorage.removeItem('bcp_refresh');
-  localStorage.removeItem('bcp_user');
-  localStorage.removeItem('bcp_profile');
+  ['bcp_token','bcp_refresh','bcp_user','bcp_profile'].forEach(k=>localStorage.removeItem(k));
   window.location.href='index.html';
+}
+
+function renderAvatar(name, avatarUrl){
+  const el = document.getElementById('avatar-display');
+  if(avatarUrl){
+    el.innerHTML = `<img src="${avatarUrl}" alt="аватар">`;
+  } else {
+    const initial = name && name.trim() ? name.trim()[0].toUpperCase() : '?';
+    el.innerHTML = initial;
+    el.style.fontSize = '36px';
+  }
+}
+
+async function uploadAvatar(input){
+  const file = input.files[0];
+  if(!file) return;
+  const avatarEl = document.getElementById('avatar-display');
+  avatarEl.classList.add('avatar-uploading');
+
+  const ext = file.name.split('.').pop();
+  const fileName = `${currentUserId}.${ext}`;
+  const res = await fetch(`${SUPABASE_URL}/storage/v1/object/${BUCKET_AVATARS}/${fileName}`, {
+    method: 'POST',
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${getToken()}`, 'Content-Type': file.type, 'x-upsert': 'true' },
+    body: file
+  });
+
+  if(res.ok){
+    const avatarUrl = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET_AVATARS}/${fileName}?t=${Date.now()}`;
+    // Сохраняем в профиль
+    await fetch(`${SUPABASE_URL}/rest/v1/user_profiles?id=eq.${currentUserId}`, {
+      method: 'PATCH',
+      headers: { ...authHeaders(), 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ avatar_url: avatarUrl })
+    });
+    const profile = JSON.parse(localStorage.getItem('bcp_profile')||'{}');
+    profile.avatar_url = avatarUrl;
+    localStorage.setItem('bcp_profile', JSON.stringify(profile));
+    renderAvatar(document.getElementById('p-name').value, avatarUrl);
+    showMsg('Аватар обновлён', 'success');
+  } else {
+    showMsg('Ошибка загрузки аватара', 'error');
+  }
+  avatarEl.classList.remove('avatar-uploading');
+  input.value = '';
 }
 
 async function loadProfile(){
   const token = getToken();
   if(!token){ window.location.href='auth.html'; return; }
 
-  // Получаем пользователя
   const userRes = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
     headers:{ 'apikey':SUPABASE_KEY, 'Authorization':`Bearer ${token}` }
   });
   if(!userRes.ok){ window.location.href='auth.html'; return; }
   const user = await userRes.json();
+  currentUserId = user.id;
 
   document.getElementById('p-email').value = user.email||'';
   document.getElementById('user-email').textContent = user.email||'';
 
-  // Получаем профиль
   const profRes = await fetch(`${SUPABASE_URL}/rest/v1/user_profiles?id=eq.${user.id}&select=*`, {
     headers: authHeaders()
   });
   const profiles = await profRes.json();
   const profile = profiles[0]||{};
-
   const name = profile.name || user.user_metadata?.name || '';
+
   document.getElementById('p-name').value = name;
   document.getElementById('p-phone').value = profile.phone||'';
   document.getElementById('user-name').textContent = name||'Без имени';
-  document.getElementById('avatar').textContent = name ? name[0].toUpperCase() : '?';
+  renderAvatar(name, profile.avatar_url);
 
-  // Избранное
   await loadFavourites(user.id);
 }
 
 async function loadFavourites(userId){
-  const favRes = await fetch(`${SUPABASE_URL}/rest/v1/user_favourites?user_id=eq.${userId}&select=property_id`, {
-    headers: authHeaders()
-  });
+  const [favRes, notesRes] = await Promise.all([
+    fetch(`${SUPABASE_URL}/rest/v1/user_favourites?user_id=eq.${userId}&select=property_id`, { headers: authHeaders() }),
+    fetch(`${SUPABASE_URL}/rest/v1/user_notes?user_id=eq.${userId}&select=property_id`, { headers: authHeaders() }),
+  ]);
   const favs = await favRes.json();
-  document.getElementById('fav-count').textContent = favs.length;
-
-  // Заметки
-  const notesRes = await fetch(`${SUPABASE_URL}/rest/v1/user_notes?user_id=eq.${userId}&select=property_id`, {
-    headers: authHeaders()
-  });
   const notes = await notesRes.json();
+  document.getElementById('fav-count').textContent = favs.length;
   document.getElementById('notes-count').textContent = notes.length;
 
   const list = document.getElementById('fav-list');
   if(!favs.length){ list.innerHTML='<div class="loading" style="color:#aaa">Нет избранных объектов</div>'; return; }
 
-  // Загружаем данные объектов
   const ids = favs.map(f=>f.property_id).join(',');
   const propsRes = await fetch(`${SUPABASE_URL}/rest/v1/Properties?id=in.(${ids})&select=id,title_ru,price,images,emoji`, {
     headers: authHeaders()
   });
   const props = await propsRes.json();
-
   list.innerHTML = props.map(p=>{
-    const thumb = p.images&&p.images.length>0
+    const thumb = p.images?.length>0
       ? `<div class="fav-thumb"><img src="${p.images[0]}" alt="фото"></div>`
       : `<div class="fav-thumb">${p.emoji}</div>`;
     return `<a class="fav-item" href="property.html?id=${p.id}">
       ${thumb}
-      <div class="fav-info">
-        <div class="fav-title">${p.title_ru}</div>
-        <div class="fav-price">€${(p.price*1000).toLocaleString()}</div>
-      </div>
+      <div class="fav-info"><div class="fav-title">${p.title_ru}</div><div class="fav-price">€${(p.price*1000).toLocaleString()}</div></div>
       <span style="color:#aaa">→</span>
     </a>`;
   }).join('');
@@ -187,12 +230,7 @@ async function saveProfile(){
   const btn = document.getElementById('save-profile-btn');
   btn.disabled=true; btn.textContent='Сохраняем...';
 
-  const userRes = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
-    headers:{ 'apikey':SUPABASE_KEY, 'Authorization':`Bearer ${getToken()}` }
-  });
-  const user = await userRes.json();
-
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/user_profiles?id=eq.${user.id}`, {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/user_profiles?id=eq.${currentUserId}`, {
     method:'PATCH',
     headers:{ ...authHeaders(), 'Prefer':'return=minimal' },
     body: JSON.stringify({ name, phone })
@@ -201,8 +239,10 @@ async function saveProfile(){
   if(res.ok){
     showMsg('Данные сохранены', 'success');
     document.getElementById('user-name').textContent = name||'Без имени';
-    document.getElementById('avatar').textContent = name ? name[0].toUpperCase() : '?';
-    localStorage.setItem('bcp_profile', JSON.stringify({ name, phone }));
+    const profile = JSON.parse(localStorage.getItem('bcp_profile')||'{}');
+    Object.assign(profile, { name, phone });
+    localStorage.setItem('bcp_profile', JSON.stringify(profile));
+    renderAvatar(name, profile.avatar_url);
   } else { showMsg('Ошибка сохранения', 'error'); }
 
   btn.disabled=false; btn.textContent='Сохранить';
@@ -213,15 +253,13 @@ async function changePassword(){
   const p2 = document.getElementById('new-password2').value;
   if(p1.length<6){ showMsg('Минимум 6 символов', 'error'); return; }
   if(p1!==p2){ showMsg('Пароли не совпадают', 'error'); return; }
-
   const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
     method:'PUT',
     headers:{ 'apikey':SUPABASE_KEY, 'Authorization':`Bearer ${getToken()}`, 'Content-Type':'application/json' },
     body: JSON.stringify({ password: p1 })
   });
-
   if(res.ok){ showMsg('Пароль изменён', 'success'); document.getElementById('new-password').value=''; document.getElementById('new-password2').value=''; }
-  else { showMsg('Ошибка смены пароля', 'error'); }
+  else showMsg('Ошибка смены пароля', 'error');
 }
 
 window.onload = loadProfile;
