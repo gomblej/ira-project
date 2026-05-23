@@ -9,18 +9,21 @@
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f0; min-height: 100vh; }
   .page { max-width: 600px; margin: 0 auto; padding: 20px; }
 
+  .lang-switch { display: flex; gap: 8px; justify-content: center; margin-bottom: 14px; flex-wrap: wrap; }
+  .lb { padding: 6px 10px; border-radius: 20px; border: 1px solid #ccc; background: white; cursor: pointer; display: flex; align-items: center; }
+  .lb.active { border: 2px solid #1a1a1a; }
+  .lb img { display: block; border-radius: 2px; }
+
   .back-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: #666; background: white; border: none; border-radius: 20px; padding: 8px 16px; cursor: pointer; margin-bottom: 16px; text-decoration: none; }
 
   .card { background: white; border-radius: 16px; padding: 24px; margin-bottom: 14px; }
   .card h2 { font-size: 17px; font-weight: 700; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
 
-  /* Аватар */
   .avatar-wrap { position: relative; width: 88px; height: 88px; margin: 0 auto 16px; cursor: pointer; }
   .avatar { width: 88px; height: 88px; border-radius: 50%; background: linear-gradient(135deg, #0f6e56, #1a9070); display: flex; align-items: center; justify-content: center; font-size: 36px; color: white; font-weight: 700; overflow: hidden; }
   .avatar img { width: 100%; height: 100%; object-fit: cover; }
   .avatar-edit-badge { position: absolute; bottom: 0; right: 0; background: #0f6e56; color: white; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; font-size: 13px; border: 2px solid white; }
   .avatar-input { display: none; }
-  .avatar-uploading { opacity: 0.6; }
 
   .user-name { text-align: center; font-size: 20px; font-weight: 700; margin-bottom: 4px; }
   .user-email { text-align: center; font-size: 14px; color: #888; margin-bottom: 20px; }
@@ -56,8 +59,15 @@
 </style>
 </head>
 <body>
-<div class="page">
-  <a class="back-btn" href="index.html">← На главную</a>
+<div class="page" id="page">
+  <div class="lang-switch">
+    <button class="lb" id="lb-ru" onclick="setLang('ru',this)"><img src="https://flagcdn.com/24x18/ru.png" alt="RU"></button>
+    <button class="lb" id="lb-en" onclick="setLang('en',this)"><img src="https://flagcdn.com/24x18/gb.png" alt="EN"></button>
+    <button class="lb" id="lb-el" onclick="setLang('el',this)"><img src="https://flagcdn.com/24x18/cy.png" alt="ΕΛ"></button>
+    <button class="lb" id="lb-he" onclick="setLang('he',this)"><img src="https://flagcdn.com/24x18/il.png" alt="HE"></button>
+  </div>
+
+  <a class="back-btn" id="back-btn" href="index.html">← <span id="back-label"></span></a>
   <div class="msg" id="msg"></div>
 
   <div class="card" style="text-align:center">
@@ -66,36 +76,36 @@
       <div class="avatar-edit-badge">✏️</div>
     </div>
     <input type="file" id="avatar-input" class="avatar-input" accept="image/*" onchange="uploadAvatar(this)">
-    <div class="user-name" id="user-name">Загружаем...</div>
+    <div class="user-name" id="user-name">...</div>
     <div class="user-email" id="user-email"></div>
     <div class="stat-row">
-      <div class="stat"><div class="stat-num" id="fav-count">0</div><div class="stat-label">В избранном</div></div>
-      <div class="stat"><div class="stat-num" id="notes-count">0</div><div class="stat-label">Заметок</div></div>
+      <div class="stat"><div class="stat-num" id="fav-count">0</div><div class="stat-label" id="stat-fav-label"></div></div>
+      <div class="stat"><div class="stat-num" id="notes-count">0</div><div class="stat-label" id="stat-notes-label"></div></div>
     </div>
   </div>
 
   <div class="card">
-    <h2>👤 Личные данные</h2>
-    <div class="form-group"><label>Имя</label><input type="text" id="p-name" placeholder="Ваше имя"></div>
-    <div class="form-group"><label>Email</label><input type="email" id="p-email" disabled></div>
-    <div class="form-group"><label>Телефон</label><input type="tel" id="p-phone" placeholder="+357..."></div>
-    <button class="save-btn" id="save-profile-btn" onclick="saveProfile()">Сохранить</button>
+    <h2>👤 <span id="section-personal"></span></h2>
+    <div class="form-group"><label id="label-name"></label><input type="text" id="p-name"></div>
+    <div class="form-group"><label id="label-email"></label><input type="email" id="p-email" disabled></div>
+    <div class="form-group"><label id="label-phone"></label><input type="tel" id="p-phone"></div>
+    <button class="save-btn" id="save-profile-btn" onclick="saveProfile()"><span id="btn-save"></span></button>
   </div>
 
   <div class="card">
-    <h2>🔑 Сменить пароль</h2>
-    <div class="form-group"><label>Новый пароль</label><input type="password" id="new-password" placeholder="Минимум 6 символов"></div>
-    <div class="form-group"><label>Повторите пароль</label><input type="password" id="new-password2" placeholder="Повторите пароль"></div>
-    <button class="save-btn" onclick="changePassword()">Сменить пароль</button>
+    <h2>🔑 <span id="section-password"></span></h2>
+    <div class="form-group"><label id="label-new-password"></label><input type="password" id="new-password"></div>
+    <div class="form-group"><label id="label-repeat-password"></label><input type="password" id="new-password2"></div>
+    <button class="save-btn" onclick="changePassword()"><span id="btn-change-password"></span></button>
   </div>
 
   <div class="card">
-    <h2>❤️ Избранное</h2>
-    <div id="fav-list"><div class="loading">Загружаем...</div></div>
+    <h2>❤️ <span id="section-favourites"></span></h2>
+    <div id="fav-list"><div class="loading">...</div></div>
   </div>
 
   <div class="card">
-    <button class="danger-btn" onclick="logout()">Выйти из аккаунта</button>
+    <button class="danger-btn" onclick="logout()" id="btn-logout"></button>
   </div>
 </div>
 
@@ -108,6 +118,106 @@ function getToken(){ return localStorage.getItem('bcp_token')||''; }
 function authHeaders(){ return { 'apikey':SUPABASE_KEY, 'Authorization':`Bearer ${getToken()}`, 'Content-Type':'application/json' }; }
 
 let currentUserId = null;
+let lang = 'ru';
+
+const T = {
+  ru: {
+    back:'На главную', sectionPersonal:'Личные данные', sectionPassword:'Сменить пароль',
+    sectionFavourites:'Избранное',
+    labelName:'Имя', labelEmail:'Email', labelPhone:'Телефон',
+    labelNewPassword:'Новый пароль', labelRepeatPassword:'Повторите пароль',
+    btnSave:'Сохранить', btnChangePassword:'Сменить пароль', btnLogout:'Выйти из аккаунта',
+    statFav:'В избранном', statNotes:'Заметок',
+    placeholderName:'Ваше имя', placeholderPhone:'+357...',
+    placeholderNewPassword:'Минимум 8 символов', placeholderRepeat:'Повторите пароль',
+    msgSaved:'Данные сохранены', msgSaveError:'Ошибка сохранения',
+    msgPasswordChanged:'Пароль изменён', msgPasswordError:'Ошибка смены пароля',
+    msgPasswordShort:'Минимум 8 символов', msgPasswordMismatch:'Пароли не совпадают',
+    msgAvatarOk:'Аватар обновлён', msgAvatarError:'Ошибка загрузки аватара',
+    noFavourites:'Нет избранных объектов',
+    noName:'Без имени', rtl:false,
+  },
+  en: {
+    back:'Back to home', sectionPersonal:'Personal details', sectionPassword:'Change password',
+    sectionFavourites:'Favourites',
+    labelName:'Name', labelEmail:'Email', labelPhone:'Phone',
+    labelNewPassword:'New password', labelRepeatPassword:'Repeat password',
+    btnSave:'Save', btnChangePassword:'Change password', btnLogout:'Sign out',
+    statFav:'Saved', statNotes:'Notes',
+    placeholderName:'Your name', placeholderPhone:'+357...',
+    placeholderNewPassword:'At least 8 characters', placeholderRepeat:'Repeat password',
+    msgSaved:'Saved successfully', msgSaveError:'Error saving',
+    msgPasswordChanged:'Password changed', msgPasswordError:'Error changing password',
+    msgPasswordShort:'At least 8 characters', msgPasswordMismatch:'Passwords do not match',
+    msgAvatarOk:'Avatar updated', msgAvatarError:'Error uploading avatar',
+    noFavourites:'No saved properties',
+    noName:'No name', rtl:false,
+  },
+  el: {
+    back:'Πίσω στην αρχική', sectionPersonal:'Προσωπικά στοιχεία', sectionPassword:'Αλλαγή κωδικού',
+    sectionFavourites:'Αγαπημένα',
+    labelName:'Όνομα', labelEmail:'Email', labelPhone:'Τηλέφωνο',
+    labelNewPassword:'Νέος κωδικός', labelRepeatPassword:'Επανάληψη κωδικού',
+    btnSave:'Αποθήκευση', btnChangePassword:'Αλλαγή κωδικού', btnLogout:'Αποσύνδεση',
+    statFav:'Αποθηκευμένα', statNotes:'Σημειώσεις',
+    placeholderName:'Το όνομά σας', placeholderPhone:'+357...',
+    placeholderNewPassword:'Τουλάχιστον 8 χαρακτήρες', placeholderRepeat:'Επανάληψη κωδικού',
+    msgSaved:'Αποθηκεύτηκε', msgSaveError:'Σφάλμα αποθήκευσης',
+    msgPasswordChanged:'Ο κωδικός άλλαξε', msgPasswordError:'Σφάλμα αλλαγής κωδικού',
+    msgPasswordShort:'Τουλάχιστον 8 χαρακτήρες', msgPasswordMismatch:'Οι κωδικοί δεν ταιριάζουν',
+    msgAvatarOk:'Το avatar ενημερώθηκε', msgAvatarError:'Σφάλμα μεταφόρτωσης',
+    noFavourites:'Δεν υπάρχουν αγαπημένα',
+    noName:'Χωρίς όνομα', rtl:false,
+  },
+  he: {
+    back:'חזרה לדף הבית', sectionPersonal:'פרטים אישיים', sectionPassword:'שינוי סיסמה',
+    sectionFavourites:'מועדפים',
+    labelName:'שם', labelEmail:'אימייל', labelPhone:'טלפון',
+    labelNewPassword:'סיסמה חדשה', labelRepeatPassword:'חזור על הסיסמה',
+    btnSave:'שמור', btnChangePassword:'שנה סיסמה', btnLogout:'התנתק',
+    statFav:'שמורים', statNotes:'הערות',
+    placeholderName:'השם שלך', placeholderPhone:'+357...',
+    placeholderNewPassword:'לפחות 8 תווים', placeholderRepeat:'חזור על הסיסמה',
+    msgSaved:'נשמר בהצלחה', msgSaveError:'שגיאה בשמירה',
+    msgPasswordChanged:'הסיסמה שונתה', msgPasswordError:'שגיאה בשינוי סיסמה',
+    msgPasswordShort:'לפחות 8 תווים', msgPasswordMismatch:'הסיסמאות אינן תואמות',
+    msgAvatarOk:'האווטאר עודכן', msgAvatarError:'שגיאה בהעלאת אווטאר',
+    noFavourites:'אין נכסים שמורים',
+    noName:'ללא שם', rtl:true,
+  }
+};
+
+function setLang(l, btn){
+  lang = l;
+  localStorage.setItem('bcp_lang', l);
+  document.querySelectorAll('.lb').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  else { const b=document.getElementById('lb-'+l); if(b) b.classList.add('active'); }
+  applyTexts();
+}
+
+function applyTexts(){
+  const t = T[lang];
+  document.getElementById('page').setAttribute('dir', t.rtl?'rtl':'ltr');
+  document.getElementById('back-label').textContent = t.back;
+  document.getElementById('section-personal').textContent = t.sectionPersonal;
+  document.getElementById('section-password').textContent = t.sectionPassword;
+  document.getElementById('section-favourites').textContent = t.sectionFavourites;
+  document.getElementById('label-name').textContent = t.labelName;
+  document.getElementById('label-email').textContent = t.labelEmail;
+  document.getElementById('label-phone').textContent = t.labelPhone;
+  document.getElementById('label-new-password').textContent = t.labelNewPassword;
+  document.getElementById('label-repeat-password').textContent = t.labelRepeatPassword;
+  document.getElementById('btn-save').textContent = t.btnSave;
+  document.getElementById('btn-change-password').textContent = t.btnChangePassword;
+  document.getElementById('btn-logout').textContent = t.btnLogout;
+  document.getElementById('stat-fav-label').textContent = t.statFav;
+  document.getElementById('stat-notes-label').textContent = t.statNotes;
+  document.getElementById('p-name').placeholder = t.placeholderName;
+  document.getElementById('p-phone').placeholder = t.placeholderPhone;
+  document.getElementById('new-password').placeholder = t.placeholderNewPassword;
+  document.getElementById('new-password2').placeholder = t.placeholderRepeat;
+}
 
 function showMsg(text, type){
   const el=document.getElementById('msg');
@@ -125,144 +235,140 @@ function renderAvatar(name, avatarUrl){
   if(avatarUrl){
     el.innerHTML = `<img src="${avatarUrl}" alt="аватар">`;
   } else {
-    const initial = name && name.trim() ? name.trim()[0].toUpperCase() : '?';
-    el.innerHTML = initial;
-    el.style.fontSize = '36px';
+    const initial = name?.trim() ? name.trim()[0].toUpperCase() : '?';
+    el.textContent = initial;
   }
 }
 
 async function uploadAvatar(input){
-  const file = input.files[0];
-  if(!file) return;
-  const avatarEl = document.getElementById('avatar-display');
-  avatarEl.classList.add('avatar-uploading');
-
+  const file = input.files[0]; if(!file) return;
+  const t = T[lang];
+  document.getElementById('avatar-display').style.opacity='0.6';
   const ext = file.name.split('.').pop();
   const fileName = `${currentUserId}.${ext}`;
   const res = await fetch(`${SUPABASE_URL}/storage/v1/object/${BUCKET_AVATARS}/${fileName}`, {
-    method: 'POST',
-    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${getToken()}`, 'Content-Type': file.type, 'x-upsert': 'true' },
-    body: file
+    method:'POST',
+    headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${getToken()}`,'Content-Type':file.type,'x-upsert':'true'},
+    body:file
   });
-
   if(res.ok){
     const avatarUrl = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET_AVATARS}/${fileName}?t=${Date.now()}`;
-    // Сохраняем в профиль
-    await fetch(`${SUPABASE_URL}/rest/v1/user_profiles?id=eq.${currentUserId}`, {
-      method: 'PATCH',
-      headers: { ...authHeaders(), 'Prefer': 'return=minimal' },
-      body: JSON.stringify({ avatar_url: avatarUrl })
+    await fetch(`${SUPABASE_URL}/rest/v1/user_profiles?id=eq.${currentUserId}`,{
+      method:'PATCH', headers:{...authHeaders(),'Prefer':'return=minimal'},
+      body:JSON.stringify({avatar_url:avatarUrl})
     });
     const profile = JSON.parse(localStorage.getItem('bcp_profile')||'{}');
     profile.avatar_url = avatarUrl;
     localStorage.setItem('bcp_profile', JSON.stringify(profile));
     renderAvatar(document.getElementById('p-name').value, avatarUrl);
-    showMsg('Аватар обновлён', 'success');
-  } else {
-    showMsg('Ошибка загрузки аватара', 'error');
-  }
-  avatarEl.classList.remove('avatar-uploading');
-  input.value = '';
+    showMsg(t.msgAvatarOk, 'success');
+  } else { showMsg(t.msgAvatarError, 'error'); }
+  document.getElementById('avatar-display').style.opacity='1';
+  input.value='';
 }
 
 async function loadProfile(){
   const token = getToken();
   if(!token){ window.location.href='auth.html'; return; }
-
-  const userRes = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
-    headers:{ 'apikey':SUPABASE_KEY, 'Authorization':`Bearer ${token}` }
-  });
+  const userRes = await fetch(`${SUPABASE_URL}/auth/v1/user`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${token}`}});
   if(!userRes.ok){ window.location.href='auth.html'; return; }
   const user = await userRes.json();
   currentUserId = user.id;
-
   document.getElementById('p-email').value = user.email||'';
   document.getElementById('user-email').textContent = user.email||'';
 
-  const profRes = await fetch(`${SUPABASE_URL}/rest/v1/user_profiles?id=eq.${user.id}&select=*`, {
-    headers: authHeaders()
-  });
+  const profRes = await fetch(`${SUPABASE_URL}/rest/v1/user_profiles?id=eq.${user.id}&select=*`,{headers:authHeaders()});
   const profiles = await profRes.json();
   const profile = profiles[0]||{};
   const name = profile.name || user.user_metadata?.name || '';
-
   document.getElementById('p-name').value = name;
   document.getElementById('p-phone').value = profile.phone||'';
-  document.getElementById('user-name').textContent = name||'Без имени';
+  document.getElementById('user-name').textContent = name || T[lang].noName;
   renderAvatar(name, profile.avatar_url);
 
   await loadFavourites(user.id);
 }
 
 async function loadFavourites(userId){
+  const t = T[lang];
   const [favRes, notesRes] = await Promise.all([
-    fetch(`${SUPABASE_URL}/rest/v1/user_favourites?user_id=eq.${userId}&select=property_id`, { headers: authHeaders() }),
-    fetch(`${SUPABASE_URL}/rest/v1/user_notes?user_id=eq.${userId}&select=property_id`, { headers: authHeaders() }),
+    fetch(`${SUPABASE_URL}/rest/v1/user_favourites?user_id=eq.${userId}&select=property_id`,{headers:authHeaders()}),
+    fetch(`${SUPABASE_URL}/rest/v1/user_notes?user_id=eq.${userId}&select=property_id`,{headers:authHeaders()}),
   ]);
   const favs = await favRes.json();
   const notes = await notesRes.json();
-  document.getElementById('fav-count').textContent = favs.length;
-  document.getElementById('notes-count').textContent = notes.length;
+  document.getElementById('fav-count').textContent = Array.isArray(favs)?favs.length:0;
+  document.getElementById('notes-count').textContent = Array.isArray(notes)?notes.length:0;
 
   const list = document.getElementById('fav-list');
-  if(!favs.length){ list.innerHTML='<div class="loading" style="color:#aaa">Нет избранных объектов</div>'; return; }
+  if(!Array.isArray(favs)||!favs.length){ list.innerHTML=`<div class="loading" style="color:#aaa">${t.noFavourites}</div>`; return; }
 
   const ids = favs.map(f=>f.property_id).join(',');
-  const propsRes = await fetch(`${SUPABASE_URL}/rest/v1/Properties?id=in.(${ids})&select=id,title_ru,price,images,emoji`, {
-    headers: authHeaders()
-  });
+  const propsRes = await fetch(`${SUPABASE_URL}/rest/v1/Properties?id=in.(${ids})&select=id,title_ru,title_en,title_el,title_he,price,images,emoji`,{headers:authHeaders()});
   const props = await propsRes.json();
+  if(!Array.isArray(props)||!props.length){ list.innerHTML=`<div class="loading" style="color:#aaa">${t.noFavourites}</div>`; return; }
+
   list.innerHTML = props.map(p=>{
+    const title = p['title_'+lang] || p.title_ru || p.title_en || '';
     const thumb = p.images?.length>0
-      ? `<div class="fav-thumb"><img src="${p.images[0]}" alt="фото"></div>`
-      : `<div class="fav-thumb">${p.emoji}</div>`;
+      ?`<div class="fav-thumb"><img src="${p.images[0]}" alt="фото"></div>`
+      :`<div class="fav-thumb">${p.emoji}</div>`;
     return `<a class="fav-item" href="property.html?id=${p.id}">
       ${thumb}
-      <div class="fav-info"><div class="fav-title">${p.title_ru}</div><div class="fav-price">€${(p.price*1000).toLocaleString()}</div></div>
+      <div class="fav-info"><div class="fav-title">${title}</div><div class="fav-price">€${(p.price*1000).toLocaleString()}</div></div>
       <span style="color:#aaa">→</span>
     </a>`;
   }).join('');
 }
 
 async function saveProfile(){
+  const t = T[lang];
   const name = document.getElementById('p-name').value.trim();
   const phone = document.getElementById('p-phone').value.trim();
   const btn = document.getElementById('save-profile-btn');
-  btn.disabled=true; btn.textContent='Сохраняем...';
+  btn.disabled=true;
 
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/user_profiles?id=eq.${currentUserId}`, {
-    method:'PATCH',
-    headers:{ ...authHeaders(), 'Prefer':'return=minimal' },
-    body: JSON.stringify({ name, phone })
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/user_profiles?id=eq.${currentUserId}`,{
+    method:'PATCH', headers:{...authHeaders(),'Prefer':'return=minimal'},
+    body:JSON.stringify({name, phone})
   });
-
   if(res.ok){
-    showMsg('Данные сохранены', 'success');
-    document.getElementById('user-name').textContent = name||'Без имени';
+    showMsg(t.msgSaved, 'success');
+    document.getElementById('user-name').textContent = name||t.noName;
     const profile = JSON.parse(localStorage.getItem('bcp_profile')||'{}');
-    Object.assign(profile, { name, phone });
+    Object.assign(profile, {name, phone});
     localStorage.setItem('bcp_profile', JSON.stringify(profile));
     renderAvatar(name, profile.avatar_url);
-  } else { showMsg('Ошибка сохранения', 'error'); }
-
-  btn.disabled=false; btn.textContent='Сохранить';
+  } else { showMsg(t.msgSaveError, 'error'); }
+  btn.disabled=false;
 }
 
 async function changePassword(){
+  const t = T[lang];
   const p1 = document.getElementById('new-password').value;
   const p2 = document.getElementById('new-password2').value;
-  if(p1.length<6){ showMsg('Минимум 6 символов', 'error'); return; }
-  if(p1!==p2){ showMsg('Пароли не совпадают', 'error'); return; }
-  const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+  if(p1.length<8){ showMsg(t.msgPasswordShort, 'error'); return; }
+  if(p1!==p2){ showMsg(t.msgPasswordMismatch, 'error'); return; }
+  const res = await fetch(`${SUPABASE_URL}/auth/v1/user`,{
     method:'PUT',
-    headers:{ 'apikey':SUPABASE_KEY, 'Authorization':`Bearer ${getToken()}`, 'Content-Type':'application/json' },
-    body: JSON.stringify({ password: p1 })
+    headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${getToken()}`,'Content-Type':'application/json'},
+    body:JSON.stringify({password:p1})
   });
-  if(res.ok){ showMsg('Пароль изменён', 'success'); document.getElementById('new-password').value=''; document.getElementById('new-password2').value=''; }
-  else showMsg('Ошибка смены пароля', 'error');
+  if(res.ok){
+    showMsg(t.msgPasswordChanged, 'success');
+    document.getElementById('new-password').value='';
+    document.getElementById('new-password2').value='';
+  } else { showMsg(t.msgPasswordError, 'error'); }
 }
 
-window.onload = loadProfile;
+window.onload = async function(){
+  // Определяем язык — сначала из localStorage, потом браузерный
+  const savedLang = localStorage.getItem('bcp_lang');
+  const browserLang = navigator.language?.substring(0,2);
+  const detectedLang = savedLang || (['ru','en','el','he'].includes(browserLang) ? browserLang : 'en');
+  setLang(detectedLang);
+  await loadProfile();
+};
 </script>
 </body>
 </html>
