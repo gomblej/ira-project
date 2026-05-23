@@ -21,7 +21,6 @@
   .admin-header h1 { font-size: 18px; font-weight: 700; }
   .logout-btn { font-size: 13px; padding: 6px 14px; border-radius: 20px; border: 1px solid #ddd; background: white; color: #666; cursor: pointer; }
 
-  /* Табы */
   .admin-tabs { display: flex; background: white; border-radius: 16px; padding: 6px; margin-bottom: 16px; gap: 4px; }
   .admin-tab { flex: 1; padding: 10px; text-align: center; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; color: #888; border: none; background: transparent; transition: all 0.2s; }
   .admin-tab.active { background: #0f6e56; color: white; }
@@ -65,7 +64,6 @@
   .save-btn:disabled { opacity: 0.6; cursor: not-allowed; }
   .cancel-btn { padding: 12px 20px; border-radius: 12px; border: 1px solid #ddd; background: white; color: #666; font-size: 14px; cursor: pointer; }
 
-  /* Список объектов */
   .props-list { display: flex; flex-direction: column; gap: 10px; }
   .prop-card { background: white; border-radius: 14px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; }
   .prop-thumb { width: 56px; height: 56px; border-radius: 10px; flex-shrink: 0; background: #e6f7f2; display: flex; align-items: center; justify-content: center; font-size: 24px; overflow: hidden; }
@@ -82,17 +80,14 @@
   .edit-btn { font-size: 13px; padding: 6px 12px; border-radius: 10px; border: 1px solid #ddd; background: white; color: #1a1a1a; cursor: pointer; }
   .delete-btn { font-size: 13px; padding: 6px 12px; border-radius: 10px; border: none; background: #fff0f0; color: #c0392b; cursor: pointer; }
 
-  /* Список пользователей */
   .users-list { display: flex; flex-direction: column; gap: 10px; }
   .user-card { background: white; border-radius: 14px; padding: 16px; display: flex; align-items: center; gap: 14px; }
-  .user-avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #0f6e56, #1a9070); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; font-weight: 700; flex-shrink: 0; }
+  .user-avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #0f6e56, #1a9070); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; font-weight: 700; flex-shrink: 0; overflow: hidden; }
+  .user-avatar img { width: 44px; height: 44px; object-fit: cover; }
   .user-info { flex: 1; min-width: 0; }
   .user-name { font-size: 15px; font-weight: 600; }
   .user-email { font-size: 13px; color: #888; margin-top: 2px; }
   .user-meta { font-size: 12px; color: #aaa; margin-top: 3px; display: flex; gap: 12px; flex-wrap: wrap; }
-  .user-badge { font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
-  .badge-confirmed { background: #e6f7f2; color: #0f6e56; }
-  .badge-pending { background: #fff3cd; color: #856404; }
 
   .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 16px; }
   .stat-card { background: white; border-radius: 14px; padding: 16px; text-align: center; }
@@ -111,7 +106,7 @@
   <div class="login-box">
     <div class="logo">Best Cyprus Properties</div>
     <h1>Вход для риелтора</h1>
-    <input type="password" id="password-input" placeholder="Введите пароль" onkeydown="if(event.key==='Enter') login()">
+    <input type="password" id="password-input" placeholder="Введите пароль" onkeydown="if(event.key==='Enter') login()" autocomplete="current-password">
     <button onclick="login()">Войти</button>
     <div class="login-error" id="login-error"></div>
   </div>
@@ -123,7 +118,7 @@
     <button class="logout-btn" onclick="logout()">Выйти</button>
   </div>
 
-  <div class="stats-row" id="stats-row">
+  <div class="stats-row">
     <div class="stat-card"><div class="stat-num" id="stat-props">—</div><div class="stat-label">Объектов</div></div>
     <div class="stat-card"><div class="stat-num" id="stat-users">—</div><div class="stat-label">Пользователей</div></div>
     <div class="stat-card"><div class="stat-num" id="stat-favs">—</div><div class="stat-label">Сохранений</div></div>
@@ -136,30 +131,30 @@
 
   <div class="msg" id="msg"></div>
 
-  <!-- Объекты -->
   <div class="tab-panel active" id="panel-props">
     <button class="add-btn" onclick="openForm()">+ Добавить новый объект</button>
 
     <div class="form-card" id="form-card">
       <h2 id="form-title">Новый объект</h2>
       <input type="hidden" id="edit-id">
-      <div class="form-grid">
+      <!-- autocomplete="off" на всей форме -->
+      <div class="form-grid" autocomplete="off">
         <div class="section-title">📋 Основная информация</div>
         <div class="form-group"><label>Город</label>
-          <select id="f-city">
+          <select id="f-city" autocomplete="off">
             <option value="Limassol">Лимасол</option><option value="Paphos">Пафос</option>
             <option value="Larnaca">Ларнака</option><option value="Nicosia">Никосия</option>
             <option value="Famagusta">Фамагуста</option>
           </select>
         </div>
         <div class="form-group"><label>Дистрикт?</label>
-          <select id="f-district">
+          <select id="f-district" autocomplete="off">
             <option value="false">Нет — сам город</option>
             <option value="true">Да — дистрикт / пригород</option>
           </select>
         </div>
         <div class="form-group"><label>Тип недвижимости</label>
-          <select id="f-type">
+          <select id="f-type" autocomplete="off">
             <option value="apt">Квартира</option><option value="penthouse">Пентхаус</option>
             <option value="house">Дом / вилла</option><option value="townhouse">Таунхаус</option>
             <option value="land_res">Участок под жильё</option><option value="land_other">Земельный участок (прочее)</option>
@@ -167,48 +162,48 @@
           </select>
         </div>
         <div class="form-group"><label>Первичная / Вторичная</label>
-          <select id="f-market"><option value="new">Первичная</option><option value="resale">Вторичная</option></select>
+          <select id="f-market" autocomplete="off"><option value="new">Первичная</option><option value="resale">Вторичная</option></select>
         </div>
         <div class="form-group"><label>Статус</label>
-          <select id="f-status">
+          <select id="f-status" autocomplete="off">
             <option value="available">В продаже</option>
             <option value="unavailable">Временно не продаётся</option>
             <option value="sold">Продано</option>
           </select>
         </div>
-        <div class="form-group"><label>Цена (тысяч €)</label>
-          <input type="number" id="f-price" placeholder="280" min="0">
+        <div class="form-group"><label>Цена (тысяч €, например 280)</label>
+          <input type="number" id="f-price" placeholder="280" min="0" autocomplete="off">
         </div>
         <div class="form-group"><label>Спальни (0 = студия)</label>
-          <input type="number" id="f-rooms" placeholder="2" min="0">
+          <input type="number" id="f-rooms" placeholder="2" min="0" autocomplete="off">
         </div>
         <div class="form-group"><label>Общая площадь (м²)</label>
-          <input type="number" id="f-area" placeholder="72" min="0">
+          <input type="number" id="f-area" placeholder="72" min="0" autocomplete="off">
         </div>
         <div class="form-group"><label>Внутренняя площадь / Internal area (м²)</label>
-          <input type="number" id="f-internal" placeholder="65" min="0">
+          <input type="number" id="f-internal" placeholder="65" min="0" autocomplete="off">
         </div>
         <div class="form-group"><label>Размер участка (м²)</label>
-          <input type="number" id="f-plot" placeholder="500" min="0">
+          <input type="number" id="f-plot" placeholder="500" min="0" autocomplete="off">
         </div>
         <div class="form-group"><label>Год постройки</label>
-          <input type="number" id="f-year" placeholder="2020" min="1900" max="2030">
+          <input type="number" id="f-year" placeholder="2020" min="1900" max="2030" autocomplete="off">
         </div>
         <div class="form-group"><label>Бассейн</label>
-          <select id="f-pool">
+          <select id="f-pool" autocomplete="off">
             <option value="none">Нет бассейна</option>
             <option value="yes">Есть бассейн</option>
             <option value="possible">Можно построить</option>
           </select>
         </div>
         <div class="form-group"><label>Море в шаговой доступности</label>
-          <select id="f-sea">
+          <select id="f-sea" autocomplete="off">
             <option value="false">Нет</option>
             <option value="true">Да</option>
           </select>
         </div>
         <div class="form-group"><label>Эмодзи</label>
-          <select id="f-emoji">
+          <select id="f-emoji" autocomplete="off">
             <option value="🏢">🏢 Квартира / апартаменты</option>
             <option value="🏙️">🏙️ Пентхаус</option>
             <option value="🏡">🏡 Дом / вилла</option>
@@ -220,35 +215,35 @@
           </select>
         </div>
         <div class="form-group"><label>Новый объект?</label>
-          <select id="f-isnew">
+          <select id="f-isnew" autocomplete="off">
             <option value="true">Да — показывать бейдж "Новое"</option>
             <option value="false">Нет</option>
           </select>
         </div>
 
         <div class="section-title">🌐 Названия</div>
-        <div class="form-group full"><label>Название (RU) *</label><input type="text" id="f-title-ru" placeholder="Апартаменты у моря"></div>
-        <div class="form-group full"><label>Название (EN)</label><input type="text" id="f-title-en" placeholder="Sea-view apartment"></div>
-        <div class="form-group full"><label>Название (греческий)</label><input type="text" id="f-title-el"></div>
-        <div class="form-group full"><label>Название (иврит)</label><input type="text" id="f-title-he"></div>
+        <div class="form-group full"><label>Название (RU) *</label><input type="text" id="f-title-ru" placeholder="Апартаменты у моря" autocomplete="off"></div>
+        <div class="form-group full"><label>Название (EN)</label><input type="text" id="f-title-en" placeholder="Sea-view apartment" autocomplete="off"></div>
+        <div class="form-group full"><label>Название (греческий)</label><input type="text" id="f-title-el" autocomplete="off"></div>
+        <div class="form-group full"><label>Название (иврит)</label><input type="text" id="f-title-he" autocomplete="off"></div>
 
         <div class="section-title">🏷️ Теги</div>
-        <div class="form-group"><label>Тег (RU)</label><input type="text" id="f-tag-ru" placeholder="Вид на море"></div>
-        <div class="form-group"><label>Тег (EN)</label><input type="text" id="f-tag-en" placeholder="Sea view"></div>
-        <div class="form-group"><label>Тег (греческий)</label><input type="text" id="f-tag-el"></div>
-        <div class="form-group"><label>Тег (иврит)</label><input type="text" id="f-tag-he"></div>
+        <div class="form-group"><label>Тег (RU)</label><input type="text" id="f-tag-ru" placeholder="Вид на море" autocomplete="off"></div>
+        <div class="form-group"><label>Тег (EN)</label><input type="text" id="f-tag-en" placeholder="Sea view" autocomplete="off"></div>
+        <div class="form-group"><label>Тег (греческий)</label><input type="text" id="f-tag-el" autocomplete="off"></div>
+        <div class="form-group"><label>Тег (иврит)</label><input type="text" id="f-tag-he" autocomplete="off"></div>
 
         <div class="section-title">📝 Описание</div>
-        <div class="form-group full"><label>Описание (RU)</label><textarea id="f-desc-ru" rows="4" placeholder="Подробное описание на русском..."></textarea></div>
-        <div class="form-group full"><label>Описание (EN)</label><textarea id="f-desc-en" rows="4" placeholder="Description in English..."></textarea></div>
+        <div class="form-group full"><label>Описание (RU)</label><textarea id="f-desc-ru" rows="4" placeholder="Подробное описание на русском..." autocomplete="off"></textarea></div>
+        <div class="form-group full"><label>Описание (EN)</label><textarea id="f-desc-en" rows="4" placeholder="Description in English..." autocomplete="off"></textarea></div>
 
         <div class="translate-wrap">
           <button class="translate-btn" id="translate-btn" onclick="autoTranslate()">✨ Перевести на греческий и иврит</button>
           <span class="translate-note">Переводит описания и названия через Claude AI</span>
         </div>
 
-        <div class="form-group full"><label>Описание (греческий)</label><textarea id="f-desc-el" rows="4"></textarea></div>
-        <div class="form-group full"><label>Описание (иврит)</label><textarea id="f-desc-he" rows="4"></textarea></div>
+        <div class="form-group full"><label>Описание (греческий)</label><textarea id="f-desc-el" rows="4" autocomplete="off"></textarea></div>
+        <div class="form-group full"><label>Описание (иврит)</label><textarea id="f-desc-he" rows="4" autocomplete="off"></textarea></div>
 
         <div class="section-title">📷 Фотографии</div>
         <div class="photo-section">
@@ -271,7 +266,6 @@
     <div class="props-list" id="props-list"><div class="loading">Загружаем объекты...</div></div>
   </div>
 
-  <!-- Пользователи -->
   <div class="tab-panel" id="panel-users">
     <div class="users-list" id="users-list"><div class="loading">Загружаем пользователей...</div></div>
   </div>
@@ -328,13 +322,14 @@ async function loadStats(){
   ]);
   const props = await propsRes.json();
   const favs = await favsRes.json();
-  document.getElementById('stat-props').textContent = props.length;
-  document.getElementById('stat-favs').textContent = favs.length;
+  document.getElementById('stat-props').textContent = Array.isArray(props)?props.length:'—';
+  document.getElementById('stat-favs').textContent = Array.isArray(favs)?favs.length:'—';
 }
 
 async function loadProperties(){
   const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?select=*&order=id.desc`, { headers: HEADERS });
   allProps = await res.json();
+  if(!Array.isArray(allProps)) allProps = [];
   renderPropsList();
 }
 
@@ -365,19 +360,17 @@ function renderPropsList(){
 }
 
 async function loadUsers(){
-  // Загружаем профили + данные об избранном
   const [profRes, favsRes] = await Promise.all([
     fetch(`${SUPABASE_URL}/rest/v1/user_profiles?select=*&order=created_at.desc`, { headers: HEADERS }),
     fetch(`${SUPABASE_URL}/rest/v1/user_favourites?select=user_id`, { headers: HEADERS }),
   ]);
   const profiles = await profRes.json();
   const favs = await favsRes.json();
-
+  if(!Array.isArray(profiles)){ document.getElementById('users-list').innerHTML='<div class="loading" style="color:#aaa">Нет данных</div>'; return; }
   document.getElementById('stat-users').textContent = profiles.length;
 
-  // Считаем избранное по пользователям
   const favCounts = {};
-  favs.forEach(f=>{ favCounts[f.user_id]=(favCounts[f.user_id]||0)+1; });
+  if(Array.isArray(favs)) favs.forEach(f=>{ favCounts[f.user_id]=(favCounts[f.user_id]||0)+1; });
 
   const con = document.getElementById('users-list');
   if(!profiles.length){ con.innerHTML='<div class="loading" style="color:#aaa">Пользователей пока нет</div>'; return; }
@@ -387,9 +380,12 @@ async function loadUsers(){
     const initial = name && name!=='—' ? name[0].toUpperCase() : '?';
     const favCount = favCounts[p.id]||0;
     const registered = new Date(p.created_at).toLocaleDateString('ru-RU', {day:'numeric',month:'long',year:'numeric'});
+    const avatarHtml = p.avatar_url
+      ? `<div class="user-avatar"><img src="${p.avatar_url}" alt="avatar"></div>`
+      : `<div class="user-avatar">${initial}</div>`;
     return `
     <div class="user-card">
-      <div class="user-avatar">${initial}</div>
+      ${avatarHtml}
       <div class="user-info">
         <div class="user-name">${name}</div>
         <div class="user-email">${p.phone||''}</div>
@@ -443,8 +439,7 @@ function closeForm(){
 function editProperty(id){ const prop=allProps.find(p=>p.id===id); if(prop) openForm(prop); }
 
 function renderPhotosPreview(){
-  const con = document.getElementById('photos-preview');
-  con.innerHTML = currentImages.map((url,i)=>`
+  document.getElementById('photos-preview').innerHTML = currentImages.map((url,i)=>`
     <div class="photo-thumb">
       <img src="${url}" alt="фото ${i+1}">
       <button class="remove-photo" onclick="removePhoto(${i})">×</button>
@@ -454,8 +449,7 @@ function renderPhotosPreview(){
 function removePhoto(index){ currentImages.splice(index,1); renderPhotosPreview(); }
 
 async function handlePhotoUpload(input){
-  const files = Array.from(input.files);
-  if(!files.length) return;
+  const files = Array.from(input.files); if(!files.length) return;
   const progress=document.getElementById('upload-progress');
   const saveBtn=document.getElementById('save-btn');
   progress.style.display='block'; saveBtn.disabled=true;

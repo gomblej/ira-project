@@ -50,16 +50,24 @@
   .param-label { font-size: 11px; color: #888; margin-top: 2px; }
   .description { font-size: 15px; line-height: 1.6; color: #444; white-space: pre-wrap; }
 
+  /* Заметка */
   .note-card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 14px; }
   .note-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
   .note-card-title { font-size: 15px; font-weight: 600; }
   .note-edit-toggle { font-size: 13px; color: #0f6e56; cursor: pointer; border: none; background: none; padding: 0; }
   .note-display { font-size: 14px; color: #444; background: #fffde7; border-radius: 10px; padding: 12px; border: 1px solid #fff176; line-height: 1.5; white-space: pre-wrap; }
-  .note-display.empty { color: #aaa; background: #f8f8f8; border: 1px dashed #ddd; font-style: italic; white-space: normal; }
+  .note-display.empty { color: #aaa; background: #f8f8f8; border: 1px dashed #ddd; font-style: italic; white-space: normal; cursor: pointer; }
   .note-textarea { width: 100%; font-size: 14px; padding: 10px 12px; border-radius: 10px; border: 1px solid #0f6e56; background: white; color: #1a1a1a; font-family: inherit; resize: vertical; min-height: 80px; outline: none; margin-top: 8px; }
   .note-actions { display: flex; gap: 8px; margin-top: 8px; }
   .note-save { flex: 1; padding: 10px; border-radius: 10px; border: none; background: #0f6e56; color: white; font-size: 14px; font-weight: 600; cursor: pointer; }
   .note-cancel { padding: 10px 16px; border-radius: 10px; border: 1px solid #ddd; background: white; color: #666; font-size: 14px; cursor: pointer; }
+
+  /* Заглушка для незарегистрированных */
+  .note-auth-prompt { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: #f8f8f8; border-radius: 10px; padding: 14px; border: 1px dashed #ddd; cursor: pointer; transition: all 0.2s; }
+  .note-auth-prompt:hover { background: #f0faf7; border-color: #0f6e56; }
+  .note-auth-prompt-text { font-size: 14px; color: #888; }
+  .note-auth-prompt-text strong { display: block; color: #1a1a1a; font-size: 14px; margin-bottom: 2px; }
+  .note-auth-prompt-btn { font-size: 13px; padding: 8px 14px; border-radius: 10px; border: none; background: #0f6e56; color: white; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
 
   .contact-card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 14px; }
   .contact-card h2 { font-size: 17px; font-weight: 700; margin-bottom: 14px; }
@@ -73,10 +81,7 @@
 
   .enquiry-form { display: none; margin-top: 14px; padding: 16px; background: #f8f8f8; border-radius: 14px; }
   .enquiry-form.open { display: block; }
-
-  /* Автозаполнение баннер */
   .autofill-banner { background: #e6f7f2; border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; font-size: 13px; color: #0f6e56; display: flex; align-items: center; gap: 8px; }
-
   .form-section { margin-bottom: 16px; }
   .form-section-title { font-size: 13px; font-weight: 600; color: #555; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.4px; }
   .field { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
@@ -109,6 +114,19 @@
   .lightbox-prev, .lightbox-next { position: absolute; top: 50%; transform: translateY(-50%); color: white; font-size: 28px; cursor: pointer; background: rgba(255,255,255,0.1); border: none; border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
   .lightbox-prev { left: 16px; } .lightbox-next { right: 16px; }
 
+  /* Auth popup */
+  .auth-popup { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 500; align-items: flex-end; justify-content: center; padding: 20px; }
+  .auth-popup.open { display: flex; }
+  .auth-popup-card { background: white; border-radius: 24px; padding: 28px; width: 100%; max-width: 420px; text-align: center; animation: slideUp 0.3s ease; }
+  @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .auth-popup-icon { font-size: 48px; margin-bottom: 12px; }
+  .auth-popup-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  .auth-popup-sub { font-size: 14px; color: #666; margin-bottom: 20px; line-height: 1.5; }
+  .auth-popup-btns { display: flex; flex-direction: column; gap: 10px; }
+  .auth-popup-reg { padding: 14px; border-radius: 14px; border: none; background: #0f6e56; color: white; font-size: 15px; font-weight: 600; cursor: pointer; }
+  .auth-popup-login { padding: 13px; border-radius: 14px; border: 1px solid #e0e0e0; background: white; color: #1a1a1a; font-size: 15px; cursor: pointer; }
+  .auth-popup-close { margin-top: 10px; font-size: 13px; color: #aaa; cursor: pointer; background: none; border: none; }
+
   .lang-switch { display: flex; gap: 8px; justify-content: center; margin-bottom: 14px; flex-wrap: wrap; }
   .lb { padding: 6px 10px; border-radius: 20px; border: 1px solid #ccc; background: white; cursor: pointer; display: flex; align-items: center; }
   .lb.active { border: 2px solid #1a1a1a; }
@@ -137,16 +155,29 @@
   <button class="lightbox-next" onclick="event.stopPropagation();lbNav(1)">›</button>
 </div>
 
+<!-- Auth popup для заметок -->
+<div class="auth-popup" id="auth-popup">
+  <div class="auth-popup-card">
+    <div class="auth-popup-icon">📝</div>
+    <div class="auth-popup-title" id="popup-title">Войдите чтобы добавить заметку</div>
+    <div class="auth-popup-sub" id="popup-sub">Заметки сохраняются в вашем аккаунте и видны только вам</div>
+    <div class="auth-popup-btns">
+      <button class="auth-popup-reg" onclick="window.location.href='auth.html?mode=register'">Создать аккаунт</button>
+      <button class="auth-popup-login" onclick="window.location.href='auth.html'">Уже есть аккаунт — войти</button>
+    </div>
+    <button class="auth-popup-close" onclick="closeAuthPopup()">Закрыть</button>
+  </div>
+</div>
+
 <script>
 const SUPABASE_URL = 'https://lfgqhprihykoxqfnubhc.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_-E46ER3EDjD4TTMMiTRaCQ_9xAe36q_';
 const TABLE = 'Properties';
 
 let lang='ru', prop=null, galleryIdx=0, lbImages=[], lbIdx=0;
-let formOpen=false, editingNote=false;
+let editingNote=false;
 let favs=new Set(), notes={};
 
-// ---- Auth & Profile ----
 function getToken(){ return localStorage.getItem('bcp_token')||''; }
 function isLoggedIn(){ return !!getToken(); }
 function getProfile(){ try{ return JSON.parse(localStorage.getItem('bcp_profile')||'null'); }catch(e){ return null; } }
@@ -154,8 +185,7 @@ function getUser(){ try{ return JSON.parse(localStorage.getItem('bcp_user')||'nu
 
 function loadStorage(){
   try {
-    const f=localStorage.getItem('bcp_favs');
-    const n=localStorage.getItem('bcp_notes');
+    const f=localStorage.getItem('bcp_favs'); const n=localStorage.getItem('bcp_notes');
     if(f) f.split(',').filter(Boolean).forEach(id=>favs.add(parseInt(id)));
     if(n) Object.assign(notes, JSON.parse(n));
   } catch(e){}
@@ -170,12 +200,14 @@ async function loadFavsFromSupabase(){
     fetch(`${SUPABASE_URL}/rest/v1/user_favourites?user_id=eq.${user.id}&select=property_id`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${token}`}}),
     fetch(`${SUPABASE_URL}/rest/v1/user_notes?user_id=eq.${user.id}&select=property_id,note`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${token}`}})
   ]);
-  const favsData=await favRes.json();
-  const notesData=await notesRes.json();
+  const favsData=await favRes.json(); const notesData=await notesRes.json();
+  if(!Array.isArray(favsData)||!Array.isArray(notesData)){ localStorage.removeItem('bcp_token'); return; }
   favs=new Set(favsData.map(f=>f.property_id));
-  notes={};
-  notesData.forEach(n=>{ notes[n.property_id]=n.note; });
+  notes={}; notesData.forEach(n=>{ notes[n.property_id]=n.note; });
 }
+
+function showAuthPopup(){ document.getElementById('auth-popup').classList.add('open'); }
+function closeAuthPopup(){ document.getElementById('auth-popup').classList.remove('open'); }
 
 async function toggleFav(){
   const id=prop.id;
@@ -183,7 +215,7 @@ async function toggleFav(){
   const user=getUser(); const token=getToken();
   if(favs.has(id)){
     if(notes[id]){
-      if(!confirm(T[lang].deleteNoteConfirm)) { updateFavBtn(); return; }
+      if(!confirm(T[lang].deleteNoteConfirm)){ updateFavBtn(); return; }
       await fetch(`${SUPABASE_URL}/rest/v1/user_notes?user_id=eq.${user.id}&property_id=eq.${id}`,{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${token}`}});
       delete notes[id]; renderNote();
     }
@@ -209,7 +241,6 @@ async function saveNoteSupabase(id, text){
   notes[id]=text;
 }
 
-// ---- Country codes (compact) ----
 const TOP_COUNTRIES=[{flag:'🇨🇾',code:'+357'},{flag:'🇷🇺',code:'+7'},{flag:'🇬🇧',code:'+44'},{flag:'🇮🇱',code:'+972'}];
 const ALL_COUNTRIES=[
   {flag:'🇦🇫',code:'+93'},{flag:'🇦🇱',code:'+355'},{flag:'🇩🇿',code:'+213'},{flag:'🇦🇷',code:'+54'},
@@ -247,7 +278,11 @@ const T = {
     city:'Город', type:'Тип', year:'Год', pool:'Бассейн', sea:'Море рядом', rtl:false,
     poolYes:'Есть', poolPossible:'Возможен',
     favAdd:'В избранное', favRemove:'В избранном ❤️',
-    noteTitle:'📝 Моя заметка', noteEdit:'Редактировать', noteEmpty:'Нет заметки. Нажмите чтобы добавить.',
+    noteTitle:'📝 Моя заметка',
+    noteEdit:'Редактировать', noteEmpty:'Нет заметки. Нажмите чтобы добавить.',
+    noteAddPromptTitle:'Добавьте личную заметку',
+    noteAddPromptSub:'Войдите в аккаунт чтобы сохранять заметки по объектам',
+    noteAddPromptBtn:'Войти / Зарегистрироваться',
     notePlaceholder:'Напишите заметку...', noteSave:'Сохранить', noteCancel:'Отмена',
     deleteNoteConfirm:'Удалить заметку к этому объекту?',
     autofillBanner:'✅ Данные из вашего профиля подставлены автоматически',
@@ -261,6 +296,8 @@ const T = {
     fOtherText:'Опишите ваш запрос', fSubmit:'Отправить заявку',
     fSuccessTitle:'Заявка отправлена!', fSuccessText:'Мы свяжемся с вами в ближайшее время.',
     fSelectContact:'Выберите хотя бы один способ связи',
+    popupNoteTitle:'Войдите чтобы добавить заметку',
+    popupNoteSub:'Заметки сохраняются в вашем аккаунте и видны только вам',
   },
   en:{
     back:'← All properties', contact:'Contact us',
@@ -271,7 +308,11 @@ const T = {
     city:'City', type:'Type', year:'Year', pool:'Pool', sea:'Sea nearby', rtl:false,
     poolYes:'Has pool', poolPossible:'Pool possible',
     favAdd:'Save', favRemove:'Saved ❤️',
-    noteTitle:'📝 My note', noteEdit:'Edit', noteEmpty:'No note yet. Tap to add.',
+    noteTitle:'📝 My note',
+    noteEdit:'Edit', noteEmpty:'No note yet. Tap to add.',
+    noteAddPromptTitle:'Add a personal note',
+    noteAddPromptSub:'Sign in to save notes on properties',
+    noteAddPromptBtn:'Sign in / Register',
     notePlaceholder:'Write a note...', noteSave:'Save', noteCancel:'Cancel',
     deleteNoteConfirm:'Delete the note for this property?',
     autofillBanner:'✅ Your profile details have been filled in automatically',
@@ -285,6 +326,8 @@ const T = {
     fOtherText:'Describe your request', fSubmit:'Submit enquiry',
     fSuccessTitle:'Enquiry sent!', fSuccessText:'We will contact you shortly.',
     fSelectContact:'Please select at least one contact method',
+    popupNoteTitle:'Sign in to add a note',
+    popupNoteSub:'Notes are saved to your account and visible only to you',
   },
   el:{
     back:'← Όλα τα ακίνητα', contact:'Επικοινωνία',
@@ -294,7 +337,11 @@ const T = {
     city:'Πόλη', type:'Τύπος', year:'Έτος', pool:'Πισίνα', sea:'Θάλασσα κοντά', rtl:false,
     poolYes:'Υπάρχει', poolPossible:'Δυνατή',
     favAdd:'Αποθήκευση', favRemove:'Αποθηκεύτηκε ❤️',
-    noteTitle:'📝 Η σημείωσή μου', noteEdit:'Επεξεργασία', noteEmpty:'Δεν υπάρχει σημείωση.',
+    noteTitle:'📝 Η σημείωσή μου',
+    noteEdit:'Επεξεργασία', noteEmpty:'Δεν υπάρχει σημείωση.',
+    noteAddPromptTitle:'Προσθέστε προσωπική σημείωση',
+    noteAddPromptSub:'Συνδεθείτε για να αποθηκεύσετε σημειώσεις',
+    noteAddPromptBtn:'Σύνδεση / Εγγραφή',
     notePlaceholder:'Γράψτε μια σημείωση...', noteSave:'Αποθήκευση', noteCancel:'Ακύρωση',
     deleteNoteConfirm:'Διαγραφή σημείωσης;',
     autofillBanner:'✅ Τα στοιχεία σας συμπληρώθηκαν αυτόματα',
@@ -307,6 +354,8 @@ const T = {
     fOtherText:'Περιγράψτε το αίτημά σας', fSubmit:'Αποστολή',
     fSuccessTitle:'Στάλθηκε!', fSuccessText:'Θα επικοινωνήσουμε σύντομα.',
     fSelectContact:'Επιλέξτε τρόπο επικοινωνίας',
+    popupNoteTitle:'Συνδεθείτε για σημείωση',
+    popupNoteSub:'Οι σημειώσεις αποθηκεύονται στον λογαριασμό σας',
   },
   he:{
     back:'← כל הנכסים', contact:'צור קשר',
@@ -316,7 +365,11 @@ const T = {
     city:'עיר', type:'סוג', year:'שנה', pool:'בריכה', sea:'ים קרוב', rtl:true,
     poolYes:'יש בריכה', poolPossible:'אפשר לבנות',
     favAdd:'שמור', favRemove:'שמור ❤️',
-    noteTitle:'📝 ההערה שלי', noteEdit:'ערוך', noteEmpty:'אין הערה עדיין.',
+    noteTitle:'📝 ההערה שלי',
+    noteEdit:'ערוך', noteEmpty:'אין הערה עדיין.',
+    noteAddPromptTitle:'הוסף הערה אישית',
+    noteAddPromptSub:'התחבר כדי לשמור הערות על נכסים',
+    noteAddPromptBtn:'כניסה / הרשמה',
     notePlaceholder:'כתוב הערה...', noteSave:'שמור', noteCancel:'ביטול',
     deleteNoteConfirm:'למחוק את ההערה?',
     autofillBanner:'✅ הפרטים שלך מולאו אוטומטית מהפרופיל',
@@ -329,6 +382,8 @@ const T = {
     fOtherText:'תאר את הבקשה שלך', fSubmit:'שלח פנייה',
     fSuccessTitle:'הפנייה נשלחה!', fSuccessText:'ניצור איתך קשר בהקדם.',
     fSelectContact:'בחר לפחות אמצעי קשר אחד',
+    popupNoteTitle:'התחבר כדי להוסיף הערה',
+    popupNoteSub:'ההערות נשמרות בחשבון שלך ונראות רק לך',
   }
 };
 
@@ -354,15 +409,25 @@ function closeLightbox(){ document.getElementById('lightbox').classList.remove('
 function lbNav(dir){ lbIdx=(lbIdx+dir+lbImages.length)%lbImages.length; document.getElementById('lightbox-img').src=lbImages[lbIdx]; }
 
 function setGallery(idx){
-  galleryIdx=idx;
-  const imgs=prop.images||[]; if(!imgs.length) return;
+  galleryIdx=idx; const imgs=prop.images||[]; if(!imgs.length) return;
   document.getElementById('main-img').src=imgs[idx];
   document.querySelectorAll('.gallery-thumb').forEach((t,i)=>t.classList.toggle('active',i===idx));
   const ctr=document.getElementById('gallery-counter'); if(ctr) ctr.textContent=`${idx+1}/${imgs.length}`;
 }
 function galleryNav(dir){ const imgs=prop.images||[]; if(!imgs.length) return; setGallery((galleryIdx+dir+imgs.length)%imgs.length); }
 
-function toggleNoteEdit(){ editingNote=!editingNote; renderNote(); if(editingNote){ const ta=document.getElementById('note-textarea'); if(ta){ ta.focus(); ta.selectionStart=ta.value.length; } } }
+function toggleNoteEdit(){
+  if(!isLoggedIn()){
+    // Обновляем текст попапа
+    const t=T[lang];
+    document.getElementById('popup-title').textContent=t.popupNoteTitle;
+    document.getElementById('popup-sub').textContent=t.popupNoteSub;
+    showAuthPopup();
+    return;
+  }
+  editingNote=!editingNote; renderNote();
+  if(editingNote){ const ta=document.getElementById('note-textarea'); if(ta){ ta.focus(); ta.selectionStart=ta.value.length; } }
+}
 function cancelNote(){ editingNote=false; renderNote(); }
 
 async function saveNote(){
@@ -376,6 +441,25 @@ async function saveNote(){
 function renderNote(){
   const t=T[lang]; const con=document.getElementById('note-section'); if(!con) return;
   const note=notes[prop.id]||'';
+
+  if(!isLoggedIn()){
+    // Показываем приглашение войти
+    con.innerHTML=`
+      <div class="note-card">
+        <div class="note-card-header">
+          <div class="note-card-title">${t.noteTitle}</div>
+        </div>
+        <div class="note-auth-prompt" onclick="toggleNoteEdit()">
+          <div class="note-auth-prompt-text">
+            <strong>${t.noteAddPromptTitle}</strong>
+            ${t.noteAddPromptSub}
+          </div>
+          <button class="note-auth-prompt-btn">${t.noteAddPromptBtn}</button>
+        </div>
+      </div>`;
+    return;
+  }
+
   con.innerHTML=`
     <div class="note-card">
       <div class="note-card-header">
@@ -393,17 +477,13 @@ function renderNote(){
 }
 
 function toggleForm(){
-  const btn=document.getElementById('enquiry-btn');
-  const form=document.getElementById('enquiry-form');
-  const t=T[lang];
+  const btn=document.getElementById('enquiry-btn'); const form=document.getElementById('enquiry-form'); const t=T[lang];
   const isOpen=form.classList.contains('open');
   if(isOpen){ form.classList.remove('open'); btn.classList.remove('open'); btn.innerHTML=`📝 ${t.enquiryBtn}`; }
   else { form.classList.add('open'); btn.classList.add('open'); btn.innerHTML=`✕ ${t.enquiryBtnClose}`; }
 }
-
 function onTgCheck(){ document.getElementById('tg-field').classList.toggle('show', document.getElementById('ch-tg').checked); }
 function onOtherCheck(){ document.getElementById('other-field').classList.toggle('show', document.getElementById('ch-other').checked); }
-
 function validateForm(){
   const t=T[lang]; let valid=true;
   ['f-name','f-phone','f-email'].forEach(id=>{
@@ -421,7 +501,6 @@ function validateForm(){
   }
   return valid;
 }
-
 function submitForm(){
   if(!validateForm()) return;
   document.getElementById('enquiry-form-inner').style.display='none';
@@ -431,10 +510,8 @@ function submitForm(){
 function renderProp(){
   const t=T[lang]; const d=prop;
   const imgs=d.images&&d.images.length>0?d.images:[];
-  const rl=roomsLabel(d);
-  const desc=d['description_'+lang]||'';
-  const isSold=d.status==='sold', isUnavail=d.status==='unavailable';
-  const isFav=favs.has(d.id);
+  const rl=roomsLabel(d); const desc=d['description_'+lang]||'';
+  const isSold=d.status==='sold', isUnavail=d.status==='unavailable', isFav=favs.has(d.id);
 
   let statusBadge='';
   if(isSold) statusBadge=`<span class="badge badge-sold">${t.soldBadge}</span>`;
@@ -447,7 +524,7 @@ function renderProp(){
       <img id="main-img" src="${imgs[0]}" alt="фото" onclick="openLightbox(${galleryIdx})">
       ${imgs.length>1?`<button class="gallery-prev" onclick="galleryNav(-1)">‹</button><button class="gallery-next" onclick="galleryNav(1)">›</button><span class="gallery-counter" id="gallery-counter">1/${imgs.length}</span>`:''}
     </div>
-    ${imgs.length>1?`<div class="gallery-thumbs">${imgs.map((url,i)=>`<img class="gallery-thumb ${i===0?'active':''}" src="${url}" onclick="setGallery(${i})" alt="фото ${i+1}">`).join('')}</div>`:''}
+    ${imgs.length>1?`<div class="gallery-thumbs">${imgs.map((url,i)=>`<img class="gallery-thumb ${i===0?'active':''}" src="${url}" onclick="setGallery(${i})" alt="">`).join('')}</div>`:''}
   `:`<div class="gallery-main"><div class="no-photo">${d.emoji}</div></div>`;
 
   const params=[];
@@ -459,24 +536,16 @@ function renderProp(){
   if(d.pool&&d.pool!=='none') params.push(`<div class="param"><div class="param-icon">🏊</div><div class="param-value">${d.pool==='yes'?t.poolYes:t.poolPossible}</div><div class="param-label">${t.pool}</div></div>`);
   if(d.sea_walking) params.push(`<div class="param"><div class="param-icon">🌊</div><div class="param-value">✓</div><div class="param-label">${t.sea}</div></div>`);
 
-  // Автозаполнение из профиля
-  const profile = getProfile();
-  const user = getUser();
-  const prefillName = profile?.name || '';
-  const prefillEmail = user?.email || '';
-  const prefillPhone = profile?.phone || '';
-  const hasAutofill = isLoggedIn() && (prefillName || prefillEmail || prefillPhone);
-
-  // Определяем код страны по телефону
-  let prefillCountryCode = '+357';
+  const profile=getProfile(); const user=getUser();
+  const prefillName=profile?.name||''; const prefillEmail=user?.email||''; const prefillPhone=profile?.phone||'';
+  const hasAutofill=isLoggedIn()&&(prefillName||prefillEmail||prefillPhone);
+  let prefillCountryCode='';
   if(prefillPhone){
-    const allCodes = [...TOP_COUNTRIES, ...ALL_COUNTRIES].sort((a,b)=>b.code.length-a.code.length);
-    const match = allCodes.find(c=>prefillPhone.startsWith(c.code));
-    if(match) prefillCountryCode = match.code;
+    const allCodes=[...TOP_COUNTRIES,...ALL_COUNTRIES].sort((a,b)=>b.code.length-a.code.length);
+    const match=allCodes.find(c=>prefillPhone.startsWith(c.code));
+    if(match) prefillCountryCode=match.code;
   }
-  const prefillPhoneNum = prefillPhone && prefillCountryCode
-    ? prefillPhone.replace(prefillCountryCode, '').trim()
-    : prefillPhone;
+  const prefillPhoneNum=prefillPhone&&prefillCountryCode?prefillPhone.replace(prefillCountryCode,'').trim():prefillPhone;
 
   document.getElementById('content').innerHTML=`
     <a class="back-btn" href="index.html">${t.back}</a>
@@ -513,24 +582,12 @@ function renderProp(){
         <div id="enquiry-form-inner">
           ${hasAutofill?`<div class="autofill-banner">${t.autofillBanner}</div>`:''}
           <div class="form-section">
-            <div class="field">
-              <label>${t.fName}<span class="req">*</span></label>
-              <input type="text" id="f-name" value="${prefillName}" class="${prefillName?'autofilled':''}">
-              <div class="field-error" id="f-name-err"></div>
-            </div>
-            <div class="field">
-              <label>${t.fPhone}<span class="req">*</span></label>
-              <div class="phone-row">
-                ${buildCountrySelect(prefillCountryCode)}
-                <input type="tel" id="f-phone" value="${prefillPhoneNum}" class="${prefillPhone?'autofilled':''}">
-              </div>
+            <div class="field"><label>${t.fName}<span class="req">*</span></label><input type="text" id="f-name" value="${prefillName}" class="${prefillName?'autofilled':''}"><div class="field-error" id="f-name-err"></div></div>
+            <div class="field"><label>${t.fPhone}<span class="req">*</span></label>
+              <div class="phone-row">${buildCountrySelect(prefillCountryCode)}<input type="tel" id="f-phone" value="${prefillPhoneNum}" class="${prefillPhone?'autofilled':''}"></div>
               <div class="field-error" id="f-phone-err"></div>
             </div>
-            <div class="field">
-              <label>${t.fEmail}<span class="req">*</span></label>
-              <input type="email" id="f-email" value="${prefillEmail}" class="${prefillEmail?'autofilled':''}">
-              <div class="field-error" id="f-email-err"></div>
-            </div>
+            <div class="field"><label>${t.fEmail}<span class="req">*</span></label><input type="email" id="f-email" value="${prefillEmail}" class="${prefillEmail?'autofilled':''}"><div class="field-error" id="f-email-err"></div></div>
           </div>
           <div class="form-section">
             <div class="form-section-title">${t.fContactMethod}</div>
@@ -539,9 +596,7 @@ function renderProp(){
               <label class="check-item"><input type="checkbox" id="ch-wa"><span>💬 ${t.fWa}</span></label>
               <label class="check-item"><input type="checkbox" id="ch-viber"><span>📱 ${t.fViber}</span></label>
               <label class="check-item"><input type="checkbox" id="ch-tg" onchange="onTgCheck()"><span>✈️ ${t.fTg}</span></label>
-              <div class="telegram-field" id="tg-field">
-                <div class="field"><label>${t.fTgNick}<span class="req">*</span></label><input type="text" id="f-tg-nick" placeholder="@username"><div class="field-error" id="tg-nick-err"></div></div>
-              </div>
+              <div class="telegram-field" id="tg-field"><div class="field"><label>${t.fTgNick}<span class="req">*</span></label><input type="text" id="f-tg-nick" placeholder="@username"><div class="field-error" id="tg-nick-err"></div></div></div>
               <label class="check-item"><input type="checkbox" id="ch-email"><span>✉️ ${t.fEmailOpt}</span></label>
             </div>
             <div class="field-error" id="method-err" style="margin-top:8px">${t.fSelectContact}</div>
@@ -553,9 +608,7 @@ function renderProp(){
               <label class="check-item"><input type="checkbox" id="ch-viewing"><span>🏠 ${t.fViewing}</span></label>
               <label class="check-item"><input type="checkbox" id="ch-other" onchange="onOtherCheck()"><span>✏️ ${t.fOther}</span></label>
             </div>
-            <div class="other-field" id="other-field">
-              <div class="field" style="margin-top:8px"><textarea id="f-other" rows="3" placeholder="${t.fOtherText}"></textarea></div>
-            </div>
+            <div class="other-field" id="other-field"><div class="field" style="margin-top:8px"><textarea id="f-other" rows="3" placeholder="${t.fOtherText}"></textarea></div></div>
           </div>
           <button class="submit-btn" onclick="submitForm()">${t.fSubmit}</button>
         </div>
@@ -565,8 +618,7 @@ function renderProp(){
           <div style="color:#666">${t.fSuccessText}</div>
         </div>
       </div>
-    </div>
-  `;
+    </div>`;
 
   renderNote();
 }
@@ -576,8 +628,7 @@ window.onload=async function(){
   const id=params.get('id');
   if(!id){ document.getElementById('content').innerHTML='<div class="error-msg">Объект не найден</div>'; return; }
   try {
-    if(isLoggedIn()){ await loadFavsFromSupabase(); }
-    else { loadStorage(); }
+    if(isLoggedIn()){ await loadFavsFromSupabase(); } else { loadStorage(); }
     const res=await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?id=eq.${id}&select=*`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
     const data=await res.json();
     if(!data.length){ document.getElementById('content').innerHTML='<div class="error-msg">Объект не найден</div>'; return; }
