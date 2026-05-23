@@ -818,6 +818,7 @@
       display: flex;
       align-items: center;
       gap: 6px;
+      white-space: pre-wrap;
     }
 
     .note-display.empty {
@@ -1516,8 +1517,14 @@
 
     function toggleFav(id, e) {
       e.stopPropagation();
-      if (favs.has(id)) { favs.delete(id); delete notes[id]; saveNotes(); }
-      else favs.add(id);
+      if (favs.has(id)) {
+        if (notes[id]) {
+          if (confirm('Удалить заметку к этому объекту?')) { delete notes[id]; saveNotes(); }
+        }
+        favs.delete(id);
+      } else {
+        favs.add(id);
+      }
       saveFavs(); render();
     }
     function toggleFavView() { showFavOnly = !showFavOnly; updateFavBtn(); render(); }

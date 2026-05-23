@@ -1,398 +1,982 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Best Cyprus Properties</title>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a; }
-  .page { max-width: 800px; margin: 0 auto; padding: 16px; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Best Cyprus Properties</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  .back-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: #666; background: white; border: none; border-radius: 20px; padding: 8px 16px; cursor: pointer; margin-bottom: 16px; text-decoration: none; }
-  .back-btn:hover { background: #f0f0f0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f5f0;
+      color: #1a1a1a;
+    }
 
-  .gallery { background: white; border-radius: 16px; overflow: hidden; margin-bottom: 16px; }
-  .gallery-main { position: relative; width: 100%; height: 320px; background: linear-gradient(135deg, #e6f7f2, #b2e0d0); }
-  .gallery-main img { width: 100%; height: 100%; object-fit: cover; cursor: zoom-in; }
-  .gallery-main .no-photo { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 80px; }
-  .gallery-prev, .gallery-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.4); color: white; border: none; border-radius: 50%; width: 38px; height: 38px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-  .gallery-prev { left: 10px; } .gallery-next { right: 10px; }
-  .gallery-counter { position: absolute; bottom: 10px; right: 12px; background: rgba(0,0,0,0.5); color: white; font-size: 12px; padding: 3px 9px; border-radius: 20px; }
-  .gallery-thumbs { display: flex; gap: 6px; padding: 10px; overflow-x: auto; }
-  .gallery-thumb { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; cursor: pointer; opacity: 0.6; flex-shrink: 0; border: 2px solid transparent; }
-  .gallery-thumb.active { opacity: 1; border-color: #0f6e56; }
+    .page {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 16px;
+    }
 
-  .info-card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 14px; }
-  .prop-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
-  .prop-header-left { flex: 1; }
-  .prop-title { font-size: 22px; font-weight: 700; line-height: 1.3; margin-bottom: 6px; }
-  .prop-price { font-size: 24px; font-weight: 700; color: #0f6e56; white-space: nowrap; }
-  .prop-price.sold { color: #888; text-decoration: line-through; }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      color: #666;
+      background: white;
+      border: none;
+      border-radius: 20px;
+      padding: 8px 16px;
+      cursor: pointer;
+      margin-bottom: 16px;
+      text-decoration: none;
+    }
 
-  /* Кнопка избранного на странице объекта */
-  .fav-page-btn { display: flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 12px; border: 1.5px solid #e0e0e0; background: white; font-size: 14px; cursor: pointer; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
-  .fav-page-btn:hover { border-color: #e91e8c; }
-  .fav-page-btn.active { background: #fce4ec; color: #ad1457; border-color: #ad1457; font-weight: 600; }
+    .back-btn:hover {
+      background: #f0f0f0;
+    }
 
-  .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
-  .badge { font-size: 12px; padding: 4px 12px; border-radius: 20px; font-weight: 600; }
-  .badge-new-build { background: #e3f2fd; color: #1565c0; }
-  .badge-resale { background: #f3e5f5; color: #6a1b9a; }
-  .badge-sold { background: #1a1a1a; color: white; }
-  .badge-unavailable { background: #fff3cd; color: #856404; }
-  .badge-tag { background: #e6f7f2; color: #0f6e56; }
-  .badge-new { background: #fff3e0; color: #e65100; }
+    .gallery {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
 
-  .params { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; margin-bottom: 16px; }
-  .param { background: #f8f8f8; border-radius: 12px; padding: 12px; text-align: center; }
-  .param-icon { font-size: 20px; margin-bottom: 4px; }
-  .param-value { font-size: 15px; font-weight: 600; }
-  .param-label { font-size: 11px; color: #888; margin-top: 2px; }
-  .description { font-size: 15px; line-height: 1.6; color: #444; white-space: pre-wrap; }
+    .gallery-main {
+      position: relative;
+      width: 100%;
+      height: 320px;
+      background: linear-gradient(135deg, #e6f7f2, #b2e0d0);
+    }
 
-  /* Заметка на странице объекта */
-  .note-card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 14px; }
-  .note-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-  .note-card-title { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
-  .note-edit-toggle { font-size: 13px; color: #0f6e56; cursor: pointer; border: none; background: none; padding: 0; }
-  .note-display { font-size: 14px; color: #444; background: #fffde7; border-radius: 10px; padding: 12px; border: 1px solid #fff176; line-height: 1.5; }
-  .note-display.empty { color: #aaa; background: #f8f8f8; border: 1px dashed #ddd; font-style: italic; }
-  .note-edit-wrap { margin-top: 8px; }
-  .note-textarea { width: 100%; font-size: 14px; padding: 10px 12px; border-radius: 10px; border: 1px solid #0f6e56; background: white; color: #1a1a1a; font-family: inherit; resize: vertical; min-height: 80px; outline: none; }
-  .note-actions { display: flex; gap: 8px; margin-top: 8px; }
-  .note-save { flex: 1; padding: 10px; border-radius: 10px; border: none; background: #0f6e56; color: white; font-size: 14px; font-weight: 600; cursor: pointer; }
-  .note-cancel { padding: 10px 16px; border-radius: 10px; border: 1px solid #ddd; background: white; color: #666; font-size: 14px; cursor: pointer; }
+    .gallery-main img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      cursor: zoom-in;
+    }
 
-  .contact-card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 14px; }
-  .contact-card h2 { font-size: 17px; font-weight: 700; margin-bottom: 14px; }
-  .quick-btns { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
-  .btn { width: 100%; padding: 13px; border-radius: 14px; font-size: 15px; font-weight: 500; cursor: pointer; border: none; display: flex; align-items: center; justify-content: center; gap: 8px; }
-  .bwa { background: #25D366; color: white; }
-  .bem { background: #f0f0f0; color: #1a1a1a; }
+    .gallery-main .no-photo {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+    }
 
-  .form-toggle-btn { width: 100%; padding: 13px; border-radius: 14px; font-size: 15px; font-weight: 500; cursor: pointer; background: white; color: #0f6e56; border: 2px solid #0f6e56; display: flex; align-items: center; justify-content: center; gap: 8px; }
-  .form-toggle-btn.open { background: #0f6e56; color: white; }
+    .gallery-prev,
+    .gallery-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.4);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 38px;
+      height: 38px;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-  .enquiry-form { display: none; margin-top: 14px; padding: 16px; background: #f8f8f8; border-radius: 14px; }
-  .enquiry-form.open { display: block; }
-  .form-section { margin-bottom: 16px; }
-  .form-section-title { font-size: 13px; font-weight: 600; color: #555; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.4px; }
-  .field { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
-  .field label { font-size: 13px; color: #666; }
-  .field label .req { color: #c0392b; margin-left: 2px; }
-  .field input, .field textarea, .field select { font-size: 14px; padding: 10px 12px; border-radius: 10px; border: 1px solid #e0e0e0; background: white; color: #1a1a1a; font-family: inherit; width: 100%; }
-  .field input.error { border-color: #c0392b; }
-  .field-error { font-size: 12px; color: #c0392b; margin-top: 2px; display: none; }
-  .field-error.show { display: block; }
-  .phone-row { display: flex; gap: 8px; }
-  .phone-row select { width: 110px; flex-shrink: 0; font-size: 14px; }
-  .phone-row input { flex: 1; }
-  .checks { display: flex; flex-direction: column; gap: 8px; }
-  .check-item { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-  .check-item input[type=checkbox] { width: 18px; height: 18px; accent-color: #0f6e56; cursor: pointer; flex-shrink: 0; }
-  .check-item span { font-size: 14px; color: #1a1a1a; }
-  .telegram-field { margin-top: 8px; display: none; }
-  .telegram-field.show { display: block; }
-  .other-field { margin-top: 8px; display: none; }
-  .other-field.show { display: block; }
-  .submit-btn { width: 100%; padding: 14px; border-radius: 12px; border: none; background: #0f6e56; color: white; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 16px; }
-  .form-success { text-align: center; padding: 24px; display: none; }
-  .form-success.show { display: block; }
+    .gallery-prev {
+      left: 10px;
+    }
 
-  .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 1000; align-items: center; justify-content: center; }
-  .lightbox.open { display: flex; }
-  .lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 10px; object-fit: contain; }
-  .lightbox-close { position: absolute; top: 16px; right: 20px; color: white; font-size: 32px; cursor: pointer; background: none; border: none; }
-  .lightbox-prev, .lightbox-next { position: absolute; top: 50%; transform: translateY(-50%); color: white; font-size: 28px; cursor: pointer; background: rgba(255,255,255,0.1); border: none; border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
-  .lightbox-prev { left: 16px; } .lightbox-next { right: 16px; }
+    .gallery-next {
+      right: 10px;
+    }
 
-  .lang-switch { display: flex; gap: 8px; justify-content: center; margin-bottom: 14px; flex-wrap: wrap; }
-  .lb { padding: 6px 10px; border-radius: 20px; border: 1px solid #ccc; background: white; cursor: pointer; display: flex; align-items: center; }
-  .lb.active { border: 2px solid #1a1a1a; }
-  .lb img { display: block; border-radius: 2px; }
+    .gallery-counter {
+      position: absolute;
+      bottom: 10px;
+      right: 12px;
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      font-size: 12px;
+      padding: 3px 9px;
+      border-radius: 20px;
+    }
 
-  .loading { text-align: center; padding: 60px; color: #888; font-size: 16px; }
-  .error-msg { text-align: center; padding: 60px; color: #c0392b; font-size: 16px; }
-</style>
+    .gallery-thumbs {
+      display: flex;
+      gap: 6px;
+      padding: 10px;
+      overflow-x: auto;
+    }
+
+    .gallery-thumb {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      object-fit: cover;
+      cursor: pointer;
+      opacity: 0.6;
+      flex-shrink: 0;
+      border: 2px solid transparent;
+    }
+
+    .gallery-thumb.active {
+      opacity: 1;
+      border-color: #0f6e56;
+    }
+
+    .info-card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 14px;
+    }
+
+    .prop-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .prop-header-left {
+      flex: 1;
+    }
+
+    .prop-title {
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 6px;
+    }
+
+    .prop-price {
+      font-size: 24px;
+      font-weight: 700;
+      color: #0f6e56;
+      white-space: nowrap;
+    }
+
+    .prop-price.sold {
+      color: #888;
+      text-decoration: line-through;
+    }
+
+    /* Кнопка избранного на странице объекта */
+    .fav-page-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 12px;
+      border: 1.5px solid #e0e0e0;
+      background: white;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .fav-page-btn:hover {
+      border-color: #e91e8c;
+    }
+
+    .fav-page-btn.active {
+      background: #fce4ec;
+      color: #ad1457;
+      border-color: #ad1457;
+      font-weight: 600;
+    }
+
+    .badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .badge {
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    .badge-new-build {
+      background: #e3f2fd;
+      color: #1565c0;
+    }
+
+    .badge-resale {
+      background: #f3e5f5;
+      color: #6a1b9a;
+    }
+
+    .badge-sold {
+      background: #1a1a1a;
+      color: white;
+    }
+
+    .badge-unavailable {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .badge-tag {
+      background: #e6f7f2;
+      color: #0f6e56;
+    }
+
+    .badge-new {
+      background: #fff3e0;
+      color: #e65100;
+    }
+
+    .params {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .param {
+      background: #f8f8f8;
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .param-icon {
+      font-size: 20px;
+      margin-bottom: 4px;
+    }
+
+    .param-value {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .param-label {
+      font-size: 11px;
+      color: #888;
+      margin-top: 2px;
+    }
+
+    .description {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #444;
+      white-space: pre-wrap;
+    }
+
+    /* Заметка на странице объекта */
+    .note-card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 14px;
+    }
+
+    .note-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .note-card-title {
+      font-size: 15px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .note-edit-toggle {
+      font-size: 13px;
+      color: #0f6e56;
+      cursor: pointer;
+      border: none;
+      background: none;
+      padding: 0;
+    }
+
+    .note-display {
+      font-size: 14px;
+      color: #444;
+      background: #fffde7;
+      border-radius: 10px;
+      padding: 12px;
+      border: 1px solid #fff176;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+
+    .note-display.empty {
+      color: #aaa;
+      background: #f8f8f8;
+      border: 1px dashed #ddd;
+      font-style: italic;
+    }
+
+    .note-edit-wrap {
+      margin-top: 8px;
+    }
+
+    .note-textarea {
+      width: 100%;
+      font-size: 14px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #0f6e56;
+      background: white;
+      color: #1a1a1a;
+      font-family: inherit;
+      resize: vertical;
+      min-height: 80px;
+      outline: none;
+    }
+
+    .note-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .note-save {
+      flex: 1;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      background: #0f6e56;
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .note-cancel {
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      background: white;
+      color: #666;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .contact-card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 14px;
+    }
+
+    .contact-card h2 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .quick-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 13px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .bwa {
+      background: #25D366;
+      color: white;
+    }
+
+    .bem {
+      background: #f0f0f0;
+      color: #1a1a1a;
+    }
+
+    .form-toggle-btn {
+      width: 100%;
+      padding: 13px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      background: white;
+      color: #0f6e56;
+      border: 2px solid #0f6e56;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .form-toggle-btn.open {
+      background: #0f6e56;
+      color: white;
+    }
+
+    .enquiry-form {
+      display: none;
+      margin-top: 14px;
+      padding: 16px;
+      background: #f8f8f8;
+      border-radius: 14px;
+    }
+
+    .enquiry-form.open {
+      display: block;
+    }
+
+    .form-section {
+      margin-bottom: 16px;
+    }
+
+    .form-section-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #555;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 10px;
+    }
+
+    .field label {
+      font-size: 13px;
+      color: #666;
+    }
+
+    .field label .req {
+      color: #c0392b;
+      margin-left: 2px;
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      font-size: 14px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e0e0e0;
+      background: white;
+      color: #1a1a1a;
+      font-family: inherit;
+      width: 100%;
+    }
+
+    .field input.error {
+      border-color: #c0392b;
+    }
+
+    .field-error {
+      font-size: 12px;
+      color: #c0392b;
+      margin-top: 2px;
+      display: none;
+    }
+
+    .field-error.show {
+      display: block;
+    }
+
+    .phone-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .phone-row select {
+      width: 110px;
+      flex-shrink: 0;
+      font-size: 14px;
+    }
+
+    .phone-row input {
+      flex: 1;
+    }
+
+    .checks {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .check-item input[type=checkbox] {
+      width: 18px;
+      height: 18px;
+      accent-color: #0f6e56;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .check-item span {
+      font-size: 14px;
+      color: #1a1a1a;
+    }
+
+    .telegram-field {
+      margin-top: 8px;
+      display: none;
+    }
+
+    .telegram-field.show {
+      display: block;
+    }
+
+    .other-field {
+      margin-top: 8px;
+      display: none;
+    }
+
+    .other-field.show {
+      display: block;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      background: #0f6e56;
+      color: white;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 16px;
+    }
+
+    .form-success {
+      text-align: center;
+      padding: 24px;
+      display: none;
+    }
+
+    .form-success.show {
+      display: block;
+    }
+
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.92);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 10px;
+      object-fit: contain;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      color: white;
+      font-size: 32px;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    .lightbox-prev,
+    .lightbox-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+      font-size: 28px;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox-prev {
+      left: 16px;
+    }
+
+    .lightbox-next {
+      right: 16px;
+    }
+
+    .lang-switch {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .lb {
+      padding: 6px 10px;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+      background: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .lb.active {
+      border: 2px solid #1a1a1a;
+    }
+
+    .lb img {
+      display: block;
+      border-radius: 2px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 60px;
+      color: #888;
+      font-size: 16px;
+    }
+
+    .error-msg {
+      text-align: center;
+      padding: 60px;
+      color: #c0392b;
+      font-size: 16px;
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="page" id="page">
-  <div class="lang-switch">
-    <button class="lb active" onclick="setLang('ru',this)"><img src="https://flagcdn.com/24x18/ru.png" alt="RU"></button>
-    <button class="lb" onclick="setLang('en',this)"><img src="https://flagcdn.com/24x18/gb.png" alt="EN"></button>
-    <button class="lb" onclick="setLang('el',this)"><img src="https://flagcdn.com/24x18/cy.png" alt="ΕΛ"></button>
-    <button class="lb" onclick="setLang('he',this)"><img src="https://flagcdn.com/24x18/il.png" alt="HE"></button>
+  <div class="page" id="page">
+    <div class="lang-switch">
+      <button class="lb active" onclick="setLang('ru',this)"><img src="https://flagcdn.com/24x18/ru.png"
+          alt="RU"></button>
+      <button class="lb" onclick="setLang('en',this)"><img src="https://flagcdn.com/24x18/gb.png" alt="EN"></button>
+      <button class="lb" onclick="setLang('el',this)"><img src="https://flagcdn.com/24x18/cy.png" alt="ΕΛ"></button>
+      <button class="lb" onclick="setLang('he',this)"><img src="https://flagcdn.com/24x18/il.png" alt="HE"></button>
+    </div>
+    <div class="loading" id="content">⏳ Загружаем объект...</div>
   </div>
-  <div class="loading" id="content">⏳ Загружаем объект...</div>
-</div>
 
-<div class="lightbox" id="lightbox" onclick="closeLightbox()">
-  <button class="lightbox-close">×</button>
-  <button class="lightbox-prev" onclick="event.stopPropagation();lbNav(-1)">‹</button>
-  <img id="lightbox-img" src="" alt="">
-  <button class="lightbox-next" onclick="event.stopPropagation();lbNav(1)">›</button>
-</div>
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close">×</button>
+    <button class="lightbox-prev" onclick="event.stopPropagation();lbNav(-1)">‹</button>
+    <img id="lightbox-img" src="" alt="">
+    <button class="lightbox-next" onclick="event.stopPropagation();lbNav(1)">›</button>
+  </div>
 
-<script>
-const SUPABASE_URL = 'https://lfgqhprihykoxqfnubhc.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_-E46ER3EDjD4TTMMiTRaCQ_9xAe36q_';
-const TABLE = 'Properties';
+  <script>
+    const SUPABASE_URL = 'https://lfgqhprihykoxqfnubhc.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_-E46ER3EDjD4TTMMiTRaCQ_9xAe36q_';
+    const TABLE = 'Properties';
 
-let lang='ru', prop=null, galleryIdx=0, lbImages=[], lbIdx=0;
-let formOpen=false, editingNote=false;
+    let lang = 'ru', prop = null, galleryIdx = 0, lbImages = [], lbIdx = 0;
+    let formOpen = false, editingNote = false;
 
-// ---- localStorage ----
-let favs = new Set();
-let notes = {};
+    // ---- localStorage ----
+    let favs = new Set();
+    let notes = {};
 
-function loadStorage(){
-  try {
-    const f = localStorage.getItem('bcp_favs');
-    const n = localStorage.getItem('bcp_notes');
-    if(f) f.split(',').filter(Boolean).forEach(id=>favs.add(parseInt(id)));
-    if(n) Object.assign(notes, JSON.parse(n));
-  } catch(e){}
-}
+    function loadStorage() {
+      try {
+        const f = localStorage.getItem('bcp_favs');
+        const n = localStorage.getItem('bcp_notes');
+        if (f) f.split(',').filter(Boolean).forEach(id => favs.add(parseInt(id)));
+        if (n) Object.assign(notes, JSON.parse(n));
+      } catch (e) { }
+    }
 
-function saveFavs(){ try { localStorage.setItem('bcp_favs', [...favs].join(',')); } catch(e){} }
-function saveNotes(){ try { localStorage.setItem('bcp_notes', JSON.stringify(notes)); } catch(e){} }
+    function saveFavs() { try { localStorage.setItem('bcp_favs', [...favs].join(',')); } catch (e) { } }
+    function saveNotes() { try { localStorage.setItem('bcp_notes', JSON.stringify(notes)); } catch (e) { } }
 
-const TOP_COUNTRIES = [
-  {flag:'🇨🇾', name:'Cyprus', code:'+357'},
-  {flag:'🇷🇺', name:'Россия', code:'+7'},
-  {flag:'🇬🇧', name:'United Kingdom', code:'+44'},
-  {flag:'🇮🇱', name:'Israel', code:'+972'},
-];
-const ALL_COUNTRIES = [
-  {flag:'🇦🇫',name:'Afghanistan',code:'+93'},{flag:'🇦🇱',name:'Albania',code:'+355'},{flag:'🇩🇿',name:'Algeria',code:'+213'},
-  {flag:'🇦🇷',name:'Argentina',code:'+54'},{flag:'🇦🇲',name:'Armenia',code:'+374'},{flag:'🇦🇺',name:'Australia',code:'+61'},
-  {flag:'🇦🇹',name:'Austria',code:'+43'},{flag:'🇦🇿',name:'Azerbaijan',code:'+994'},{flag:'🇧🇭',name:'Bahrain',code:'+973'},
-  {flag:'🇧🇾',name:'Belarus',code:'+375'},{flag:'🇧🇪',name:'Belgium',code:'+32'},{flag:'🇧🇷',name:'Brazil',code:'+55'},
-  {flag:'🇧🇬',name:'Bulgaria',code:'+359'},{flag:'🇨🇦',name:'Canada',code:'+1'},{flag:'🇨🇱',name:'Chile',code:'+56'},
-  {flag:'🇨🇳',name:'China',code:'+86'},{flag:'🇨🇴',name:'Colombia',code:'+57'},{flag:'🇨🇿',name:'Czech Republic',code:'+420'},
-  {flag:'🇩🇰',name:'Denmark',code:'+45'},{flag:'🇪🇬',name:'Egypt',code:'+20'},{flag:'🇪🇪',name:'Estonia',code:'+372'},
-  {flag:'🇫🇮',name:'Finland',code:'+358'},{flag:'🇫🇷',name:'France',code:'+33'},{flag:'🇬🇪',name:'Georgia',code:'+995'},
-  {flag:'🇩🇪',name:'Germany',code:'+49'},{flag:'🇬🇷',name:'Greece',code:'+30'},{flag:'🇭🇺',name:'Hungary',code:'+36'},
-  {flag:'🇮🇳',name:'India',code:'+91'},{flag:'🇮🇩',name:'Indonesia',code:'+62'},{flag:'🇮🇷',name:'Iran',code:'+98'},
-  {flag:'🇮🇶',name:'Iraq',code:'+964'},{flag:'🇮🇪',name:'Ireland',code:'+353'},{flag:'🇮🇹',name:'Italy',code:'+39'},
-  {flag:'🇯🇵',name:'Japan',code:'+81'},{flag:'🇯🇴',name:'Jordan',code:'+962'},{flag:'🇰🇿',name:'Kazakhstan',code:'+7-7'},
-  {flag:'🇰🇪',name:'Kenya',code:'+254'},{flag:'🇰🇼',name:'Kuwait',code:'+965'},{flag:'🇱🇻',name:'Latvia',code:'+371'},
-  {flag:'🇱🇧',name:'Lebanon',code:'+961'},{flag:'🇱🇹',name:'Lithuania',code:'+370'},{flag:'🇲🇾',name:'Malaysia',code:'+60'},
-  {flag:'🇲🇹',name:'Malta',code:'+356'},{flag:'🇲🇽',name:'Mexico',code:'+52'},{flag:'🇲🇩',name:'Moldova',code:'+373'},
-  {flag:'🇲🇦',name:'Morocco',code:'+212'},{flag:'🇳🇱',name:'Netherlands',code:'+31'},{flag:'🇳🇿',name:'New Zealand',code:'+64'},
-  {flag:'🇳🇬',name:'Nigeria',code:'+234'},{flag:'🇳🇴',name:'Norway',code:'+47'},{flag:'🇴🇲',name:'Oman',code:'+968'},
-  {flag:'🇵🇰',name:'Pakistan',code:'+92'},{flag:'🇵🇱',name:'Poland',code:'+48'},{flag:'🇵🇹',name:'Portugal',code:'+351'},
-  {flag:'🇶🇦',name:'Qatar',code:'+974'},{flag:'🇷🇴',name:'Romania',code:'+40'},{flag:'🇸🇦',name:'Saudi Arabia',code:'+966'},
-  {flag:'🇷🇸',name:'Serbia',code:'+381'},{flag:'🇸🇬',name:'Singapore',code:'+65'},{flag:'🇸🇰',name:'Slovakia',code:'+421'},
-  {flag:'🇿🇦',name:'South Africa',code:'+27'},{flag:'🇰🇷',name:'South Korea',code:'+82'},{flag:'🇪🇸',name:'Spain',code:'+34'},
-  {flag:'🇱🇰',name:'Sri Lanka',code:'+94'},{flag:'🇸🇪',name:'Sweden',code:'+46'},{flag:'🇨🇭',name:'Switzerland',code:'+41'},
-  {flag:'🇸🇾',name:'Syria',code:'+963'},{flag:'🇹🇼',name:'Taiwan',code:'+886'},{flag:'🇹🇭',name:'Thailand',code:'+66'},
-  {flag:'🇹🇳',name:'Tunisia',code:'+216'},{flag:'🇹🇷',name:'Turkey',code:'+90'},{flag:'🇹🇲',name:'Turkmenistan',code:'+993'},
-  {flag:'🇺🇦',name:'Ukraine',code:'+380'},{flag:'🇦🇪',name:'UAE',code:'+971'},{flag:'🇺🇸',name:'United States',code:'+1'},
-  {flag:'🇺🇿',name:'Uzbekistan',code:'+998'},{flag:'🇻🇪',name:'Venezuela',code:'+58'},{flag:'🇻🇳',name:'Vietnam',code:'+84'},
-];
+    const TOP_COUNTRIES = [
+      { flag: '🇨🇾', name: 'Cyprus', code: '+357' },
+      { flag: '🇷🇺', name: 'Россия', code: '+7' },
+      { flag: '🇬🇧', name: 'United Kingdom', code: '+44' },
+      { flag: '🇮🇱', name: 'Israel', code: '+972' },
+    ];
+    const ALL_COUNTRIES = [
+      { flag: '🇦🇫', name: 'Afghanistan', code: '+93' }, { flag: '🇦🇱', name: 'Albania', code: '+355' }, { flag: '🇩🇿', name: 'Algeria', code: '+213' },
+      { flag: '🇦🇷', name: 'Argentina', code: '+54' }, { flag: '🇦🇲', name: 'Armenia', code: '+374' }, { flag: '🇦🇺', name: 'Australia', code: '+61' },
+      { flag: '🇦🇹', name: 'Austria', code: '+43' }, { flag: '🇦🇿', name: 'Azerbaijan', code: '+994' }, { flag: '🇧🇭', name: 'Bahrain', code: '+973' },
+      { flag: '🇧🇾', name: 'Belarus', code: '+375' }, { flag: '🇧🇪', name: 'Belgium', code: '+32' }, { flag: '🇧🇷', name: 'Brazil', code: '+55' },
+      { flag: '🇧🇬', name: 'Bulgaria', code: '+359' }, { flag: '🇨🇦', name: 'Canada', code: '+1' }, { flag: '🇨🇱', name: 'Chile', code: '+56' },
+      { flag: '🇨🇳', name: 'China', code: '+86' }, { flag: '🇨🇴', name: 'Colombia', code: '+57' }, { flag: '🇨🇿', name: 'Czech Republic', code: '+420' },
+      { flag: '🇩🇰', name: 'Denmark', code: '+45' }, { flag: '🇪🇬', name: 'Egypt', code: '+20' }, { flag: '🇪🇪', name: 'Estonia', code: '+372' },
+      { flag: '🇫🇮', name: 'Finland', code: '+358' }, { flag: '🇫🇷', name: 'France', code: '+33' }, { flag: '🇬🇪', name: 'Georgia', code: '+995' },
+      { flag: '🇩🇪', name: 'Germany', code: '+49' }, { flag: '🇬🇷', name: 'Greece', code: '+30' }, { flag: '🇭🇺', name: 'Hungary', code: '+36' },
+      { flag: '🇮🇳', name: 'India', code: '+91' }, { flag: '🇮🇩', name: 'Indonesia', code: '+62' }, { flag: '🇮🇷', name: 'Iran', code: '+98' },
+      { flag: '🇮🇶', name: 'Iraq', code: '+964' }, { flag: '🇮🇪', name: 'Ireland', code: '+353' }, { flag: '🇮🇹', name: 'Italy', code: '+39' },
+      { flag: '🇯🇵', name: 'Japan', code: '+81' }, { flag: '🇯🇴', name: 'Jordan', code: '+962' }, { flag: '🇰🇿', name: 'Kazakhstan', code: '+7-7' },
+      { flag: '🇰🇪', name: 'Kenya', code: '+254' }, { flag: '🇰🇼', name: 'Kuwait', code: '+965' }, { flag: '🇱🇻', name: 'Latvia', code: '+371' },
+      { flag: '🇱🇧', name: 'Lebanon', code: '+961' }, { flag: '🇱🇹', name: 'Lithuania', code: '+370' }, { flag: '🇲🇾', name: 'Malaysia', code: '+60' },
+      { flag: '🇲🇹', name: 'Malta', code: '+356' }, { flag: '🇲🇽', name: 'Mexico', code: '+52' }, { flag: '🇲🇩', name: 'Moldova', code: '+373' },
+      { flag: '🇲🇦', name: 'Morocco', code: '+212' }, { flag: '🇳🇱', name: 'Netherlands', code: '+31' }, { flag: '🇳🇿', name: 'New Zealand', code: '+64' },
+      { flag: '🇳🇬', name: 'Nigeria', code: '+234' }, { flag: '🇳🇴', name: 'Norway', code: '+47' }, { flag: '🇴🇲', name: 'Oman', code: '+968' },
+      { flag: '🇵🇰', name: 'Pakistan', code: '+92' }, { flag: '🇵🇱', name: 'Poland', code: '+48' }, { flag: '🇵🇹', name: 'Portugal', code: '+351' },
+      { flag: '🇶🇦', name: 'Qatar', code: '+974' }, { flag: '🇷🇴', name: 'Romania', code: '+40' }, { flag: '🇸🇦', name: 'Saudi Arabia', code: '+966' },
+      { flag: '🇷🇸', name: 'Serbia', code: '+381' }, { flag: '🇸🇬', name: 'Singapore', code: '+65' }, { flag: '🇸🇰', name: 'Slovakia', code: '+421' },
+      { flag: '🇿🇦', name: 'South Africa', code: '+27' }, { flag: '🇰🇷', name: 'South Korea', code: '+82' }, { flag: '🇪🇸', name: 'Spain', code: '+34' },
+      { flag: '🇱🇰', name: 'Sri Lanka', code: '+94' }, { flag: '🇸🇪', name: 'Sweden', code: '+46' }, { flag: '🇨🇭', name: 'Switzerland', code: '+41' },
+      { flag: '🇸🇾', name: 'Syria', code: '+963' }, { flag: '🇹🇼', name: 'Taiwan', code: '+886' }, { flag: '🇹🇭', name: 'Thailand', code: '+66' },
+      { flag: '🇹🇳', name: 'Tunisia', code: '+216' }, { flag: '🇹🇷', name: 'Turkey', code: '+90' }, { flag: '🇹🇲', name: 'Turkmenistan', code: '+993' },
+      { flag: '🇺🇦', name: 'Ukraine', code: '+380' }, { flag: '🇦🇪', name: 'UAE', code: '+971' }, { flag: '🇺🇸', name: 'United States', code: '+1' },
+      { flag: '🇺🇿', name: 'Uzbekistan', code: '+998' }, { flag: '🇻🇪', name: 'Venezuela', code: '+58' }, { flag: '🇻🇳', name: 'Vietnam', code: '+84' },
+    ];
 
-function buildCountrySelect(){
-  const topOpts = TOP_COUNTRIES.map(c=>`<option value="${c.code}">${c.flag} ${c.code}</option>`).join('');
-  const sep = `<option disabled>──────────</option>`;
-  const restOpts = ALL_COUNTRIES.sort((a,b)=>a.name.localeCompare(b.name)).map(c=>`<option value="${c.code}">${c.flag} ${c.code}</option>`).join('');
-  return `<select id="f-country">${topOpts}${sep}${restOpts}</select>`;
-}
+    function buildCountrySelect() {
+      const topOpts = TOP_COUNTRIES.map(c => `<option value="${c.code}">${c.flag} ${c.code}</option>`).join('');
+      const sep = `<option disabled>──────────</option>`;
+      const restOpts = ALL_COUNTRIES.sort((a, b) => a.name.localeCompare(b.name)).map(c => `<option value="${c.code}">${c.flag} ${c.code}</option>`).join('');
+      return `<select id="f-country">${topOpts}${sep}${restOpts}</select>`;
+    }
 
-const T = {
-  ru: {
-    back:'← Все объекты', contact:'Связаться с нами',
-    wa:'Написать в WhatsApp', em:'Написать на email',
-    enquiryBtn:'Оставить заявку', enquiryBtnClose:'Закрыть форму',
-    rooms:'спал.', studio:'Студия', area:'м²',
-    noDesc:'Описание скоро появится.',
-    soldBadge:'Продано', unavailBadge:'Временно не продаётся',
-    newBuild:'Первичная', resale:'Вторичная', newBadge:'Новое',
-    city:'Город', type:'Тип', year:'Год', pool:'Бассейн', sea:'Море рядом', rtl:false,
-    poolYes:'Есть', poolPossible:'Возможен',
-    favAdd:'В избранное', favRemove:'В избранном ❤️',
-    noteTitle:'📝 Моя заметка', noteEdit:'Редактировать', notePlaceholder:'Здесь появится ваша заметка об этом объекте...', noteEmpty:'Нет заметки. Нажмите чтобы добавить.',
-    noteSave:'Сохранить', noteCancel:'Отмена',
-    cities:{ Limassol:'Лимасол', Limassol_district:'Лимасол дистрикт', Paphos:'Пафос', Paphos_district:'Пафос дистрикт', Larnaca:'Ларнака', Larnaca_district:'Ларнака дистрикт', Nicosia:'Никосия', Nicosia_district:'Никосия дистрикт', Famagusta_district:'Фамагуста дистрикт' },
-    types:{ apt:'Квартира', penthouse:'Пентхаус', house:'Дом / вилла', townhouse:'Таунхаус', land_res:'Участок под жильё', land_other:'Земельный участок', commercial:'Коммерческая', building:'Целое здание' },
-    fName:'Имя', fPhone:'Номер телефона', fEmail:'Email',
-    fRequired:'Обязательное поле',
-    fContactMethod:'Предпочтительный способ связи',
-    fCall:'Позвонить по телефону', fWa:'WhatsApp', fViber:'Viber', fTg:'Telegram', fEmailOpt:'Email',
-    fTgNick:'Ваш Telegram-ник', fTgRequired:'Укажите Telegram-ник',
-    fPurpose:'Вы хотите...',
-    fQuestion:'Задать вопрос', fViewing:'Записаться на просмотр', fOther:'Другое',
-    fOtherText:'Опишите ваш запрос',
-    fSubmit:'Отправить заявку',
-    fSuccessTitle:'Заявка отправлена!', fSuccessText:'Мы свяжемся с вами в ближайшее время.',
-    fSelectContact:'Выберите хотя бы один способ связи',
-  },
-  en: {
-    back:'← All properties', contact:'Contact us',
-    wa:'Contact on WhatsApp', em:'Send email',
-    enquiryBtn:'Send enquiry', enquiryBtnClose:'Close form',
-    rooms:'bed.', studio:'Studio', area:'m²',
-    noDesc:'Description coming soon.',
-    soldBadge:'Sold', unavailBadge:'Temporarily unavailable',
-    newBuild:'New build', resale:'Resale', newBadge:'New',
-    city:'City', type:'Type', year:'Year', pool:'Pool', sea:'Sea nearby', rtl:false,
-    poolYes:'Has pool', poolPossible:'Pool possible',
-    favAdd:'Save', favRemove:'Saved ❤️',
-    noteTitle:'📝 My note', noteEdit:'Edit', notePlaceholder:'Your note about this property will appear here...', noteEmpty:'No note yet. Tap to add one.',
-    noteSave:'Save', noteCancel:'Cancel',
-    cities:{ Limassol:'Limassol', Limassol_district:'Limassol District', Paphos:'Paphos', Paphos_district:'Paphos District', Larnaca:'Larnaca', Larnaca_district:'Larnaca District', Nicosia:'Nicosia', Nicosia_district:'Nicosia District', Famagusta_district:'Famagusta District' },
-    types:{ apt:'Apartment', penthouse:'Penthouse', house:'House / villa', townhouse:'Townhouse', land_res:'Residential land', land_other:'Land plot', commercial:'Commercial', building:'Whole building' },
-    fName:'Name', fPhone:'Phone number', fEmail:'Email',
-    fRequired:'Required field',
-    fContactMethod:'Preferred contact method',
-    fCall:'Phone call', fWa:'WhatsApp', fViber:'Viber', fTg:'Telegram', fEmailOpt:'Email',
-    fTgNick:'Your Telegram username', fTgRequired:'Please enter your Telegram username',
-    fPurpose:'I would like to...',
-    fQuestion:'Ask a question', fViewing:'Schedule a viewing', fOther:'Other',
-    fOtherText:'Describe your request',
-    fSubmit:'Submit enquiry',
-    fSuccessTitle:'Enquiry sent!', fSuccessText:'We will contact you shortly.',
-    fSelectContact:'Please select at least one contact method',
-  },
-  el: {
-    back:'← Όλα τα ακίνητα', contact:'Επικοινωνία',
-    wa:'WhatsApp', em:'Email',
-    enquiryBtn:'Αίτημα επικοινωνίας', enquiryBtnClose:'Κλείσιμο',
-    rooms:'υπν.', studio:'Στούντιο', area:'τ.μ.',
-    noDesc:'Περιγραφή σύντομα.',
-    soldBadge:'Πωλήθηκε', unavailBadge:'Προσωρινά μη διαθέσιμο',
-    newBuild:'Πρωτογενής', resale:'Μεταπώληση', newBadge:'Νέο',
-    city:'Πόλη', type:'Τύπος', year:'Έτος', pool:'Πισίνα', sea:'Θάλασσα κοντά', rtl:false,
-    poolYes:'Υπάρχει', poolPossible:'Δυνατή',
-    favAdd:'Αποθήκευση', favRemove:'Αποθηκεύτηκε ❤️',
-    noteTitle:'📝 Η σημείωσή μου', noteEdit:'Επεξεργασία', notePlaceholder:'Η σημείωσή σας...', noteEmpty:'Δεν υπάρχει σημείωση.',
-    noteSave:'Αποθήκευση', noteCancel:'Ακύρωση',
-    cities:{ Limassol:'Λεμεσός', Limassol_district:'Επαρχία Λεμεσού', Paphos:'Πάφος', Paphos_district:'Επαρχία Πάφου', Larnaca:'Λάρνακα', Larnaca_district:'Επαρχία Λάρνακας', Nicosia:'Λευκωσία', Nicosia_district:'Επαρχία Λευκωσίας', Famagusta_district:'Επαρχία Αμμοχώστου' },
-    types:{ apt:'Διαμέρισμα', penthouse:'Πεντχάους', house:'Σπίτι / Βίλα', townhouse:'Μεζονέτα', land_res:'Οικόπεδο κατοικίας', land_other:'Οικόπεδο', commercial:'Εμπορικό', building:'Ολόκληρο κτίριο' },
-    fName:'Όνομα', fPhone:'Τηλέφωνο', fEmail:'Email',
-    fRequired:'Υποχρεωτικό πεδίο',
-    fContactMethod:'Προτιμώμενος τρόπος επικοινωνίας',
-    fCall:'Τηλεφωνική κλήση', fWa:'WhatsApp', fViber:'Viber', fTg:'Telegram', fEmailOpt:'Email',
-    fTgNick:'Όνομα χρήστη Telegram', fTgRequired:'Εισαγάγετε το όνομα',
-    fPurpose:'Θέλω να...',
-    fQuestion:'Κάνω ερώτηση', fViewing:'Κλείσω ραντεβού', fOther:'Άλλο',
-    fOtherText:'Περιγράψτε το αίτημά σας',
-    fSubmit:'Αποστολή',
-    fSuccessTitle:'Στάλθηκε!', fSuccessText:'Θα επικοινωνήσουμε σύντομα.',
-    fSelectContact:'Επιλέξτε τουλάχιστον έναν τρόπο',
-  },
-  he: {
-    back:'← כל הנכסים', contact:'צור קשר',
-    wa:'וואטסאפ', em:'אימייל',
-    enquiryBtn:'שלח פנייה', enquiryBtnClose:'סגור טופס',
-    rooms:"חד'", studio:'סטודיו', area:'מ״ר',
-    noDesc:'תיאור בקרוב.',
-    soldBadge:'נמכר', unavailBadge:'זמנית לא למכירה',
-    newBuild:'יד ראשונה', resale:'יד שנייה', newBadge:'חדש',
-    city:'עיר', type:'סוג', year:'שנה', pool:'בריכה', sea:'ים קרוב', rtl:true,
-    poolYes:'יש בריכה', poolPossible:'אפשר לבנות',
-    favAdd:'שמור', favRemove:'שמור ❤️',
-    noteTitle:'📝 ההערה שלי', noteEdit:'ערוך', notePlaceholder:'ההערה שלך על הנכס הזה...', noteEmpty:'אין הערה עדיין.',
-    noteSave:'שמור', noteCancel:'ביטול',
-    cities:{ Limassol:'לימסול', Limassol_district:'מחוז לימסול', Paphos:'פאפוס', Paphos_district:'מחוז פאפוס', Larnaca:'לרנקה', Larnaca_district:'מחוז לרנקה', Nicosia:'ניקוסיה', Nicosia_district:'מחוז ניקוסיה', Famagusta_district:'מחוז פמגוסטה' },
-    types:{ apt:'דירה', penthouse:'פנטהאוס', house:'בית / וילה', townhouse:'טאונהאוס', land_res:'מגרש למגורים', land_other:'מגרש', commercial:'מסחרי', building:'בניין שלם' },
-    fName:'שם', fPhone:'מספר טלפון', fEmail:'אימייל',
-    fRequired:'שדה חובה',
-    fContactMethod:'אמצעי יצירת קשר מועדף',
-    fCall:'שיחת טלפון', fWa:'וואטסאפ', fViber:'ויבר', fTg:'טלגרם', fEmailOpt:'אימייל',
-    fTgNick:'שם המשתמש בטלגרם', fTgRequired:'נא להזין שם משתמש',
-    fPurpose:'אני רוצה...',
-    fQuestion:'לשאול שאלה', fViewing:'לתאם ביקור', fOther:'אחר',
-    fOtherText:'תאר את הבקשה שלך',
-    fSubmit:'שלח פנייה',
-    fSuccessTitle:'הפנייה נשלחה!', fSuccessText:'ניצור איתך קשר בהקדם.',
-    fSelectContact:'בחר לפחות אמצעי קשר אחד',
-  }
-};
+    const T = {
+      ru: {
+        back: '← Все объекты', contact: 'Связаться с нами',
+        wa: 'Написать в WhatsApp', em: 'Написать на email',
+        enquiryBtn: 'Оставить заявку', enquiryBtnClose: 'Закрыть форму',
+        rooms: 'спал.', studio: 'Студия', area: 'м²',
+        noDesc: 'Описание скоро появится.',
+        soldBadge: 'Продано', unavailBadge: 'Временно не продаётся',
+        newBuild: 'Первичная', resale: 'Вторичная', newBadge: 'Новое',
+        city: 'Город', type: 'Тип', year: 'Год', pool: 'Бассейн', sea: 'Море рядом', rtl: false,
+        poolYes: 'Есть', poolPossible: 'Возможен',
+        favAdd: 'В избранное', favRemove: 'В избранном ❤️',
+        noteTitle: '📝 Моя заметка', noteEdit: 'Редактировать', notePlaceholder: 'Здесь появится ваша заметка об этом объекте...', noteEmpty: 'Нет заметки. Нажмите чтобы добавить.',
+        noteSave: 'Сохранить', noteCancel: 'Отмена',
+        cities: { Limassol: 'Лимасол', Limassol_district: 'Лимасол дистрикт', Paphos: 'Пафос', Paphos_district: 'Пафос дистрикт', Larnaca: 'Ларнака', Larnaca_district: 'Ларнака дистрикт', Nicosia: 'Никосия', Nicosia_district: 'Никосия дистрикт', Famagusta_district: 'Фамагуста дистрикт' },
+        types: { apt: 'Квартира', penthouse: 'Пентхаус', house: 'Дом / вилла', townhouse: 'Таунхаус', land_res: 'Участок под жильё', land_other: 'Земельный участок', commercial: 'Коммерческая', building: 'Целое здание' },
+        fName: 'Имя', fPhone: 'Номер телефона', fEmail: 'Email',
+        fRequired: 'Обязательное поле',
+        fContactMethod: 'Предпочтительный способ связи',
+        fCall: 'Позвонить по телефону', fWa: 'WhatsApp', fViber: 'Viber', fTg: 'Telegram', fEmailOpt: 'Email',
+        fTgNick: 'Ваш Telegram-ник', fTgRequired: 'Укажите Telegram-ник',
+        fPurpose: 'Вы хотите...',
+        fQuestion: 'Задать вопрос', fViewing: 'Записаться на просмотр', fOther: 'Другое',
+        fOtherText: 'Опишите ваш запрос',
+        fSubmit: 'Отправить заявку',
+        fSuccessTitle: 'Заявка отправлена!', fSuccessText: 'Мы свяжемся с вами в ближайшее время.',
+        fSelectContact: 'Выберите хотя бы один способ связи',
+      },
+      en: {
+        back: '← All properties', contact: 'Contact us',
+        wa: 'Contact on WhatsApp', em: 'Send email',
+        enquiryBtn: 'Send enquiry', enquiryBtnClose: 'Close form',
+        rooms: 'bed.', studio: 'Studio', area: 'm²',
+        noDesc: 'Description coming soon.',
+        soldBadge: 'Sold', unavailBadge: 'Temporarily unavailable',
+        newBuild: 'New build', resale: 'Resale', newBadge: 'New',
+        city: 'City', type: 'Type', year: 'Year', pool: 'Pool', sea: 'Sea nearby', rtl: false,
+        poolYes: 'Has pool', poolPossible: 'Pool possible',
+        favAdd: 'Save', favRemove: 'Saved ❤️',
+        noteTitle: '📝 My note', noteEdit: 'Edit', notePlaceholder: 'Your note about this property will appear here...', noteEmpty: 'No note yet. Tap to add one.',
+        noteSave: 'Save', noteCancel: 'Cancel',
+        cities: { Limassol: 'Limassol', Limassol_district: 'Limassol District', Paphos: 'Paphos', Paphos_district: 'Paphos District', Larnaca: 'Larnaca', Larnaca_district: 'Larnaca District', Nicosia: 'Nicosia', Nicosia_district: 'Nicosia District', Famagusta_district: 'Famagusta District' },
+        types: { apt: 'Apartment', penthouse: 'Penthouse', house: 'House / villa', townhouse: 'Townhouse', land_res: 'Residential land', land_other: 'Land plot', commercial: 'Commercial', building: 'Whole building' },
+        fName: 'Name', fPhone: 'Phone number', fEmail: 'Email',
+        fRequired: 'Required field',
+        fContactMethod: 'Preferred contact method',
+        fCall: 'Phone call', fWa: 'WhatsApp', fViber: 'Viber', fTg: 'Telegram', fEmailOpt: 'Email',
+        fTgNick: 'Your Telegram username', fTgRequired: 'Please enter your Telegram username',
+        fPurpose: 'I would like to...',
+        fQuestion: 'Ask a question', fViewing: 'Schedule a viewing', fOther: 'Other',
+        fOtherText: 'Describe your request',
+        fSubmit: 'Submit enquiry',
+        fSuccessTitle: 'Enquiry sent!', fSuccessText: 'We will contact you shortly.',
+        fSelectContact: 'Please select at least one contact method',
+      },
+      el: {
+        back: '← Όλα τα ακίνητα', contact: 'Επικοινωνία',
+        wa: 'WhatsApp', em: 'Email',
+        enquiryBtn: 'Αίτημα επικοινωνίας', enquiryBtnClose: 'Κλείσιμο',
+        rooms: 'υπν.', studio: 'Στούντιο', area: 'τ.μ.',
+        noDesc: 'Περιγραφή σύντομα.',
+        soldBadge: 'Πωλήθηκε', unavailBadge: 'Προσωρινά μη διαθέσιμο',
+        newBuild: 'Πρωτογενής', resale: 'Μεταπώληση', newBadge: 'Νέο',
+        city: 'Πόλη', type: 'Τύπος', year: 'Έτος', pool: 'Πισίνα', sea: 'Θάλασσα κοντά', rtl: false,
+        poolYes: 'Υπάρχει', poolPossible: 'Δυνατή',
+        favAdd: 'Αποθήκευση', favRemove: 'Αποθηκεύτηκε ❤️',
+        noteTitle: '📝 Η σημείωσή μου', noteEdit: 'Επεξεργασία', notePlaceholder: 'Η σημείωσή σας...', noteEmpty: 'Δεν υπάρχει σημείωση.',
+        noteSave: 'Αποθήκευση', noteCancel: 'Ακύρωση',
+        cities: { Limassol: 'Λεμεσός', Limassol_district: 'Επαρχία Λεμεσού', Paphos: 'Πάφος', Paphos_district: 'Επαρχία Πάφου', Larnaca: 'Λάρνακα', Larnaca_district: 'Επαρχία Λάρνακας', Nicosia: 'Λευκωσία', Nicosia_district: 'Επαρχία Λευκωσίας', Famagusta_district: 'Επαρχία Αμμοχώστου' },
+        types: { apt: 'Διαμέρισμα', penthouse: 'Πεντχάους', house: 'Σπίτι / Βίλα', townhouse: 'Μεζονέτα', land_res: 'Οικόπεδο κατοικίας', land_other: 'Οικόπεδο', commercial: 'Εμπορικό', building: 'Ολόκληρο κτίριο' },
+        fName: 'Όνομα', fPhone: 'Τηλέφωνο', fEmail: 'Email',
+        fRequired: 'Υποχρεωτικό πεδίο',
+        fContactMethod: 'Προτιμώμενος τρόπος επικοινωνίας',
+        fCall: 'Τηλεφωνική κλήση', fWa: 'WhatsApp', fViber: 'Viber', fTg: 'Telegram', fEmailOpt: 'Email',
+        fTgNick: 'Όνομα χρήστη Telegram', fTgRequired: 'Εισαγάγετε το όνομα',
+        fPurpose: 'Θέλω να...',
+        fQuestion: 'Κάνω ερώτηση', fViewing: 'Κλείσω ραντεβού', fOther: 'Άλλο',
+        fOtherText: 'Περιγράψτε το αίτημά σας',
+        fSubmit: 'Αποστολή',
+        fSuccessTitle: 'Στάλθηκε!', fSuccessText: 'Θα επικοινωνήσουμε σύντομα.',
+        fSelectContact: 'Επιλέξτε τουλάχιστον έναν τρόπο',
+      },
+      he: {
+        back: '← כל הנכסים', contact: 'צור קשר',
+        wa: 'וואטסאפ', em: 'אימייל',
+        enquiryBtn: 'שלח פנייה', enquiryBtnClose: 'סגור טופס',
+        rooms: "חד'", studio: 'סטודיו', area: 'מ״ר',
+        noDesc: 'תיאור בקרוב.',
+        soldBadge: 'נמכר', unavailBadge: 'זמנית לא למכירה',
+        newBuild: 'יד ראשונה', resale: 'יד שנייה', newBadge: 'חדש',
+        city: 'עיר', type: 'סוג', year: 'שנה', pool: 'בריכה', sea: 'ים קרוב', rtl: true,
+        poolYes: 'יש בריכה', poolPossible: 'אפשר לבנות',
+        favAdd: 'שמור', favRemove: 'שמור ❤️',
+        noteTitle: '📝 ההערה שלי', noteEdit: 'ערוך', notePlaceholder: 'ההערה שלך על הנכס הזה...', noteEmpty: 'אין הערה עדיין.',
+        noteSave: 'שמור', noteCancel: 'ביטול',
+        cities: { Limassol: 'לימסול', Limassol_district: 'מחוז לימסול', Paphos: 'פאפוס', Paphos_district: 'מחוז פאפוס', Larnaca: 'לרנקה', Larnaca_district: 'מחוז לרנקה', Nicosia: 'ניקוסיה', Nicosia_district: 'מחוז ניקוסיה', Famagusta_district: 'מחוז פמגוסטה' },
+        types: { apt: 'דירה', penthouse: 'פנטהאוס', house: 'בית / וילה', townhouse: 'טאונהאוס', land_res: 'מגרש למגורים', land_other: 'מגרש', commercial: 'מסחרי', building: 'בניין שלם' },
+        fName: 'שם', fPhone: 'מספר טלפון', fEmail: 'אימייל',
+        fRequired: 'שדה חובה',
+        fContactMethod: 'אמצעי יצירת קשר מועדף',
+        fCall: 'שיחת טלפון', fWa: 'וואטסאפ', fViber: 'ויבר', fTg: 'טלגרם', fEmailOpt: 'אימייל',
+        fTgNick: 'שם המשתמש בטלגרם', fTgRequired: 'נא להזין שם משתמש',
+        fPurpose: 'אני רוצה...',
+        fQuestion: 'לשאול שאלה', fViewing: 'לתאם ביקור', fOther: 'אחר',
+        fOtherText: 'תאר את הבקשה שלך',
+        fSubmit: 'שלח פנייה',
+        fSuccessTitle: 'הפנייה נשלחה!', fSuccessText: 'ניצור איתך קשר בהקדם.',
+        fSelectContact: 'בחר לפחות אמצעי קשר אחד',
+      }
+    };
 
-function setLang(l, btn){
-  lang=l;
-  document.querySelectorAll('.lb').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  document.getElementById('page').setAttribute('dir', T[l].rtl?'rtl':'ltr');
-  if(prop) renderProp();
-}
+    function setLang(l, btn) {
+      lang = l;
+      document.querySelectorAll('.lb').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      document.getElementById('page').setAttribute('dir', T[l].rtl ? 'rtl' : 'ltr');
+      if (prop) renderProp();
+    }
 
-function getCityLabel(d){ return T[lang].cities[d.district?d.city+'_district':d.city]||d.city; }
-function roomsLabel(d){
-  const t=T[lang];
-  if(['apt','penthouse','house','townhouse'].includes(d.type)&&d.rooms===0) return t.studio;
-  if(d.rooms===0) return '';
-  if(d.rooms>=5) return `5+ ${t.rooms}`;
-  return `${d.rooms} ${t.rooms}`;
-}
+    function getCityLabel(d) { return T[lang].cities[d.district ? d.city + '_district' : d.city] || d.city; }
+    function roomsLabel(d) {
+      const t = T[lang];
+      if (['apt', 'penthouse', 'house', 'townhouse'].includes(d.type) && d.rooms === 0) return t.studio;
+      if (d.rooms === 0) return '';
+      if (d.rooms >= 5) return `5+ ${t.rooms}`;
+      return `${d.rooms} ${t.rooms}`;
+    }
 
-function openLightbox(idx){ lbImages=prop.images||[]; lbIdx=idx; document.getElementById('lightbox-img').src=lbImages[idx]; document.getElementById('lightbox').classList.add('open'); }
-function closeLightbox(){ document.getElementById('lightbox').classList.remove('open'); }
-function lbNav(dir){ lbIdx=(lbIdx+dir+lbImages.length)%lbImages.length; document.getElementById('lightbox-img').src=lbImages[lbIdx]; }
+    function openLightbox(idx) { lbImages = prop.images || []; lbIdx = idx; document.getElementById('lightbox-img').src = lbImages[idx]; document.getElementById('lightbox').classList.add('open'); }
+    function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+    function lbNav(dir) { lbIdx = (lbIdx + dir + lbImages.length) % lbImages.length; document.getElementById('lightbox-img').src = lbImages[lbIdx]; }
 
-function setGallery(idx){
-  galleryIdx=idx;
-  const imgs=prop.images||[];
-  if(!imgs.length) return;
-  document.getElementById('main-img').src=imgs[idx];
-  document.querySelectorAll('.gallery-thumb').forEach((t,i)=>t.classList.toggle('active',i===idx));
-  const ctr=document.getElementById('gallery-counter');
-  if(ctr) ctr.textContent=`${idx+1}/${imgs.length}`;
-}
-function galleryNav(dir){ const imgs=prop.images||[]; if(!imgs.length) return; setGallery((galleryIdx+dir+imgs.length)%imgs.length); }
+    function setGallery(idx) {
+      galleryIdx = idx;
+      const imgs = prop.images || [];
+      if (!imgs.length) return;
+      document.getElementById('main-img').src = imgs[idx];
+      document.querySelectorAll('.gallery-thumb').forEach((t, i) => t.classList.toggle('active', i === idx));
+      const ctr = document.getElementById('gallery-counter');
+      if (ctr) ctr.textContent = `${idx + 1}/${imgs.length}`;
+    }
+    function galleryNav(dir) { const imgs = prop.images || []; if (!imgs.length) return; setGallery((galleryIdx + dir + imgs.length) % imgs.length); }
 
-function toggleFav(){
-  const id = prop.id;
-  if(favs.has(id)){ favs.delete(id); } else { favs.add(id); }
-  saveFavs();
-  updateFavBtn();
-}
+    function toggleFav() {
+      const id = prop.id;
+      if (favs.has(id)) {
+        if (notes[id]) {
+          if (confirm('Удалить заметку к этому объекту?')) { delete notes[id]; saveNotes(); renderNote(); }
+        }
+        favs.delete(id);
+      } else {
+        favs.add(id);
+      }
+      saveFavs(); updateFavBtn();
+    }
 
-function updateFavBtn(){
-  const t=T[lang];
-  const btn=document.getElementById('fav-page-btn');
-  if(!btn) return;
-  const isFav=favs.has(prop.id);
-  btn.className='fav-page-btn'+(isFav?' active':'');
-  btn.innerHTML=isFav?`❤️ ${t.favRemove}`:`🤍 ${t.favAdd}`;
-}
+    function updateFavBtn() {
+      const t = T[lang];
+      const btn = document.getElementById('fav-page-btn');
+      if (!btn) return;
+      const isFav = favs.has(prop.id);
+      btn.className = 'fav-page-btn' + (isFav ? ' active' : '');
+      btn.innerHTML = isFav ? `❤️ ${t.favRemove}` : `🤍 ${t.favAdd}`;
+    }
 
-function toggleNoteEdit(){
-  editingNote=!editingNote;
-  renderNote();
-  if(editingNote){
-    const ta=document.getElementById('note-textarea');
-    if(ta){ ta.focus(); ta.selectionStart=ta.value.length; }
-  }
-}
+    function toggleNoteEdit() {
+      editingNote = !editingNote;
+      renderNote();
+      if (editingNote) {
+        const ta = document.getElementById('note-textarea');
+        if (ta) { ta.focus(); ta.selectionStart = ta.value.length; }
+      }
+    }
 
-function saveNote(){
-  const ta=document.getElementById('note-textarea');
-  if(ta){ notes[prop.id]=ta.value.trim(); saveNotes(); }
-  editingNote=false;
-  renderNote();
-}
+    function saveNote() {
+      const ta = document.getElementById('note-textarea');
+      if (ta) { notes[prop.id] = ta.value.trim(); saveNotes(); }
+      editingNote = false;
+      renderNote();
+    }
 
-function cancelNote(){
-  editingNote=false;
-  renderNote();
-}
+    function cancelNote() {
+      editingNote = false;
+      renderNote();
+    }
 
-function renderNote(){
-  const t=T[lang];
-  const con=document.getElementById('note-section');
-  if(!con) return;
-  const note=notes[prop.id]||'';
-  con.innerHTML=`
+    function renderNote() {
+      const t = T[lang];
+      const con = document.getElementById('note-section');
+      if (!con) return;
+      const note = notes[prop.id] || '';
+      con.innerHTML = `
     <div class="note-card">
       <div class="note-card-header">
         <div class="note-card-title">${t.noteTitle}</div>
-        ${!editingNote?`<button class="note-edit-toggle" onclick="toggleNoteEdit()">${note?t.noteEdit:'+ '+t.noteSave}</button>`:''}
+        ${!editingNote ? `<button class="note-edit-toggle" onclick="toggleNoteEdit()">${note ? t.noteEdit : '+ ' + t.noteSave}</button>` : ''}
       </div>
-      ${editingNote?`
+      ${editingNote ? `
         <div class="note-edit-wrap">
           <textarea class="note-textarea" id="note-textarea" placeholder="${t.notePlaceholder}">${note}</textarea>
           <div class="note-actions">
@@ -400,101 +984,101 @@ function renderNote(){
             <button class="note-cancel" onclick="cancelNote()">${t.noteCancel}</button>
           </div>
         </div>
-      `:`
-        <div class="note-display ${note?'':'empty'}" onclick="toggleNoteEdit()">
-          ${note||t.noteEmpty}
+      `: `
+        <div class="note-display ${note ? '' : 'empty'}" onclick="toggleNoteEdit()">
+          ${note || t.noteEmpty}
         </div>
       `}
     </div>`;
-}
+    }
 
-function toggleForm(){
-  const btn=document.getElementById('enquiry-btn');
-  const form=document.getElementById('enquiry-form');
-  const t=T[lang];
-  const isOpen=form.classList.contains('open');
-  if(isOpen){ form.classList.remove('open'); btn.classList.remove('open'); btn.innerHTML=`📝 ${t.enquiryBtn}`; }
-  else { form.classList.add('open'); btn.classList.add('open'); btn.innerHTML=`✕ ${t.enquiryBtnClose}`; }
-}
+    function toggleForm() {
+      const btn = document.getElementById('enquiry-btn');
+      const form = document.getElementById('enquiry-form');
+      const t = T[lang];
+      const isOpen = form.classList.contains('open');
+      if (isOpen) { form.classList.remove('open'); btn.classList.remove('open'); btn.innerHTML = `📝 ${t.enquiryBtn}`; }
+      else { form.classList.add('open'); btn.classList.add('open'); btn.innerHTML = `✕ ${t.enquiryBtnClose}`; }
+    }
 
-function onTgCheck(){ document.getElementById('tg-field').classList.toggle('show', document.getElementById('ch-tg').checked); }
-function onOtherCheck(){ document.getElementById('other-field').classList.toggle('show', document.getElementById('ch-other').checked); }
+    function onTgCheck() { document.getElementById('tg-field').classList.toggle('show', document.getElementById('ch-tg').checked); }
+    function onOtherCheck() { document.getElementById('other-field').classList.toggle('show', document.getElementById('ch-other').checked); }
 
-function validateForm(){
-  const t=T[lang]; let valid=true;
-  ['f-name','f-phone','f-email'].forEach(id=>{
-    const el=document.getElementById(id); const err=document.getElementById(id+'-err');
-    if(!el.value.trim()){ el.classList.add('error'); if(err){err.textContent=t.fRequired;err.classList.add('show');} valid=false; }
-    else { el.classList.remove('error'); if(err) err.classList.remove('show'); }
-  });
-  const anyMethod=['ch-call','ch-wa','ch-viber','ch-tg','ch-email'].some(id=>document.getElementById(id).checked);
-  const methodErr=document.getElementById('method-err');
-  if(!anyMethod){ methodErr.classList.add('show'); valid=false; } else methodErr.classList.remove('show');
-  if(document.getElementById('ch-tg').checked){
-    const el=document.getElementById('f-tg-nick'); const err=document.getElementById('tg-nick-err');
-    if(!el.value.trim()){ el.classList.add('error'); if(err){err.textContent=t.fTgRequired;err.classList.add('show');} valid=false; }
-    else { el.classList.remove('error'); if(err) err.classList.remove('show'); }
-  }
-  return valid;
-}
+    function validateForm() {
+      const t = T[lang]; let valid = true;
+      ['f-name', 'f-phone', 'f-email'].forEach(id => {
+        const el = document.getElementById(id); const err = document.getElementById(id + '-err');
+        if (!el.value.trim()) { el.classList.add('error'); if (err) { err.textContent = t.fRequired; err.classList.add('show'); } valid = false; }
+        else { el.classList.remove('error'); if (err) err.classList.remove('show'); }
+      });
+      const anyMethod = ['ch-call', 'ch-wa', 'ch-viber', 'ch-tg', 'ch-email'].some(id => document.getElementById(id).checked);
+      const methodErr = document.getElementById('method-err');
+      if (!anyMethod) { methodErr.classList.add('show'); valid = false; } else methodErr.classList.remove('show');
+      if (document.getElementById('ch-tg').checked) {
+        const el = document.getElementById('f-tg-nick'); const err = document.getElementById('tg-nick-err');
+        if (!el.value.trim()) { el.classList.add('error'); if (err) { err.textContent = t.fTgRequired; err.classList.add('show'); } valid = false; }
+        else { el.classList.remove('error'); if (err) err.classList.remove('show'); }
+      }
+      return valid;
+    }
 
-function submitForm(){
-  if(!validateForm()) return;
-  document.getElementById('enquiry-form-inner').style.display='none';
-  document.getElementById('form-success').classList.add('show');
-}
+    function submitForm() {
+      if (!validateForm()) return;
+      document.getElementById('enquiry-form-inner').style.display = 'none';
+      document.getElementById('form-success').classList.add('show');
+    }
 
-function renderProp(){
-  const t=T[lang]; const d=prop;
-  const imgs=d.images&&d.images.length>0?d.images:[];
-  const rl=roomsLabel(d);
-  const desc=d['description_'+lang]||'';
-  const isSold=d.status==='sold', isUnavail=d.status==='unavailable';
-  const isFav=favs.has(d.id);
+    function renderProp() {
+      const t = T[lang]; const d = prop;
+      const imgs = d.images && d.images.length > 0 ? d.images : [];
+      const rl = roomsLabel(d);
+      const desc = d['description_' + lang] || '';
+      const isSold = d.status === 'sold', isUnavail = d.status === 'unavailable';
+      const isFav = favs.has(d.id);
 
-  let statusBadge='';
-  if(isSold) statusBadge=`<span class="badge badge-sold">${t.soldBadge}</span>`;
-  else if(isUnavail) statusBadge=`<span class="badge badge-unavailable">${t.unavailBadge}</span>`;
-  else if(d.market==='new') statusBadge=`<span class="badge badge-new-build">${t.newBuild}</span>`;
-  else statusBadge=`<span class="badge badge-resale">${t.resale}</span>`;
+      let statusBadge = '';
+      if (isSold) statusBadge = `<span class="badge badge-sold">${t.soldBadge}</span>`;
+      else if (isUnavail) statusBadge = `<span class="badge badge-unavailable">${t.unavailBadge}</span>`;
+      else if (d.market === 'new') statusBadge = `<span class="badge badge-new-build">${t.newBuild}</span>`;
+      else statusBadge = `<span class="badge badge-resale">${t.resale}</span>`;
 
-  const galleryHtml=imgs.length>0?`
+      const galleryHtml = imgs.length > 0 ? `
     <div class="gallery-main">
       <img id="main-img" src="${imgs[0]}" alt="фото" onclick="openLightbox(${galleryIdx})">
-      ${imgs.length>1?`<button class="gallery-prev" onclick="galleryNav(-1)">‹</button><button class="gallery-next" onclick="galleryNav(1)">›</button><span class="gallery-counter" id="gallery-counter">1/${imgs.length}</span>`:''}
+      ${imgs.length > 1 ? `<button class="gallery-prev" onclick="galleryNav(-1)">‹</button><button class="gallery-next" onclick="galleryNav(1)">›</button><span class="gallery-counter" id="gallery-counter">1/${imgs.length}</span>` : ''}
     </div>
-    ${imgs.length>1?`<div class="gallery-thumbs">${imgs.map((url,i)=>`<img class="gallery-thumb ${i===0?'active':''}" src="${url}" onclick="setGallery(${i})" alt="фото ${i+1}">`).join('')}</div>`:''}
-  `:`<div class="gallery-main"><div class="no-photo">${d.emoji}</div></div>`;
+    ${imgs.length > 1 ? `<div class="gallery-thumbs">${imgs.map((url, i) => `<img class="gallery-thumb ${i === 0 ? 'active' : ''}" src="${url}" onclick="setGallery(${i})" alt="фото ${i + 1}">`).join('')}</div>` : ''}
+  `: `<div class="gallery-main"><div class="no-photo">${d.emoji}</div></div>`;
 
-  const params=[];
-  params.push(`<div class="param"><div class="param-icon">📍</div><div class="param-value">${getCityLabel(d)}</div><div class="param-label">${t.city}</div></div>`);
-  if(rl) params.push(`<div class="param"><div class="param-icon">🛏️</div><div class="param-value">${rl}</div><div class="param-label">${t.rooms}</div></div>`);
-  params.push(`<div class="param"><div class="param-icon">📐</div><div class="param-value">${d.area}</div><div class="param-label">${t.area}</div></div>`);
-  params.push(`<div class="param"><div class="param-icon">🏠</div><div class="param-value">${t.types[d.type]||d.type}</div><div class="param-label">${t.type}</div></div>`);
-  if(d.year_built) params.push(`<div class="param"><div class="param-icon">🏗️</div><div class="param-value">${d.year_built}</div><div class="param-label">${t.year}</div></div>`);
-  if(d.pool&&d.pool!=='none') params.push(`<div class="param"><div class="param-icon">🏊</div><div class="param-value">${d.pool==='yes'?t.poolYes:t.poolPossible}</div><div class="param-label">${t.pool}</div></div>`);
-  if(d.sea_walking) params.push(`<div class="param"><div class="param-icon">🌊</div><div class="param-value">✓</div><div class="param-label">${t.sea}</div></div>`);
+      const params = [];
+      params.push(`<div class="param"><div class="param-icon">📍</div><div class="param-value">${getCityLabel(d)}</div><div class="param-label">${t.city}</div></div>`);
+      if (rl) params.push(`<div class="param"><div class="param-icon">🛏️</div><div class="param-value">${rl}</div><div class="param-label">${t.rooms}</div></div>`);
+      params.push(`<div class="param"><div class="param-icon">📐</div><div class="param-value">${d.area}</div><div class="param-label">${t.area}</div></div>`);
+      params.push(`<div class="param"><div class="param-icon">🏠</div><div class="param-value">${t.types[d.type] || d.type}</div><div class="param-label">${t.type}</div></div>`);
+      if (d.year_built) params.push(`<div class="param"><div class="param-icon">🏗️</div><div class="param-value">${d.year_built}</div><div class="param-label">${t.year}</div></div>`);
+      if (d.pool && d.pool !== 'none') params.push(`<div class="param"><div class="param-icon">🏊</div><div class="param-value">${d.pool === 'yes' ? t.poolYes : t.poolPossible}</div><div class="param-label">${t.pool}</div></div>`);
+      if (d.sea_walking) params.push(`<div class="param"><div class="param-icon">🌊</div><div class="param-value">✓</div><div class="param-label">${t.sea}</div></div>`);
 
-  document.getElementById('content').innerHTML=`
+      document.getElementById('content').innerHTML = `
     <a class="back-btn" href="index.html">${t.back}</a>
     <div class="gallery">${galleryHtml}</div>
     <div class="info-card">
       <div class="prop-header">
         <div class="prop-header-left">
-          <h1 class="prop-title">${d['title_'+lang]}${d.is_new&&!isSold?`<span style="display:inline-block;font-size:12px;padding:2px 8px;border-radius:20px;background:#fff3e0;color:#e65100;font-weight:600;margin-left:8px">${t.newBadge}</span>`:''}</h1>
-          <div class="prop-price ${isSold?'sold':''}">€${(d.price*1000).toLocaleString()}</div>
+          <h1 class="prop-title">${d['title_' + lang]}${d.is_new && !isSold ? `<span style="display:inline-block;font-size:12px;padding:2px 8px;border-radius:20px;background:#fff3e0;color:#e65100;font-weight:600;margin-left:8px">${t.newBadge}</span>` : ''}</h1>
+          <div class="prop-price ${isSold ? 'sold' : ''}">€${(d.price * 1000).toLocaleString()}</div>
         </div>
-        <button class="fav-page-btn ${isFav?'active':''}" id="fav-page-btn" onclick="toggleFav()">
-          ${isFav?`❤️ ${t.favRemove}`:`🤍 ${t.favAdd}`}
+        <button class="fav-page-btn ${isFav ? 'active' : ''}" id="fav-page-btn" onclick="toggleFav()">
+          ${isFav ? `❤️ ${t.favRemove}` : `🤍 ${t.favAdd}`}
         </button>
       </div>
       <div class="badges">
         ${statusBadge}
-        ${d.is_new&&!isSold?`<span class="badge badge-new">${t.newBadge}</span>`:''}
-        <span class="badge badge-tag">${d['tag_'+lang]}</span>
+        ${d.is_new && !isSold ? `<span class="badge badge-new">${t.newBadge}</span>` : ''}
+        <span class="badge badge-tag">${d['tag_' + lang]}</span>
       </div>
       <div class="params">${params.join('')}</div>
-      ${desc?`<p class="description">${desc}</p>`:`<p class="description" style="color:#aaa">${t.noDesc}</p>`}
+      ${desc ? `<p class="description">${desc}</p>` : `<p class="description" style="color:#aaa">${t.noDesc}</p>`}
     </div>
 
     <div id="note-section"></div>
@@ -502,8 +1086,8 @@ function renderProp(){
     <div class="contact-card">
       <h2>${t.contact}</h2>
       <div class="quick-btns">
-        <button class="btn bwa" onclick="location.href='https://wa.me/35799000000?text=${encodeURIComponent(d['title_'+lang])}'">💬 ${t.wa}</button>
-        <button class="btn bem" onclick="location.href='mailto:info@bestcyprusproperties.com?subject=${encodeURIComponent(d['title_'+lang])}'">✉️ ${t.em}</button>
+        <button class="btn bwa" onclick="location.href='https://wa.me/35799000000?text=${encodeURIComponent(d['title_' + lang])}'">💬 ${t.wa}</button>
+        <button class="btn bem" onclick="location.href='mailto:info@bestcyprusproperties.com?subject=${encodeURIComponent(d['title_' + lang])}'">✉️ ${t.em}</button>
       </div>
       <button class="form-toggle-btn" id="enquiry-btn" onclick="toggleForm()">📝 ${t.enquiryBtn}</button>
       <div class="enquiry-form" id="enquiry-form">
@@ -553,26 +1137,27 @@ function renderProp(){
     </div>
   `;
 
-  renderNote();
-}
+      renderNote();
+    }
 
-window.onload=async function(){
-  loadStorage();
-  const params=new URLSearchParams(window.location.search);
-  const id=params.get('id');
-  if(!id){ document.getElementById('content').innerHTML='<div class="error-msg">Объект не найден</div>'; return; }
-  try {
-    const res=await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?id=eq.${id}&select=*`,{
-      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
-    });
-    const data=await res.json();
-    if(!data.length){ document.getElementById('content').innerHTML='<div class="error-msg">Объект не найден</div>'; return; }
-    prop=data[0];
-    setLang('ru',document.querySelector('.lb'));
-  } catch(e){
-    document.getElementById('content').innerHTML='<div class="error-msg">Ошибка загрузки</div>';
-  }
-};
-</script>
+    window.onload = async function () {
+      loadStorage();
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+      if (!id) { document.getElementById('content').innerHTML = '<div class="error-msg">Объект не найден</div>'; return; }
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?id=eq.${id}&select=*`, {
+          headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+        });
+        const data = await res.json();
+        if (!data.length) { document.getElementById('content').innerHTML = '<div class="error-msg">Объект не найден</div>'; return; }
+        prop = data[0];
+        setLang('ru', document.querySelector('.lb'));
+      } catch (e) {
+        document.getElementById('content').innerHTML = '<div class="error-msg">Ошибка загрузки</div>';
+      }
+    };
+  </script>
 </body>
+
 </html>
