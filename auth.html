@@ -24,13 +24,15 @@
   .form-group input.error { border-color: #c0392b; }
   .field-error { font-size: 12px; color: #c0392b; margin-top: 2px; }
 
+  .password-hint { font-size: 12px; color: #aaa; margin-top: 4px; }
+
   .submit-btn { width: 100%; padding: 14px; border-radius: 14px; border: none; background: #0f6e56; color: white; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 6px; transition: background 0.2s; }
   .submit-btn:hover { background: #0d5e49; }
   .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
+  .alt-btn { width: 100%; padding: 13px; border-radius: 14px; border: 1px solid #e0e0e0; background: white; color: #1a1a1a; font-size: 15px; cursor: pointer; margin-top: 10px; }
   .divider { text-align: center; color: #aaa; font-size: 13px; margin: 16px 0; }
 
-  .msg { padding: 12px 14px; border-radius: 12px; font-size: 14px; margin-bottom: 14px; display: none; }
+  .msg { padding: 12px 14px; border-radius: 12px; font-size: 14px; margin-bottom: 14px; display: none; line-height: 1.5; }
   .msg.success { background: #e6f7f2; color: #0f6e56; }
   .msg.error { background: #fff0f0; color: #c0392b; }
 
@@ -39,8 +41,9 @@
 
   .benefits { background: #f8f8f8; border-radius: 14px; padding: 16px; margin-bottom: 20px; }
   .benefits-title { font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 10px; }
-  .benefit { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #555; margin-bottom: 6px; }
+  .benefit { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: #555; margin-bottom: 8px; line-height: 1.4; }
   .benefit:last-child { margin-bottom: 0; }
+  .benefit-icon { flex-shrink: 0; margin-top: 1px; }
 </style>
 </head>
 <body>
@@ -56,13 +59,12 @@
 
   <div class="msg" id="msg"></div>
 
-  <!-- Преимущества регистрации (показываем на вкладке регистрации) -->
   <div class="benefits" id="benefits" style="display:none">
     <div class="benefits-title">Что даёт аккаунт:</div>
-    <div class="benefit">❤️ Сохраняйте понравившиеся объекты</div>
-    <div class="benefit">📝 Ведите личные заметки по каждому объекту</div>
-    <div class="benefit">⚡ Отправляйте заявки в один клик</div>
-    <div class="benefit">☁️ Доступ с любого устройства</div>
+    <div class="benefit"><span class="benefit-icon">❤️</span><span>Сохраняйте понравившиеся объекты — доступно с любого устройства</span></div>
+    <div class="benefit"><span class="benefit-icon">📝</span><span>Ведите личные заметки по каждому объекту — видны только вам</span></div>
+    <div class="benefit"><span class="benefit-icon">⚡</span><span>Отправляйте заявки в один клик — данные подставляются из профиля</span></div>
+    <div class="benefit"><span class="benefit-icon">🔔</span><span>Получайте уведомления об изменении цены или статуса объектов из избранного</span></div>
   </div>
 
   <!-- Форма входа -->
@@ -77,7 +79,7 @@
     </div>
     <button class="submit-btn" id="login-btn" onclick="submitLogin()">Войти</button>
     <div class="divider">или</div>
-    <button class="submit-btn" style="background:#f0f0f0;color:#1a1a1a" onclick="switchTab('register')">Создать аккаунт</button>
+    <button class="alt-btn" onclick="switchTab('register')">Создать аккаунт</button>
   </div>
 
   <!-- Форма регистрации -->
@@ -98,7 +100,8 @@
     </div>
     <div class="form-group">
       <label>Пароль</label>
-      <input type="password" id="reg-password" placeholder="Минимум 6 символов">
+      <input type="password" id="reg-password" placeholder="Минимум 8 символов">
+      <div class="password-hint">Минимум 8 символов, включая хотя бы одну цифру</div>
       <div class="field-error" id="reg-password-err"></div>
     </div>
     <div class="form-group">
@@ -116,14 +119,6 @@
 const SUPABASE_URL = 'https://lfgqhprihykoxqfnubhc.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_-E46ER3EDjD4TTMMiTRaCQ_9xAe36q_';
 
-// Если уже залогинен — редирект на главную
-async function checkSession(){
-  const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
-    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${getToken()}` }
-  });
-  if(res.ok){ window.location.href='index.html'; }
-}
-
 function getToken(){ return localStorage.getItem('bcp_token')||''; }
 
 function switchTab(tab){
@@ -137,32 +132,30 @@ function switchTab(tab){
   hideMsg();
 }
 
-function showMsg(text, type){
-  const el=document.getElementById('msg');
-  el.textContent=text; el.className=`msg ${type}`; el.style.display='block';
-}
+function showMsg(text, type){ const el=document.getElementById('msg'); el.textContent=text; el.className=`msg ${type}`; el.style.display='block'; }
 function hideMsg(){ document.getElementById('msg').style.display='none'; }
+
+function validatePassword(pwd){
+  if(pwd.length < 8) return 'Минимум 8 символов';
+  if(!/\d/.test(pwd)) return 'Пароль должен содержать хотя бы одну цифру';
+  return null;
+}
 
 async function submitLogin(){
   const email=document.getElementById('login-email').value.trim();
   const password=document.getElementById('login-password').value;
   if(!email||!password){ showMsg('Заполните все поля', 'error'); return; }
-
   const btn=document.getElementById('login-btn');
   btn.disabled=true; btn.textContent='Входим...';
-
   const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
-    method:'POST',
-    headers:{ 'apikey':SUPABASE_KEY, 'Content-Type':'application/json' },
+    method:'POST', headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'},
     body: JSON.stringify({ email, password })
   });
   const data = await res.json();
-
   if(res.ok){
     localStorage.setItem('bcp_token', data.access_token);
     localStorage.setItem('bcp_refresh', data.refresh_token);
     localStorage.setItem('bcp_user', JSON.stringify(data.user));
-    // Загружаем профиль
     await loadProfile(data.access_token, data.user.id);
     window.location.href='index.html';
   } else {
@@ -181,7 +174,9 @@ async function submitRegister(){
   let valid=true;
   if(!name){ document.getElementById('reg-name-err').textContent='Введите имя'; valid=false; } else { document.getElementById('reg-name-err').textContent=''; }
   if(!email){ document.getElementById('reg-email-err').textContent='Введите email'; valid=false; } else { document.getElementById('reg-email-err').textContent=''; }
-  if(password.length<6){ document.getElementById('reg-password-err').textContent='Минимум 6 символов'; valid=false; } else { document.getElementById('reg-password-err').textContent=''; }
+
+  const pwdError = validatePassword(password);
+  if(pwdError){ document.getElementById('reg-password-err').textContent=pwdError; valid=false; } else { document.getElementById('reg-password-err').textContent=''; }
   if(password!==password2){ document.getElementById('reg-password2-err').textContent='Пароли не совпадают'; valid=false; } else { document.getElementById('reg-password2-err').textContent=''; }
   if(!valid) return;
 
@@ -189,16 +184,14 @@ async function submitRegister(){
   btn.disabled=true; btn.textContent='Создаём аккаунт...';
 
   const res = await fetch(`${SUPABASE_URL}/auth/v1/signup`, {
-    method:'POST',
-    headers:{ 'apikey':SUPABASE_KEY, 'Content-Type':'application/json' },
+    method:'POST', headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'},
     body: JSON.stringify({ email, password, data:{ name, phone } })
   });
   const data = await res.json();
 
   if(res.ok){
     if(data.user && data.user.confirmation_sent_at){
-      showMsg('✅ Письмо с подтверждением отправлено на '+email+'. Проверьте почту и нажмите на ссылку.', 'success');
-      // Сохраняем имя и телефон для создания профиля после подтверждения
+      showMsg(`✅ Письмо с подтверждением отправлено на ${email}. Проверьте почту и нажмите на ссылку для активации аккаунта.`, 'success');
       localStorage.setItem('bcp_pending_name', name);
       localStorage.setItem('bcp_pending_phone', phone);
     } else if(data.session){
@@ -209,34 +202,27 @@ async function submitRegister(){
       window.location.href='index.html';
     }
   } else {
-    showMsg(data.error_description||data.msg||'Ошибка регистрации', 'error');
+    showMsg(data.error_description||data.msg||'Ошибка регистрации. Возможно, этот email уже зарегистрирован.', 'error');
   }
-
   btn.disabled=false; btn.textContent='Создать аккаунт';
 }
 
 async function createProfile(token, userId, name, phone){
   await fetch(`${SUPABASE_URL}/rest/v1/user_profiles`, {
     method:'POST',
-    headers:{
-      'apikey':SUPABASE_KEY,
-      'Authorization':`Bearer ${token}`,
-      'Content-Type':'application/json',
-      'Prefer':'return=minimal'
-    },
+    headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${token}`,'Content-Type':'application/json','Prefer':'return=minimal'},
     body: JSON.stringify({ id:userId, name, phone })
   });
 }
 
 async function loadProfile(token, userId){
   const res = await fetch(`${SUPABASE_URL}/rest/v1/user_profiles?id=eq.${userId}&select=*`, {
-    headers:{ 'apikey':SUPABASE_KEY, 'Authorization':`Bearer ${token}` }
+    headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${token}`}
   });
   const data = await res.json();
   if(data.length) localStorage.setItem('bcp_profile', JSON.stringify(data[0]));
 }
 
-// Обработка редиректа после подтверждения email
 async function handleAuthCallback(){
   const hash = window.location.hash;
   if(hash && hash.includes('access_token')){
@@ -246,14 +232,12 @@ async function handleAuthCallback(){
     if(token){
       localStorage.setItem('bcp_token', token);
       if(refresh) localStorage.setItem('bcp_refresh', refresh);
-      // Получаем пользователя
       const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
-        headers:{ 'apikey':SUPABASE_KEY, 'Authorization':`Bearer ${token}` }
+        headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${token}`}
       });
       if(res.ok){
         const user = await res.json();
         localStorage.setItem('bcp_user', JSON.stringify(user));
-        // Создаём профиль если есть pending данные
         const name = localStorage.getItem('bcp_pending_name');
         const phone = localStorage.getItem('bcp_pending_phone');
         if(name){
@@ -271,15 +255,13 @@ async function handleAuthCallback(){
 
 window.onload = async function(){
   await handleAuthCallback();
-  // Проверяем не залогинен ли уже
   const token = getToken();
   if(token){
     const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
-      headers:{ 'apikey':SUPABASE_KEY, 'Authorization':`Bearer ${token}` }
+      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${token}`}
     });
     if(res.ok) window.location.href='index.html';
   }
-  // Проверяем нужно ли открыть вкладку регистрации
   const params = new URLSearchParams(window.location.search);
   if(params.get('mode')==='register') switchTab('register');
 };
