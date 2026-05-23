@@ -7,10 +7,24 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a; }
-  .page { max-width: 800px; margin: 0 auto; padding: 16px; }
+  .wrap { max-width: 800px; margin: 0 auto; padding: 16px; }
 
-  .back-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: #666; background: white; border: none; border-radius: 20px; padding: 8px 16px; cursor: pointer; margin-bottom: 16px; text-decoration: none; }
-  .back-btn:hover { background: #f0f0f0; }
+  /* ===== ШАПКА ===== */
+  .site-header { background: white; border-radius: 16px; margin-bottom: 14px; overflow: hidden; }
+  .site-header-top { padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .site-logo { text-decoration: none; display: flex; flex-direction: column; }
+  .site-logo-sub { font-size: 10px; color: #aaa; letter-spacing: 1px; text-transform: uppercase; }
+  .site-logo-main { font-size: 16px; font-weight: 700; color: #1a1a1a; line-height: 1.2; }
+  .site-header-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .lang-switch { display: flex; gap: 6px; }
+  .lb { padding: 5px 8px; border-radius: 20px; border: 1px solid #ccc; background: white; cursor: pointer; display: flex; align-items: center; }
+  .lb.active { border: 2px solid #1a1a1a; }
+  .lb img { display: block; border-radius: 2px; }
+  .auth-btn { display: flex; align-items: center; gap: 7px; padding: 7px 14px; border-radius: 20px; border: 1px solid #e0e0e0; background: white; font-size: 13px; color: #1a1a1a; cursor: pointer; white-space: nowrap; text-decoration: none; flex-shrink: 0; }
+  .auth-btn.logged { background: #e6f7f2; border-color: #0f6e56; color: #0f6e56; font-weight: 600; }
+  .auth-avatar { width: 24px; height: 24px; border-radius: 50%; background: #0f6e56; color: white; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+  .auth-avatar img { width: 24px; height: 24px; object-fit: cover; }
+  /* ===== /ШАПКА ===== */
 
   .gallery { background: white; border-radius: 16px; overflow: hidden; margin-bottom: 16px; }
   .gallery-main { position: relative; width: 100%; height: 320px; background: linear-gradient(135deg, #e6f7f2, #b2e0d0); }
@@ -29,7 +43,6 @@
   .prop-title { font-size: 22px; font-weight: 700; line-height: 1.3; margin-bottom: 6px; }
   .prop-price { font-size: 24px; font-weight: 700; color: #0f6e56; }
   .prop-price.sold { color: #888; text-decoration: line-through; }
-
   .fav-page-btn { display: flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 12px; border: 1.5px solid #e0e0e0; background: white; font-size: 14px; cursor: pointer; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
   .fav-page-btn:hover { border-color: #e91e8c; }
   .fav-page-btn.active { background: #fce4ec; color: #ad1457; border-color: #ad1457; font-weight: 600; }
@@ -50,7 +63,6 @@
   .param-label { font-size: 11px; color: #888; margin-top: 2px; }
   .description { font-size: 15px; line-height: 1.6; color: #444; white-space: pre-wrap; }
 
-  /* Заметка */
   .note-card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 14px; }
   .note-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
   .note-card-title { font-size: 15px; font-weight: 600; }
@@ -61,8 +73,6 @@
   .note-actions { display: flex; gap: 8px; margin-top: 8px; }
   .note-save { flex: 1; padding: 10px; border-radius: 10px; border: none; background: #0f6e56; color: white; font-size: 14px; font-weight: 600; cursor: pointer; }
   .note-cancel { padding: 10px 16px; border-radius: 10px; border: 1px solid #ddd; background: white; color: #666; font-size: 14px; cursor: pointer; }
-
-  /* Заглушка для незарегистрированных */
   .note-auth-prompt { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: #f8f8f8; border-radius: 10px; padding: 14px; border: 1px dashed #ddd; cursor: pointer; transition: all 0.2s; }
   .note-auth-prompt:hover { background: #f0faf7; border-color: #0f6e56; }
   .note-auth-prompt-text { font-size: 14px; color: #888; }
@@ -75,13 +85,11 @@
   .btn { width: 100%; padding: 13px; border-radius: 14px; font-size: 15px; font-weight: 500; cursor: pointer; border: none; display: flex; align-items: center; justify-content: center; gap: 8px; }
   .bwa { background: #25D366; color: white; }
   .bem { background: #f0f0f0; color: #1a1a1a; }
-
   .form-toggle-btn { width: 100%; padding: 13px; border-radius: 14px; font-size: 15px; font-weight: 500; cursor: pointer; background: white; color: #0f6e56; border: 2px solid #0f6e56; display: flex; align-items: center; justify-content: center; gap: 8px; }
   .form-toggle-btn.open { background: #0f6e56; color: white; }
-
   .enquiry-form { display: none; margin-top: 14px; padding: 16px; background: #f8f8f8; border-radius: 14px; }
   .enquiry-form.open { display: block; }
-  .autofill-banner { background: #e6f7f2; border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; font-size: 13px; color: #0f6e56; display: flex; align-items: center; gap: 8px; }
+  .autofill-banner { background: #e6f7f2; border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; font-size: 13px; color: #0f6e56; }
   .form-section { margin-bottom: 16px; }
   .form-section-title { font-size: 13px; font-weight: 600; color: #555; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.4px; }
   .field { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
@@ -114,7 +122,6 @@
   .lightbox-prev, .lightbox-next { position: absolute; top: 50%; transform: translateY(-50%); color: white; font-size: 28px; cursor: pointer; background: rgba(255,255,255,0.1); border: none; border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
   .lightbox-prev { left: 16px; } .lightbox-next { right: 16px; }
 
-  /* Auth popup */
   .auth-popup { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 500; align-items: flex-end; justify-content: center; padding: 20px; }
   .auth-popup.open { display: flex; }
   .auth-popup-card { background: white; border-radius: 24px; padding: 28px; width: 100%; max-width: 420px; text-align: center; animation: slideUp 0.3s ease; }
@@ -127,25 +134,34 @@
   .auth-popup-login { padding: 13px; border-radius: 14px; border: 1px solid #e0e0e0; background: white; color: #1a1a1a; font-size: 15px; cursor: pointer; }
   .auth-popup-close { margin-top: 10px; font-size: 13px; color: #aaa; cursor: pointer; background: none; border: none; }
 
-  .lang-switch { display: flex; gap: 8px; justify-content: center; margin-bottom: 14px; flex-wrap: wrap; }
-  .lb { padding: 6px 10px; border-radius: 20px; border: 1px solid #ccc; background: white; cursor: pointer; display: flex; align-items: center; }
-  .lb.active { border: 2px solid #1a1a1a; }
-  .lb img { display: block; border-radius: 2px; }
-
   .loading { text-align: center; padding: 60px; color: #888; font-size: 16px; }
   .error-msg { text-align: center; padding: 60px; color: #c0392b; font-size: 16px; }
 </style>
 </head>
 <body>
 
-<div class="page" id="page">
-  <div class="lang-switch">
-    <button class="lb active" onclick="setLang('ru',this)"><img src="https://flagcdn.com/24x18/ru.png" alt="RU"></button>
-    <button class="lb" onclick="setLang('en',this)"><img src="https://flagcdn.com/24x18/gb.png" alt="EN"></button>
-    <button class="lb" onclick="setLang('el',this)"><img src="https://flagcdn.com/24x18/cy.png" alt="ΕΛ"></button>
-    <button class="lb" onclick="setLang('he',this)"><img src="https://flagcdn.com/24x18/il.png" alt="HE"></button>
+<div class="wrap" id="page">
+
+  <!-- ШАПКА -->
+  <div class="site-header">
+    <div class="site-header-top">
+      <a class="site-logo" href="index.html">
+        <span class="site-logo-sub">Best Cyprus Properties</span>
+        <span class="site-logo-main" id="logo-tagline"></span>
+      </a>
+      <div class="site-header-right">
+        <div class="lang-switch">
+          <button class="lb active" onclick="setLang('ru',this)"><img src="https://flagcdn.com/24x18/ru.png" alt="RU"></button>
+          <button class="lb" onclick="setLang('en',this)"><img src="https://flagcdn.com/24x18/gb.png" alt="EN"></button>
+          <button class="lb" onclick="setLang('el',this)"><img src="https://flagcdn.com/24x18/cy.png" alt="ΕΛ"></button>
+          <button class="lb" onclick="setLang('he',this)"><img src="https://flagcdn.com/24x18/il.png" alt="HE"></button>
+        </div>
+        <a id="auth-btn" class="auth-btn" href="auth.html">👤</a>
+      </div>
+    </div>
   </div>
-  <div class="loading" id="content">⏳ Загружаем объект...</div>
+
+  <div class="loading" id="content">⏳</div>
 </div>
 
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
@@ -155,17 +171,16 @@
   <button class="lightbox-next" onclick="event.stopPropagation();lbNav(1)">›</button>
 </div>
 
-<!-- Auth popup для заметок -->
 <div class="auth-popup" id="auth-popup">
   <div class="auth-popup-card">
     <div class="auth-popup-icon">📝</div>
-    <div class="auth-popup-title" id="popup-title">Войдите чтобы добавить заметку</div>
-    <div class="auth-popup-sub" id="popup-sub">Заметки сохраняются в вашем аккаунте и видны только вам</div>
+    <div class="auth-popup-title" id="popup-title"></div>
+    <div class="auth-popup-sub" id="popup-sub"></div>
     <div class="auth-popup-btns">
-      <button class="auth-popup-reg" onclick="window.location.href='auth.html?mode=register'">Создать аккаунт</button>
-      <button class="auth-popup-login" onclick="window.location.href='auth.html'">Уже есть аккаунт — войти</button>
+      <button class="auth-popup-reg" id="popup-reg-btn" onclick="window.location.href='auth.html?mode=register'"></button>
+      <button class="auth-popup-login" id="popup-login-btn" onclick="window.location.href='auth.html'"></button>
     </div>
-    <button class="auth-popup-close" onclick="closeAuthPopup()">Закрыть</button>
+    <button class="auth-popup-close" id="popup-close-btn" onclick="closeAuthPopup()"></button>
   </div>
 </div>
 
@@ -190,13 +205,12 @@ function loadStorage(){
     if(n) Object.assign(notes, JSON.parse(n));
   } catch(e){}
 }
-function saveFavs(){ try{ localStorage.setItem('bcp_favs',[...favs].join(',')); }catch(e){} }
 function saveNotesLocal(){ try{ localStorage.setItem('bcp_notes',JSON.stringify(notes)); }catch(e){} }
 
 async function loadFavsFromSupabase(){
   const user=getUser(); if(!user) return;
   const token=getToken();
-  const [favRes, notesRes] = await Promise.all([
+  const [favRes, notesRes]=await Promise.all([
     fetch(`${SUPABASE_URL}/rest/v1/user_favourites?user_id=eq.${user.id}&select=property_id`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${token}`}}),
     fetch(`${SUPABASE_URL}/rest/v1/user_notes?user_id=eq.${user.id}&select=property_id,note`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${token}`}})
   ]);
@@ -206,7 +220,15 @@ async function loadFavsFromSupabase(){
   notes={}; notesData.forEach(n=>{ notes[n.property_id]=n.note; });
 }
 
-function showAuthPopup(){ document.getElementById('auth-popup').classList.add('open'); }
+function showAuthPopup(){
+  const t=T[lang];
+  document.getElementById('popup-title').textContent=t.popupNoteTitle;
+  document.getElementById('popup-sub').textContent=t.popupNoteSub;
+  document.getElementById('popup-reg-btn').textContent=t.popupRegBtn;
+  document.getElementById('popup-login-btn').textContent=t.popupLoginBtn;
+  document.getElementById('popup-close-btn').textContent=t.popupClose;
+  document.getElementById('auth-popup').classList.add('open');
+}
 function closeAuthPopup(){ document.getElementById('auth-popup').classList.remove('open'); }
 
 async function toggleFav(){
@@ -233,6 +255,23 @@ function updateFavBtn(){
   const isFav=favs.has(prop.id);
   btn.className='fav-page-btn'+(isFav?' active':'');
   btn.innerHTML=isFav?`❤️ ${t.favRemove}`:`🤍 ${t.favAdd}`;
+}
+
+function updateAuthBtn(){
+  const btn=document.getElementById('auth-btn'); if(!btn) return;
+  if(isLoggedIn()){
+    const profile=getProfile();
+    const name=profile?.name||getUser()?.email?.split('@')[0]||'';
+    const avatarUrl=profile?.avatar_url;
+    const avatarHtml=avatarUrl
+      ?`<div class="auth-avatar"><img src="${avatarUrl}" alt="avatar"></div>`
+      :`<div class="auth-avatar">${name?name[0].toUpperCase():'👤'}</div>`;
+    btn.href='profile.html'; btn.className='auth-btn logged';
+    btn.innerHTML=`${avatarHtml} <span>${name}</span>`;
+  } else {
+    btn.href='auth.html'; btn.className='auth-btn';
+    btn.innerHTML=`👤 <span>${T[lang].signIn}</span>`;
+  }
 }
 
 async function saveNoteSupabase(id, text){
@@ -270,128 +309,125 @@ function buildCountrySelect(selectedCode=''){
 
 const T = {
   ru:{
-    back:'← Все объекты', contact:'Связаться с нами',
-    wa:'Написать в WhatsApp', em:'Написать на email',
+    logoTagline:'Недвижимость на Кипре', signIn:'Войти',
+    contact:'Связаться с нами', wa:'Написать в WhatsApp', em:'Написать на email',
     enquiryBtn:'Оставить заявку', enquiryBtnClose:'Закрыть форму',
     rooms:'спал.', studio:'Студия', area:'м²', noDesc:'Описание скоро появится.',
     soldBadge:'Продано', unavailBadge:'Временно не продаётся', newBuild:'Первичная', resale:'Вторичная', newBadge:'Новое',
     city:'Город', type:'Тип', year:'Год', pool:'Бассейн', sea:'Море рядом', rtl:false,
     poolYes:'Есть', poolPossible:'Возможен',
     favAdd:'В избранное', favRemove:'В избранном ❤️',
-    noteTitle:'📝 Моя заметка',
-    noteEdit:'Редактировать', noteEmpty:'Нет заметки. Нажмите чтобы добавить.',
-    noteAddPromptTitle:'Добавьте личную заметку',
-    noteAddPromptSub:'Войдите в аккаунт чтобы сохранять заметки по объектам',
+    noteTitle:'📝 Моя заметка', noteEdit:'Редактировать', noteEmpty:'Нет заметки. Нажмите чтобы добавить.',
+    noteAddPromptTitle:'Добавьте личную заметку', noteAddPromptSub:'Войдите чтобы сохранять заметки',
     noteAddPromptBtn:'Войти / Зарегистрироваться',
     notePlaceholder:'Напишите заметку...', noteSave:'Сохранить', noteCancel:'Отмена',
     deleteNoteConfirm:'Удалить заметку к этому объекту?',
-    autofillBanner:'✅ Данные из вашего профиля подставлены автоматически',
-    cities:{ Limassol:'Лимасол', Limassol_district:'Лимасол дистрикт', Paphos:'Пафос', Paphos_district:'Пафос дистрикт', Larnaca:'Ларнака', Larnaca_district:'Ларнака дистрикт', Nicosia:'Никосия', Nicosia_district:'Никосия дистрикт', Famagusta_district:'Фамагуста дистрикт' },
-    types:{ apt:'Квартира', penthouse:'Пентхаус', house:'Дом / вилла', townhouse:'Таунхаус', land_res:'Участок под жильё', land_other:'Земельный участок', commercial:'Коммерческая', building:'Целое здание' },
+    autofillBanner:'Данные из вашего профиля подставлены автоматически',
+    cities:{Limassol:'Лимасол',Limassol_district:'Лимасол дистрикт',Paphos:'Пафос',Paphos_district:'Пафос дистрикт',Larnaca:'Ларнака',Larnaca_district:'Ларнака дистрикт',Nicosia:'Никосия',Nicosia_district:'Никосия дистрикт',Famagusta_district:'Фамагуста дистрикт'},
+    types:{apt:'Квартира',penthouse:'Пентхаус',house:'Дом / вилла',townhouse:'Таунхаус',land_res:'Участок под жильё',land_other:'Земельный участок',commercial:'Коммерческая',building:'Целое здание'},
     fName:'Имя', fPhone:'Номер телефона', fEmail:'Email', fRequired:'Обязательное поле',
     fContactMethod:'Предпочтительный способ связи',
-    fCall:'Позвонить по телефону', fWa:'WhatsApp', fViber:'Viber', fTg:'Telegram', fEmailOpt:'Email',
+    fCall:'Позвонить', fWa:'WhatsApp', fViber:'Viber', fTg:'Telegram', fEmailOpt:'Email',
     fTgNick:'Ваш Telegram-ник', fTgRequired:'Укажите Telegram-ник',
     fPurpose:'Вы хотите...', fQuestion:'Задать вопрос', fViewing:'Записаться на просмотр', fOther:'Другое',
-    fOtherText:'Опишите ваш запрос', fSubmit:'Отправить заявку',
-    fSuccessTitle:'Заявка отправлена!', fSuccessText:'Мы свяжемся с вами в ближайшее время.',
-    fSelectContact:'Выберите хотя бы один способ связи',
-    popupNoteTitle:'Войдите чтобы добавить заметку',
-    popupNoteSub:'Заметки сохраняются в вашем аккаунте и видны только вам',
+    fOtherText:'Опишите запрос', fSubmit:'Отправить заявку',
+    fSuccessTitle:'Заявка отправлена!', fSuccessText:'Мы свяжемся с вами.',
+    fSelectContact:'Выберите хотя бы один способ',
+    popupNoteTitle:'Войдите чтобы добавить заметку', popupNoteSub:'Заметки видны только вам',
+    popupRegBtn:'Создать аккаунт', popupLoginBtn:'Уже есть аккаунт — войти', popupClose:'Закрыть',
   },
   en:{
-    back:'← All properties', contact:'Contact us',
-    wa:'Contact on WhatsApp', em:'Send email',
-    enquiryBtn:'Send enquiry', enquiryBtnClose:'Close form',
+    logoTagline:'Cyprus Real Estate', signIn:'Sign in',
+    contact:'Contact us', wa:'WhatsApp', em:'Email',
+    enquiryBtn:'Send enquiry', enquiryBtnClose:'Close',
     rooms:'bed.', studio:'Studio', area:'m²', noDesc:'Description coming soon.',
     soldBadge:'Sold', unavailBadge:'Temporarily unavailable', newBuild:'New build', resale:'Resale', newBadge:'New',
     city:'City', type:'Type', year:'Year', pool:'Pool', sea:'Sea nearby', rtl:false,
     poolYes:'Has pool', poolPossible:'Pool possible',
     favAdd:'Save', favRemove:'Saved ❤️',
-    noteTitle:'📝 My note',
-    noteEdit:'Edit', noteEmpty:'No note yet. Tap to add.',
-    noteAddPromptTitle:'Add a personal note',
-    noteAddPromptSub:'Sign in to save notes on properties',
+    noteTitle:'📝 My note', noteEdit:'Edit', noteEmpty:'No note yet. Tap to add.',
+    noteAddPromptTitle:'Add a personal note', noteAddPromptSub:'Sign in to save notes',
     noteAddPromptBtn:'Sign in / Register',
     notePlaceholder:'Write a note...', noteSave:'Save', noteCancel:'Cancel',
     deleteNoteConfirm:'Delete the note for this property?',
-    autofillBanner:'✅ Your profile details have been filled in automatically',
-    cities:{ Limassol:'Limassol', Limassol_district:'Limassol District', Paphos:'Paphos', Paphos_district:'Paphos District', Larnaca:'Larnaca', Larnaca_district:'Larnaca District', Nicosia:'Nicosia', Nicosia_district:'Nicosia District', Famagusta_district:'Famagusta District' },
-    types:{ apt:'Apartment', penthouse:'Penthouse', house:'House / villa', townhouse:'Townhouse', land_res:'Residential land', land_other:'Land plot', commercial:'Commercial', building:'Whole building' },
-    fName:'Name', fPhone:'Phone number', fEmail:'Email', fRequired:'Required field',
+    autofillBanner:'Your profile details have been filled in automatically',
+    cities:{Limassol:'Limassol',Limassol_district:'Limassol District',Paphos:'Paphos',Paphos_district:'Paphos District',Larnaca:'Larnaca',Larnaca_district:'Larnaca District',Nicosia:'Nicosia',Nicosia_district:'Nicosia District',Famagusta_district:'Famagusta District'},
+    types:{apt:'Apartment',penthouse:'Penthouse',house:'House / villa',townhouse:'Townhouse',land_res:'Residential land',land_other:'Land plot',commercial:'Commercial',building:'Whole building'},
+    fName:'Name', fPhone:'Phone', fEmail:'Email', fRequired:'Required',
     fContactMethod:'Preferred contact method',
     fCall:'Phone call', fWa:'WhatsApp', fViber:'Viber', fTg:'Telegram', fEmailOpt:'Email',
-    fTgNick:'Your Telegram username', fTgRequired:'Please enter your Telegram username',
+    fTgNick:'Telegram username', fTgRequired:'Enter Telegram username',
     fPurpose:'I would like to...', fQuestion:'Ask a question', fViewing:'Schedule a viewing', fOther:'Other',
     fOtherText:'Describe your request', fSubmit:'Submit enquiry',
-    fSuccessTitle:'Enquiry sent!', fSuccessText:'We will contact you shortly.',
-    fSelectContact:'Please select at least one contact method',
-    popupNoteTitle:'Sign in to add a note',
-    popupNoteSub:'Notes are saved to your account and visible only to you',
+    fSuccessTitle:'Enquiry sent!', fSuccessText:'We will contact you.',
+    fSelectContact:'Select at least one',
+    popupNoteTitle:'Sign in to add a note', popupNoteSub:'Notes are visible only to you',
+    popupRegBtn:'Create account', popupLoginBtn:'Already have an account — sign in', popupClose:'Close',
   },
   el:{
-    back:'← Όλα τα ακίνητα', contact:'Επικοινωνία',
-    wa:'WhatsApp', em:'Email', enquiryBtn:'Αίτημα', enquiryBtnClose:'Κλείσιμο',
+    logoTagline:'Ακίνητα στην Κύπρο', signIn:'Σύνδεση',
+    contact:'Επικοινωνία', wa:'WhatsApp', em:'Email',
+    enquiryBtn:'Αίτημα', enquiryBtnClose:'Κλείσιμο',
     rooms:'υπν.', studio:'Στούντιο', area:'τ.μ.', noDesc:'Περιγραφή σύντομα.',
     soldBadge:'Πωλήθηκε', unavailBadge:'Μη διαθέσιμο', newBuild:'Πρωτογενής', resale:'Μεταπώληση', newBadge:'Νέο',
     city:'Πόλη', type:'Τύπος', year:'Έτος', pool:'Πισίνα', sea:'Θάλασσα κοντά', rtl:false,
     poolYes:'Υπάρχει', poolPossible:'Δυνατή',
     favAdd:'Αποθήκευση', favRemove:'Αποθηκεύτηκε ❤️',
-    noteTitle:'📝 Η σημείωσή μου',
-    noteEdit:'Επεξεργασία', noteEmpty:'Δεν υπάρχει σημείωση.',
-    noteAddPromptTitle:'Προσθέστε προσωπική σημείωση',
-    noteAddPromptSub:'Συνδεθείτε για να αποθηκεύσετε σημειώσεις',
+    noteTitle:'📝 Η σημείωσή μου', noteEdit:'Επεξεργασία', noteEmpty:'Δεν υπάρχει σημείωση.',
+    noteAddPromptTitle:'Προσθέστε σημείωση', noteAddPromptSub:'Συνδεθείτε για σημειώσεις',
     noteAddPromptBtn:'Σύνδεση / Εγγραφή',
-    notePlaceholder:'Γράψτε μια σημείωση...', noteSave:'Αποθήκευση', noteCancel:'Ακύρωση',
+    notePlaceholder:'Σημείωση...', noteSave:'Αποθήκευση', noteCancel:'Ακύρωση',
     deleteNoteConfirm:'Διαγραφή σημείωσης;',
-    autofillBanner:'✅ Τα στοιχεία σας συμπληρώθηκαν αυτόματα',
-    cities:{ Limassol:'Λεμεσός', Limassol_district:'Επαρχία Λεμεσού', Paphos:'Πάφος', Paphos_district:'Επαρχία Πάφου', Larnaca:'Λάρνακα', Larnaca_district:'Επαρχία Λάρνακας', Nicosia:'Λευκωσία', Nicosia_district:'Επαρχία Λευκωσίας', Famagusta_district:'Επαρχία Αμμοχώστου' },
-    types:{ apt:'Διαμέρισμα', penthouse:'Πεντχάους', house:'Σπίτι / Βίλα', townhouse:'Μεζονέτα', land_res:'Οικόπεδο κατοικίας', land_other:'Οικόπεδο', commercial:'Εμπορικό', building:'Ολόκληρο κτίριο' },
+    autofillBanner:'Τα στοιχεία σας συμπληρώθηκαν αυτόματα',
+    cities:{Limassol:'Λεμεσός',Limassol_district:'Επαρχία Λεμεσού',Paphos:'Πάφος',Paphos_district:'Επαρχία Πάφου',Larnaca:'Λάρνακα',Larnaca_district:'Επαρχία Λάρνακας',Nicosia:'Λευκωσία',Nicosia_district:'Επαρχία Λευκωσίας',Famagusta_district:'Επαρχία Αμμοχώστου'},
+    types:{apt:'Διαμέρισμα',penthouse:'Πεντχάους',house:'Σπίτι / Βίλα',townhouse:'Μεζονέτα',land_res:'Οικόπεδο κατοικίας',land_other:'Οικόπεδο',commercial:'Εμπορικό',building:'Ολόκληρο κτίριο'},
     fName:'Όνομα', fPhone:'Τηλέφωνο', fEmail:'Email', fRequired:'Υποχρεωτικό',
     fContactMethod:'Τρόπος επικοινωνίας', fCall:'Κλήση', fWa:'WhatsApp', fViber:'Viber', fTg:'Telegram', fEmailOpt:'Email',
     fTgNick:'Όνομα Telegram', fTgRequired:'Εισαγάγετε το όνομα',
     fPurpose:'Θέλω να...', fQuestion:'Ερώτηση', fViewing:'Ραντεβού', fOther:'Άλλο',
-    fOtherText:'Περιγράψτε το αίτημά σας', fSubmit:'Αποστολή',
-    fSuccessTitle:'Στάλθηκε!', fSuccessText:'Θα επικοινωνήσουμε σύντομα.',
-    fSelectContact:'Επιλέξτε τρόπο επικοινωνίας',
-    popupNoteTitle:'Συνδεθείτε για σημείωση',
-    popupNoteSub:'Οι σημειώσεις αποθηκεύονται στον λογαριασμό σας',
+    fOtherText:'Περιγράψτε', fSubmit:'Αποστολή',
+    fSuccessTitle:'Στάλθηκε!', fSuccessText:'Θα επικοινωνήσουμε.',
+    fSelectContact:'Επιλέξτε τρόπο',
+    popupNoteTitle:'Συνδεθείτε για σημείωση', popupNoteSub:'Ορατές μόνο σε εσάς',
+    popupRegBtn:'Δημιουργία λογαριασμού', popupLoginBtn:'Έχω ήδη λογαριασμό', popupClose:'Κλείσιμο',
   },
   he:{
-    back:'← כל הנכסים', contact:'צור קשר',
-    wa:'וואטסאפ', em:'אימייל', enquiryBtn:'שלח פנייה', enquiryBtnClose:'סגור',
+    logoTagline:'נדל״ן בקפריסין', signIn:'כניסה',
+    contact:'צור קשר', wa:'וואטסאפ', em:'אימייל',
+    enquiryBtn:'שלח פנייה', enquiryBtnClose:'סגור',
     rooms:"חד'", studio:'סטודיו', area:'מ״ר', noDesc:'תיאור בקרוב.',
     soldBadge:'נמכר', unavailBadge:'זמנית לא למכירה', newBuild:'יד ראשונה', resale:'יד שנייה', newBadge:'חדש',
     city:'עיר', type:'סוג', year:'שנה', pool:'בריכה', sea:'ים קרוב', rtl:true,
     poolYes:'יש בריכה', poolPossible:'אפשר לבנות',
     favAdd:'שמור', favRemove:'שמור ❤️',
-    noteTitle:'📝 ההערה שלי',
-    noteEdit:'ערוך', noteEmpty:'אין הערה עדיין.',
-    noteAddPromptTitle:'הוסף הערה אישית',
-    noteAddPromptSub:'התחבר כדי לשמור הערות על נכסים',
+    noteTitle:'📝 ההערה שלי', noteEdit:'ערוך', noteEmpty:'אין הערה עדיין.',
+    noteAddPromptTitle:'הוסף הערה אישית', noteAddPromptSub:'התחבר כדי לשמור הערות',
     noteAddPromptBtn:'כניסה / הרשמה',
     notePlaceholder:'כתוב הערה...', noteSave:'שמור', noteCancel:'ביטול',
     deleteNoteConfirm:'למחוק את ההערה?',
-    autofillBanner:'✅ הפרטים שלך מולאו אוטומטית מהפרופיל',
-    cities:{ Limassol:'לימסול', Limassol_district:'מחוז לימסול', Paphos:'פאפוס', Paphos_district:'מחוז פאפוס', Larnaca:'לרנקה', Larnaca_district:'מחוז לרנקה', Nicosia:'ניקוסיה', Nicosia_district:'מחוז ניקוסיה', Famagusta_district:'מחוז פמגוסטה' },
-    types:{ apt:'דירה', penthouse:'פנטהאוס', house:'בית / וילה', townhouse:'טאונהאוס', land_res:'מגרש למגורים', land_other:'מגרש', commercial:'מסחרי', building:'בניין שלם' },
+    autofillBanner:'הפרטים שלך מולאו אוטומטית מהפרופיל',
+    cities:{Limassol:'לימסול',Limassol_district:'מחוז לימסול',Paphos:'פאפוס',Paphos_district:'מחוז פאפוס',Larnaca:'לרנקה',Larnaca_district:'מחוז לרנקה',Nicosia:'ניקוסיה',Nicosia_district:'מחוז ניקוסיה',Famagusta_district:'מחוז פמגוסטה'},
+    types:{apt:'דירה',penthouse:'פנטהאוס',house:'בית / וילה',townhouse:'טאונהאוס',land_res:'מגרש למגורים',land_other:'מגרש',commercial:'מסחרי',building:'בניין שלם'},
     fName:'שם', fPhone:'טלפון', fEmail:'אימייל', fRequired:'שדה חובה',
-    fContactMethod:'אמצעי קשר מועדף', fCall:'שיחה', fWa:'וואטסאפ', fViber:'ויבר', fTg:'טלגרם', fEmailOpt:'אימייל',
-    fTgNick:'שם משתמש טלגרם', fTgRequired:'נא להזין שם משתמש',
-    fPurpose:'אני רוצה...', fQuestion:'לשאול שאלה', fViewing:'לתאם ביקור', fOther:'אחר',
-    fOtherText:'תאר את הבקשה שלך', fSubmit:'שלח פנייה',
-    fSuccessTitle:'הפנייה נשלחה!', fSuccessText:'ניצור איתך קשר בהקדם.',
-    fSelectContact:'בחר לפחות אמצעי קשר אחד',
-    popupNoteTitle:'התחבר כדי להוסיף הערה',
-    popupNoteSub:'ההערות נשמרות בחשבון שלך ונראות רק לך',
+    fContactMethod:'אמצעי קשר', fCall:'שיחה', fWa:'וואטסאפ', fViber:'ויבר', fTg:'טלגרם', fEmailOpt:'אימייל',
+    fTgNick:'שם טלגרם', fTgRequired:'נא להזין שם',
+    fPurpose:'אני רוצה...', fQuestion:'לשאול', fViewing:'לתאם ביקור', fOther:'אחר',
+    fOtherText:'תאר', fSubmit:'שלח פנייה',
+    fSuccessTitle:'נשלח!', fSuccessText:'ניצור קשר.',
+    fSelectContact:'בחר אמצעי קשר',
+    popupNoteTitle:'התחבר להוספת הערה', popupNoteSub:'ההערות נראות רק לך',
+    popupRegBtn:'צור חשבון', popupLoginBtn:'כבר יש לי חשבון', popupClose:'סגור',
   }
 };
 
 function setLang(l, btn){
   lang=l;
+  localStorage.setItem('bcp_lang', l);
   document.querySelectorAll('.lb').forEach(b=>b.classList.remove('active'));
   if(btn) btn.classList.add('active');
   document.getElementById('page').setAttribute('dir', T[l].rtl?'rtl':'ltr');
+  document.getElementById('logo-tagline').textContent = T[l].logoTagline;
+  updateAuthBtn();
   if(prop) renderProp();
 }
 
@@ -399,9 +435,7 @@ function getCityLabel(d){ return T[lang].cities[d.district?d.city+'_district':d.
 function roomsLabel(d){
   const t=T[lang];
   if(['apt','penthouse','house','townhouse'].includes(d.type)&&d.rooms===0) return t.studio;
-  if(d.rooms===0) return '';
-  if(d.rooms>=5) return `5+ ${t.rooms}`;
-  return `${d.rooms} ${t.rooms}`;
+  if(d.rooms===0) return ''; if(d.rooms>=5) return `5+ ${t.rooms}`; return `${d.rooms} ${t.rooms}`;
 }
 
 function openLightbox(idx){ lbImages=prop.images||[]; lbIdx=idx; document.getElementById('lightbox-img').src=lbImages[idx]; document.getElementById('lightbox').classList.add('open'); }
@@ -417,62 +451,36 @@ function setGallery(idx){
 function galleryNav(dir){ const imgs=prop.images||[]; if(!imgs.length) return; setGallery((galleryIdx+dir+imgs.length)%imgs.length); }
 
 function toggleNoteEdit(){
-  if(!isLoggedIn()){
-    // Обновляем текст попапа
-    const t=T[lang];
-    document.getElementById('popup-title').textContent=t.popupNoteTitle;
-    document.getElementById('popup-sub').textContent=t.popupNoteSub;
-    showAuthPopup();
-    return;
-  }
+  if(!isLoggedIn()){ showAuthPopup(); return; }
   editingNote=!editingNote; renderNote();
   if(editingNote){ const ta=document.getElementById('note-textarea'); if(ta){ ta.focus(); ta.selectionStart=ta.value.length; } }
 }
 function cancelNote(){ editingNote=false; renderNote(); }
-
 async function saveNote(){
   const ta=document.getElementById('note-textarea'); if(!ta) return;
   const text=ta.value.trim();
-  if(isLoggedIn()){ await saveNoteSupabase(prop.id, text); }
-  else { notes[prop.id]=text; saveNotesLocal(); }
+  if(isLoggedIn()){ await saveNoteSupabase(prop.id, text); } else { notes[prop.id]=text; saveNotesLocal(); }
   editingNote=false; renderNote();
 }
 
 function renderNote(){
   const t=T[lang]; const con=document.getElementById('note-section'); if(!con) return;
   const note=notes[prop.id]||'';
-
   if(!isLoggedIn()){
-    // Показываем приглашение войти
-    con.innerHTML=`
-      <div class="note-card">
-        <div class="note-card-header">
-          <div class="note-card-title">${t.noteTitle}</div>
-        </div>
-        <div class="note-auth-prompt" onclick="toggleNoteEdit()">
-          <div class="note-auth-prompt-text">
-            <strong>${t.noteAddPromptTitle}</strong>
-            ${t.noteAddPromptSub}
-          </div>
-          <button class="note-auth-prompt-btn">${t.noteAddPromptBtn}</button>
-        </div>
-      </div>`;
+    con.innerHTML=`<div class="note-card"><div class="note-card-header"><div class="note-card-title">${t.noteTitle}</div></div>
+      <div class="note-auth-prompt" onclick="toggleNoteEdit()">
+        <div class="note-auth-prompt-text"><strong>${t.noteAddPromptTitle}</strong>${t.noteAddPromptSub}</div>
+        <button class="note-auth-prompt-btn">${t.noteAddPromptBtn}</button>
+      </div></div>`;
     return;
   }
-
-  con.innerHTML=`
-    <div class="note-card">
-      <div class="note-card-header">
-        <div class="note-card-title">${t.noteTitle}</div>
-        ${!editingNote?`<button class="note-edit-toggle" onclick="toggleNoteEdit()">${note?t.noteEdit:'+ Добавить'}</button>`:''}
-      </div>
-      ${editingNote?`
-        <textarea class="note-textarea" id="note-textarea" placeholder="${t.notePlaceholder}">${note}</textarea>
-        <div class="note-actions">
-          <button class="note-save" onclick="saveNote()">${t.noteSave}</button>
-          <button class="note-cancel" onclick="cancelNote()">${t.noteCancel}</button>
-        </div>`:`
-        <div class="note-display ${note?'':'empty'}" onclick="toggleNoteEdit()">${note||t.noteEmpty}</div>`}
+  con.innerHTML=`<div class="note-card"><div class="note-card-header">
+    <div class="note-card-title">${t.noteTitle}</div>
+    ${!editingNote?`<button class="note-edit-toggle" onclick="toggleNoteEdit()">${note?t.noteEdit:'+'}</button>`:''}
+    </div>
+    ${editingNote?`<textarea class="note-textarea" id="note-textarea" placeholder="${t.notePlaceholder}">${note}</textarea>
+      <div class="note-actions"><button class="note-save" onclick="saveNote()">${t.noteSave}</button><button class="note-cancel" onclick="cancelNote()">${t.noteCancel}</button></div>`
+    :`<div class="note-display ${note?'':'empty'}" onclick="toggleNoteEdit()">${note||t.noteEmpty}</div>`}
     </div>`;
 }
 
@@ -548,7 +556,6 @@ function renderProp(){
   const prefillPhoneNum=prefillPhone&&prefillCountryCode?prefillPhone.replace(prefillCountryCode,'').trim():prefillPhone;
 
   document.getElementById('content').innerHTML=`
-    <a class="back-btn" href="index.html">${t.back}</a>
     <div class="gallery">${galleryHtml}</div>
     <div class="info-card">
       <div class="prop-header">
@@ -568,9 +575,7 @@ function renderProp(){
       <div class="params">${params.join('')}</div>
       ${desc?`<p class="description">${desc}</p>`:`<p class="description" style="color:#aaa">${t.noDesc}</p>`}
     </div>
-
     <div id="note-section"></div>
-
     <div class="contact-card">
       <h2>${t.contact}</h2>
       <div class="quick-btns">
@@ -580,7 +585,7 @@ function renderProp(){
       <button class="form-toggle-btn" id="enquiry-btn" onclick="toggleForm()">📝 ${t.enquiryBtn}</button>
       <div class="enquiry-form" id="enquiry-form">
         <div id="enquiry-form-inner">
-          ${hasAutofill?`<div class="autofill-banner">${t.autofillBanner}</div>`:''}
+          ${hasAutofill?`<div class="autofill-banner">✅ ${t.autofillBanner}</div>`:''}
           <div class="form-section">
             <div class="field"><label>${t.fName}<span class="req">*</span></label><input type="text" id="f-name" value="${prefillName}" class="${prefillName?'autofilled':''}"><div class="field-error" id="f-name-err"></div></div>
             <div class="field"><label>${t.fPhone}<span class="req">*</span></label>
@@ -620,10 +625,23 @@ function renderProp(){
       </div>
     </div>`;
 
+  document.title = d['title_'+lang] + ' — Best Cyprus Properties';
   renderNote();
 }
 
 window.onload=async function(){
+  // Язык из localStorage
+  const savedLang = localStorage.getItem('bcp_lang');
+  if(savedLang && T[savedLang]){
+    lang = savedLang;
+    document.querySelectorAll('.lb').forEach(b=>b.classList.remove('active'));
+    const activeLb = document.querySelector(`.lb[onclick*="'${savedLang}'"]`);
+    if(activeLb) activeLb.classList.add('active');
+  }
+  document.getElementById('page').setAttribute('dir', T[lang].rtl?'rtl':'ltr');
+  document.getElementById('logo-tagline').textContent = T[lang].logoTagline;
+  updateAuthBtn();
+
   const params=new URLSearchParams(window.location.search);
   const id=params.get('id');
   if(!id){ document.getElementById('content').innerHTML='<div class="error-msg">Объект не найден</div>'; return; }
@@ -633,7 +651,7 @@ window.onload=async function(){
     const data=await res.json();
     if(!data.length){ document.getElementById('content').innerHTML='<div class="error-msg">Объект не найден</div>'; return; }
     prop=data[0];
-    setLang('ru',document.querySelector('.lb'));
+    renderProp();
   } catch(e){
     document.getElementById('content').innerHTML='<div class="error-msg">Ошибка загрузки</div>';
   }
