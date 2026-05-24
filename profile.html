@@ -1,348 +1,657 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Профиль — Best Cyprus Properties</title>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f0; min-height: 100vh; }
-  .wrap { max-width: 600px; margin: 0 auto; padding: 16px; }
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Профиль — Best Cyprus Properties</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  /* ===== ШАПКА ===== */
-  .site-header { background: white; border-radius: 16px; margin-bottom: 14px; overflow: hidden; }
-  .site-header-top { padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-  .site-logo { text-decoration: none; display: flex; flex-direction: column; }
-  .site-logo-sub { font-size: 10px; color: #aaa; letter-spacing: 1px; text-transform: uppercase; }
-  .site-logo-main { font-size: 16px; font-weight: 700; color: #1a1a1a; line-height: 1.2; }
-  .site-header-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-  .lang-switch { display: flex; gap: 6px; }
-  .lb { padding: 5px 8px; border-radius: 20px; border: 1px solid #ccc; background: white; cursor: pointer; display: flex; align-items: center; }
-  .lb.active { border: 2px solid #1a1a1a; }
-  .lb img { display: block; border-radius: 2px; }
-  /* ===== /ШАПКА ===== */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f5f0;
+      min-height: 100vh;
+    }
 
-  .card { background: white; border-radius: 16px; padding: 24px; margin-bottom: 14px; }
-  .card h2 { font-size: 17px; font-weight: 700; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+    .wrap {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 16px;
+    }
 
-  .avatar-wrap { position: relative; width: 88px; height: 88px; margin: 0 auto 16px; cursor: pointer; }
-  .avatar { width: 88px; height: 88px; border-radius: 50%; background: linear-gradient(135deg, #0f6e56, #1a9070); display: flex; align-items: center; justify-content: center; font-size: 36px; color: white; font-weight: 700; overflow: hidden; }
-  .avatar img { width: 100%; height: 100%; object-fit: cover; }
-  .avatar-edit-badge { position: absolute; bottom: 0; right: 0; background: #0f6e56; color: white; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; font-size: 13px; border: 2px solid white; }
-  .avatar-input { display: none; }
+    /* ===== ШАПКА ===== */
+    .site-header {
+      background: white;
+      border-radius: 16px;
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
 
-  .user-name { text-align: center; font-size: 20px; font-weight: 700; margin-bottom: 4px; }
-  .user-email { text-align: center; font-size: 14px; color: #888; margin-bottom: 20px; }
+    .site-header-top {
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
 
-  .form-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 14px; }
-  .form-group label { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.4px; }
-  .form-group input { font-size: 15px; padding: 11px 14px; border-radius: 12px; border: 1px solid #e0e0e0; background: #f8f8f8; color: #1a1a1a; font-family: inherit; width: 100%; }
-  .form-group input:focus { outline: none; border-color: #0f6e56; background: white; }
-  .form-group input:disabled { color: #aaa; cursor: not-allowed; }
+    .site-logo {
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+    }
 
-  .save-btn { width: 100%; padding: 13px; border-radius: 12px; border: none; background: #0f6e56; color: white; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 4px; }
-  .save-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-  .danger-btn { width: 100%; padding: 13px; border-radius: 12px; border: 1px solid #e0e0e0; background: white; color: #c0392b; font-size: 15px; font-weight: 500; cursor: pointer; margin-top: 8px; }
+    .site-logo-sub {
+      font-size: 10px;
+      color: #aaa;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
 
-  .msg { padding: 12px 14px; border-radius: 12px; font-size: 14px; margin-bottom: 14px; display: none; }
-  .msg.success { background: #e6f7f2; color: #0f6e56; }
-  .msg.error { background: #fff0f0; color: #c0392b; }
+    .site-logo-main {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1a1a1a;
+      line-height: 1.2;
+    }
 
-  .stat-row { display: flex; gap: 10px; margin-bottom: 14px; }
-  .stat { flex: 1; background: #f8f8f8; border-radius: 12px; padding: 14px; text-align: center; }
-  .stat-num { font-size: 24px; font-weight: 700; color: #0f6e56; }
-  .stat-label { font-size: 12px; color: #888; margin-top: 2px; }
+    .site-header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
 
-  .fav-list { display: flex; flex-direction: column; gap: 8px; }
-  .fav-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; background: #f8f8f8; border-radius: 12px; cursor: pointer; text-decoration: none; color: #1a1a1a; }
-  .fav-item:hover { background: #e6f7f2; }
-  .fav-thumb { width: 44px; height: 44px; border-radius: 8px; flex-shrink: 0; background: #e0e0e0; display: flex; align-items: center; justify-content: center; font-size: 20px; overflow: hidden; }
-  .fav-thumb img { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; }
-  .fav-info { flex: 1; min-width: 0; }
-  .fav-title { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .fav-price { font-size: 13px; color: #0f6e56; font-weight: 600; }
-  .loading { text-align: center; padding: 30px; color: #888; }
-</style>
+    .lang-switch {
+      display: flex;
+      gap: 6px;
+    }
+
+    .lb {
+      padding: 5px 8px;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+      background: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .lb.active {
+      border: 2px solid #1a1a1a;
+    }
+
+    .lb img {
+      display: block;
+      border-radius: 2px;
+    }
+
+    /* ===== /ШАПКА ===== */
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 14px;
+    }
+
+    .card h2 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .avatar-wrap {
+      position: relative;
+      width: 88px;
+      height: 88px;
+      margin: 0 auto 16px;
+      cursor: pointer;
+    }
+
+    .avatar {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0f6e56, #1a9070);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      color: white;
+      font-weight: 700;
+      overflow: hidden;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .avatar-edit-badge {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: #0f6e56;
+      color: white;
+      border-radius: 50%;
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      border: 2px solid white;
+    }
+
+    .avatar-input {
+      display: none;
+    }
+
+    .user-name {
+      text-align: center;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .user-email {
+      text-align: center;
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      font-size: 12px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .form-group input {
+      font-size: 15px;
+      padding: 11px 14px;
+      border-radius: 12px;
+      border: 1px solid #e0e0e0;
+      background: #f8f8f8;
+      color: #1a1a1a;
+      font-family: inherit;
+      width: 100%;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #0f6e56;
+      background: white;
+    }
+
+    .form-group input:disabled {
+      color: #aaa;
+      cursor: not-allowed;
+    }
+
+    .save-btn {
+      width: 100%;
+      padding: 13px;
+      border-radius: 12px;
+      border: none;
+      background: #0f6e56;
+      color: white;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 4px;
+    }
+
+    .save-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .danger-btn {
+      width: 100%;
+      padding: 13px;
+      border-radius: 12px;
+      border: 1px solid #e0e0e0;
+      background: white;
+      color: #c0392b;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    .msg {
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      margin-bottom: 14px;
+      display: none;
+    }
+
+    .msg.success {
+      background: #e6f7f2;
+      color: #0f6e56;
+    }
+
+    .msg.error {
+      background: #fff0f0;
+      color: #c0392b;
+    }
+
+    .stat-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .stat {
+      flex: 1;
+      background: #f8f8f8;
+      border-radius: 12px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-size: 24px;
+      font-weight: 700;
+      color: #0f6e56;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #888;
+      margin-top: 2px;
+    }
+
+    .fav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .fav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      background: #f8f8f8;
+      border-radius: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      color: #1a1a1a;
+    }
+
+    .fav-item:hover {
+      background: #e6f7f2;
+    }
+
+    .fav-thumb {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      flex-shrink: 0;
+      background: #e0e0e0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      overflow: hidden;
+    }
+
+    .fav-thumb img {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .fav-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .fav-title {
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .fav-price {
+      font-size: 13px;
+      color: #0f6e56;
+      font-weight: 600;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 30px;
+      color: #888;
+    }
+  </style>
 </head>
-<body>
-<div class="wrap" id="page">
 
-  <!-- ШАПКА -->
-  <div class="site-header">
-    <div class="site-header-top">
-      <a class="site-logo" href="index.html">
-        <span class="site-logo-sub">Best Cyprus Properties</span>
-        <span class="site-logo-main" id="logo-tagline"></span>
-      </a>
-      <div class="site-header-right">
-        <div class="lang-switch">
-          <button class="lb" id="lb-ru" onclick="setLang('ru',this)"><img src="https://flagcdn.com/24x18/ru.png" alt="RU"></button>
-          <button class="lb" id="lb-en" onclick="setLang('en',this)"><img src="https://flagcdn.com/24x18/gb.png" alt="EN"></button>
-          <button class="lb" id="lb-el" onclick="setLang('el',this)"><img src="https://flagcdn.com/24x18/cy.png" alt="ΕΛ"></button>
-          <button class="lb" id="lb-he" onclick="setLang('he',this)"><img src="https://flagcdn.com/24x18/il.png" alt="HE"></button>
+<body>
+  <div class="wrap" id="page">
+
+    <!-- ШАПКА -->
+    <div class="site-header">
+      <div class="site-header-top">
+        <a class="site-logo" href="index.html">
+          <span class="site-logo-sub">Best Cyprus Properties</span>
+          <span class="site-logo-main" id="logo-tagline"></span>
+        </a>
+        <div class="site-header-right">
+          <div class="lang-switch">
+            <button class="lb" id="lb-ru" onclick="setLang('ru',this)"><img src="https://flagcdn.com/24x18/ru.png"
+                alt="RU"></button>
+            <button class="lb" id="lb-en" onclick="setLang('en',this)"><img src="https://flagcdn.com/24x18/gb.png"
+                alt="EN"></button>
+            <button class="lb" id="lb-el" onclick="setLang('el',this)"><img src="https://flagcdn.com/24x18/cy.png"
+                alt="ΕΛ"></button>
+            <button class="lb" id="lb-he" onclick="setLang('he',this)"><img src="https://flagcdn.com/24x18/il.png"
+                alt="HE"></button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="msg" id="msg"></div>
+    <div class="msg" id="msg"></div>
 
-  <div class="card" style="text-align:center">
-    <div class="avatar-wrap" onclick="document.getElementById('avatar-input').click()">
-      <div class="avatar" id="avatar-display">?</div>
-      <div class="avatar-edit-badge">✏️</div>
+    <div class="card" style="text-align:center">
+      <div class="avatar-wrap" onclick="document.getElementById('avatar-input').click()">
+        <div class="avatar" id="avatar-display">?</div>
+        <div class="avatar-edit-badge">✏️</div>
+      </div>
+      <input type="file" id="avatar-input" class="avatar-input" accept="image/*" onchange="uploadAvatar(this)">
+      <div class="user-name" id="user-name">...</div>
+      <div class="user-email" id="user-email"></div>
+      <div class="stat-row">
+        <div class="stat">
+          <div class="stat-num" id="fav-count">0</div>
+          <div class="stat-label" id="stat-fav-label"></div>
+        </div>
+        <div class="stat">
+          <div class="stat-num" id="notes-count">0</div>
+          <div class="stat-label" id="stat-notes-label"></div>
+        </div>
+      </div>
     </div>
-    <input type="file" id="avatar-input" class="avatar-input" accept="image/*" onchange="uploadAvatar(this)">
-    <div class="user-name" id="user-name">...</div>
-    <div class="user-email" id="user-email"></div>
-    <div class="stat-row">
-      <div class="stat"><div class="stat-num" id="fav-count">0</div><div class="stat-label" id="stat-fav-label"></div></div>
-      <div class="stat"><div class="stat-num" id="notes-count">0</div><div class="stat-label" id="stat-notes-label"></div></div>
+
+    <div class="card">
+      <h2>👤 <span id="section-personal"></span></h2>
+      <div class="form-group"><label id="label-name"></label><input type="text" id="p-name"></div>
+      <div class="form-group"><label id="label-email"></label><input type="email" id="p-email" disabled></div>
+      <div class="form-group"><label id="label-phone"></label><input type="tel" id="p-phone"></div>
+      <button class="save-btn" id="save-profile-btn" onclick="saveProfile()"><span id="btn-save"></span></button>
+    </div>
+
+    <div class="card">
+      <h2>🔑 <span id="section-password"></span></h2>
+      <div class="form-group"><label id="label-new-password"></label><input type="password" id="new-password"></div>
+      <div class="form-group"><label id="label-repeat-password"></label><input type="password" id="new-password2"></div>
+      <button class="save-btn" onclick="changePassword()"><span id="btn-change-password"></span></button>
+    </div>
+
+    <div class="card">
+      <h2>❤️ <span id="section-favourites"></span></h2>
+      <div id="fav-list">
+        <div class="loading">...</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <button class="danger-btn" onclick="logout()" id="btn-logout"></button>
     </div>
   </div>
 
-  <div class="card">
-    <h2>👤 <span id="section-personal"></span></h2>
-    <div class="form-group"><label id="label-name"></label><input type="text" id="p-name"></div>
-    <div class="form-group"><label id="label-email"></label><input type="email" id="p-email" disabled></div>
-    <div class="form-group"><label id="label-phone"></label><input type="tel" id="p-phone"></div>
-    <button class="save-btn" id="save-profile-btn" onclick="saveProfile()"><span id="btn-save"></span></button>
-  </div>
+  <script>
+    const SUPABASE_URL = 'https://lfgqhprihykoxqfnubhc.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_-E46ER3EDjD4TTMMiTRaCQ_9xAe36q_';
+    const BUCKET_AVATARS = 'avatars';
 
-  <div class="card">
-    <h2>🔑 <span id="section-password"></span></h2>
-    <div class="form-group"><label id="label-new-password"></label><input type="password" id="new-password"></div>
-    <div class="form-group"><label id="label-repeat-password"></label><input type="password" id="new-password2"></div>
-    <button class="save-btn" onclick="changePassword()"><span id="btn-change-password"></span></button>
-  </div>
+    function getToken() { return localStorage.getItem('bcp_token') || ''; }
+    function authHeaders() { return { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${getToken()}`, 'Content-Type': 'application/json' }; }
 
-  <div class="card">
-    <h2>❤️ <span id="section-favourites"></span></h2>
-    <div id="fav-list"><div class="loading">...</div></div>
-  </div>
+    let currentUserId = null;
+    let lang = 'ru';
 
-  <div class="card">
-    <button class="danger-btn" onclick="logout()" id="btn-logout"></button>
-  </div>
-</div>
+    const logoTaglines = { ru: 'Недвижимость на Кипре', en: 'Cyprus Real Estate', el: 'Ακίνητα στην Κύπρο', he: 'נדל״ן בקפריסין' };
 
-<script>
-const SUPABASE_URL = 'https://lfgqhprihykoxqfnubhc.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_-E46ER3EDjD4TTMMiTRaCQ_9xAe36q_';
-const BUCKET_AVATARS = 'avatars';
+    const T = {
+      ru: {
+        sectionPersonal: 'Личные данные', sectionPassword: 'Сменить пароль', sectionFavourites: 'Избранное',
+        labelName: 'Имя', labelEmail: 'Email', labelPhone: 'Телефон',
+        labelNewPassword: 'Новый пароль', labelRepeatPassword: 'Повторите пароль',
+        btnSave: 'Сохранить', btnChangePassword: 'Сменить пароль', btnLogout: 'Выйти из аккаунта',
+        statFav: 'В избранном', statNotes: 'Заметок',
+        placeholderName: 'Ваше имя', placeholderPhone: '+357...',
+        placeholderNewPassword: 'Минимум 8 символов', placeholderRepeat: 'Повторите пароль',
+        msgSaved: 'Данные сохранены', msgSaveError: 'Ошибка сохранения',
+        msgPasswordChanged: 'Пароль изменён', msgPasswordError: 'Ошибка смены пароля',
+        msgPasswordShort: 'Минимум 8 символов', msgPasswordMismatch: 'Пароли не совпадают',
+        msgAvatarOk: 'Аватар обновлён', msgAvatarError: 'Ошибка загрузки аватара',
+        noFavourites: 'Нет избранных объектов', noName: 'Без имени', rtl: false
+      },
+      en: {
+        sectionPersonal: 'Personal details', sectionPassword: 'Change password', sectionFavourites: 'Favourites',
+        labelName: 'Name', labelEmail: 'Email', labelPhone: 'Phone',
+        labelNewPassword: 'New password', labelRepeatPassword: 'Repeat password',
+        btnSave: 'Save', btnChangePassword: 'Change password', btnLogout: 'Sign out',
+        statFav: 'Saved', statNotes: 'Notes',
+        placeholderName: 'Your name', placeholderPhone: '+357...',
+        placeholderNewPassword: 'At least 8 characters', placeholderRepeat: 'Repeat password',
+        msgSaved: 'Saved', msgSaveError: 'Error saving',
+        msgPasswordChanged: 'Password changed', msgPasswordError: 'Error changing password',
+        msgPasswordShort: 'At least 8 characters', msgPasswordMismatch: 'Passwords do not match',
+        msgAvatarOk: 'Avatar updated', msgAvatarError: 'Upload error',
+        noFavourites: 'No saved properties', noName: 'No name', rtl: false
+      },
+      el: {
+        sectionPersonal: 'Προσωπικά στοιχεία', sectionPassword: 'Αλλαγή κωδικού', sectionFavourites: 'Αγαπημένα',
+        labelName: 'Όνομα', labelEmail: 'Email', labelPhone: 'Τηλέφωνο',
+        labelNewPassword: 'Νέος κωδικός', labelRepeatPassword: 'Επανάληψη',
+        btnSave: 'Αποθήκευση', btnChangePassword: 'Αλλαγή κωδικού', btnLogout: 'Αποσύνδεση',
+        statFav: 'Αποθηκευμένα', statNotes: 'Σημειώσεις',
+        placeholderName: 'Το όνομά σας', placeholderPhone: '+357...',
+        placeholderNewPassword: 'Τουλάχιστον 8 χαρακτήρες', placeholderRepeat: 'Επανάληψη',
+        msgSaved: 'Αποθηκεύτηκε', msgSaveError: 'Σφάλμα',
+        msgPasswordChanged: 'Ο κωδικός άλλαξε', msgPasswordError: 'Σφάλμα',
+        msgPasswordShort: 'Τουλάχιστον 8 χαρακτήρες', msgPasswordMismatch: 'Οι κωδικοί δεν ταιριάζουν',
+        msgAvatarOk: 'Ενημερώθηκε', msgAvatarError: 'Σφάλμα',
+        noFavourites: 'Δεν υπάρχουν αγαπημένα', noName: 'Χωρίς όνομα', rtl: false
+      },
+      he: {
+        sectionPersonal: 'פרטים אישיים', sectionPassword: 'שינוי סיסמה', sectionFavourites: 'מועדפים',
+        labelName: 'שם', labelEmail: 'אימייל', labelPhone: 'טלפון',
+        labelNewPassword: 'סיסמה חדשה', labelRepeatPassword: 'חזור על הסיסמה',
+        btnSave: 'שמור', btnChangePassword: 'שנה סיסמה', btnLogout: 'התנתק',
+        statFav: 'שמורים', statNotes: 'הערות',
+        placeholderName: 'השם שלך', placeholderPhone: '+357...',
+        placeholderNewPassword: 'לפחות 8 תווים', placeholderRepeat: 'חזור על הסיסמה',
+        msgSaved: 'נשמר', msgSaveError: 'שגיאה',
+        msgPasswordChanged: 'הסיסמה שונתה', msgPasswordError: 'שגיאה',
+        msgPasswordShort: 'לפחות 8 תווים', msgPasswordMismatch: 'הסיסמאות אינן תואמות',
+        msgAvatarOk: 'עודכן', msgAvatarError: 'שגיאה',
+        noFavourites: 'אין נכסים שמורים', noName: 'ללא שם', rtl: true
+      },
+    };
 
-function getToken(){ return localStorage.getItem('bcp_token')||''; }
-function authHeaders(){ return { 'apikey':SUPABASE_KEY, 'Authorization':`Bearer ${getToken()}`, 'Content-Type':'application/json' }; }
+    function setLang(l, btn) {
+      lang = l;
+      localStorage.setItem('bcp_lang', l);
+      document.querySelectorAll('.lb').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      else { const b = document.getElementById('lb-' + l); if (b) b.classList.add('active'); }
+      const t = T[lang];
+      document.getElementById('page').setAttribute('dir', t.rtl ? 'rtl' : 'ltr');
+      document.getElementById('logo-tagline').textContent = logoTaglines[lang] || logoTaglines.en;
+      document.getElementById('section-personal').textContent = t.sectionPersonal;
+      document.getElementById('section-password').textContent = t.sectionPassword;
+      document.getElementById('section-favourites').textContent = t.sectionFavourites;
+      document.getElementById('label-name').textContent = t.labelName;
+      document.getElementById('label-email').textContent = t.labelEmail;
+      document.getElementById('label-phone').textContent = t.labelPhone;
+      document.getElementById('label-new-password').textContent = t.labelNewPassword;
+      document.getElementById('label-repeat-password').textContent = t.labelRepeatPassword;
+      document.getElementById('btn-save').textContent = t.btnSave;
+      document.getElementById('btn-change-password').textContent = t.btnChangePassword;
+      document.getElementById('btn-logout').textContent = t.btnLogout;
+      document.getElementById('stat-fav-label').textContent = t.statFav;
+      document.getElementById('stat-notes-label').textContent = t.statNotes;
+      document.getElementById('p-name').placeholder = t.placeholderName;
+      document.getElementById('p-phone').placeholder = t.placeholderPhone;
+      document.getElementById('new-password').placeholder = t.placeholderNewPassword;
+      document.getElementById('new-password2').placeholder = t.placeholderRepeat;
+    }
 
-let currentUserId = null;
-let lang = 'ru';
+    function showMsg(text, type) {
+      const el = document.getElementById('msg');
+      el.textContent = text; el.className = `msg ${type}`; el.style.display = 'block';
+      setTimeout(() => { el.style.display = 'none'; }, 4000);
+    }
 
-const logoTaglines = { ru:'Недвижимость на Кипре', en:'Cyprus Real Estate', el:'Ακίνητα στην Κύπρο', he:'נדל״ן בקפריסין' };
+    function logout() {
+      ['bcp_token', 'bcp_refresh', 'bcp_user', 'bcp_profile'].forEach(k => localStorage.removeItem(k));
+      window.location.href = 'index.html';
+    }
 
-const T = {
-  ru:{ sectionPersonal:'Личные данные', sectionPassword:'Сменить пароль', sectionFavourites:'Избранное',
-    labelName:'Имя', labelEmail:'Email', labelPhone:'Телефон',
-    labelNewPassword:'Новый пароль', labelRepeatPassword:'Повторите пароль',
-    btnSave:'Сохранить', btnChangePassword:'Сменить пароль', btnLogout:'Выйти из аккаунта',
-    statFav:'В избранном', statNotes:'Заметок',
-    placeholderName:'Ваше имя', placeholderPhone:'+357...',
-    placeholderNewPassword:'Минимум 8 символов', placeholderRepeat:'Повторите пароль',
-    msgSaved:'Данные сохранены', msgSaveError:'Ошибка сохранения',
-    msgPasswordChanged:'Пароль изменён', msgPasswordError:'Ошибка смены пароля',
-    msgPasswordShort:'Минимум 8 символов', msgPasswordMismatch:'Пароли не совпадают',
-    msgAvatarOk:'Аватар обновлён', msgAvatarError:'Ошибка загрузки аватара',
-    noFavourites:'Нет избранных объектов', noName:'Без имени', rtl:false },
-  en:{ sectionPersonal:'Personal details', sectionPassword:'Change password', sectionFavourites:'Favourites',
-    labelName:'Name', labelEmail:'Email', labelPhone:'Phone',
-    labelNewPassword:'New password', labelRepeatPassword:'Repeat password',
-    btnSave:'Save', btnChangePassword:'Change password', btnLogout:'Sign out',
-    statFav:'Saved', statNotes:'Notes',
-    placeholderName:'Your name', placeholderPhone:'+357...',
-    placeholderNewPassword:'At least 8 characters', placeholderRepeat:'Repeat password',
-    msgSaved:'Saved', msgSaveError:'Error saving',
-    msgPasswordChanged:'Password changed', msgPasswordError:'Error changing password',
-    msgPasswordShort:'At least 8 characters', msgPasswordMismatch:'Passwords do not match',
-    msgAvatarOk:'Avatar updated', msgAvatarError:'Upload error',
-    noFavourites:'No saved properties', noName:'No name', rtl:false },
-  el:{ sectionPersonal:'Προσωπικά στοιχεία', sectionPassword:'Αλλαγή κωδικού', sectionFavourites:'Αγαπημένα',
-    labelName:'Όνομα', labelEmail:'Email', labelPhone:'Τηλέφωνο',
-    labelNewPassword:'Νέος κωδικός', labelRepeatPassword:'Επανάληψη',
-    btnSave:'Αποθήκευση', btnChangePassword:'Αλλαγή κωδικού', btnLogout:'Αποσύνδεση',
-    statFav:'Αποθηκευμένα', statNotes:'Σημειώσεις',
-    placeholderName:'Το όνομά σας', placeholderPhone:'+357...',
-    placeholderNewPassword:'Τουλάχιστον 8 χαρακτήρες', placeholderRepeat:'Επανάληψη',
-    msgSaved:'Αποθηκεύτηκε', msgSaveError:'Σφάλμα',
-    msgPasswordChanged:'Ο κωδικός άλλαξε', msgPasswordError:'Σφάλμα',
-    msgPasswordShort:'Τουλάχιστον 8 χαρακτήρες', msgPasswordMismatch:'Οι κωδικοί δεν ταιριάζουν',
-    msgAvatarOk:'Ενημερώθηκε', msgAvatarError:'Σφάλμα',
-    noFavourites:'Δεν υπάρχουν αγαπημένα', noName:'Χωρίς όνομα', rtl:false },
-  he:{ sectionPersonal:'פרטים אישיים', sectionPassword:'שינוי סיסמה', sectionFavourites:'מועדפים',
-    labelName:'שם', labelEmail:'אימייל', labelPhone:'טלפון',
-    labelNewPassword:'סיסמה חדשה', labelRepeatPassword:'חזור על הסיסמה',
-    btnSave:'שמור', btnChangePassword:'שנה סיסמה', btnLogout:'התנתק',
-    statFav:'שמורים', statNotes:'הערות',
-    placeholderName:'השם שלך', placeholderPhone:'+357...',
-    placeholderNewPassword:'לפחות 8 תווים', placeholderRepeat:'חזור על הסיסמה',
-    msgSaved:'נשמר', msgSaveError:'שגיאה',
-    msgPasswordChanged:'הסיסמה שונתה', msgPasswordError:'שגיאה',
-    msgPasswordShort:'לפחות 8 תווים', msgPasswordMismatch:'הסיסמאות אינן תואמות',
-    msgAvatarOk:'עודכן', msgAvatarError:'שגיאה',
-    noFavourites:'אין נכסים שמורים', noName:'ללא שם', rtl:true },
-};
+    function renderAvatar(name, avatarUrl) {
+      const el = document.getElementById('avatar-display');
+      if (avatarUrl) { el.innerHTML = `<img src="${avatarUrl}" alt="avatar">`; }
+      else { el.textContent = name?.trim() ? name.trim()[0].toUpperCase() : '?'; }
+    }
 
-function setLang(l, btn){
-  lang = l;
-  localStorage.setItem('bcp_lang', l);
-  document.querySelectorAll('.lb').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  else { const b=document.getElementById('lb-'+l); if(b) b.classList.add('active'); }
-  const t = T[lang];
-  document.getElementById('page').setAttribute('dir', t.rtl?'rtl':'ltr');
-  document.getElementById('logo-tagline').textContent = logoTaglines[lang]||logoTaglines.en;
-  document.getElementById('section-personal').textContent = t.sectionPersonal;
-  document.getElementById('section-password').textContent = t.sectionPassword;
-  document.getElementById('section-favourites').textContent = t.sectionFavourites;
-  document.getElementById('label-name').textContent = t.labelName;
-  document.getElementById('label-email').textContent = t.labelEmail;
-  document.getElementById('label-phone').textContent = t.labelPhone;
-  document.getElementById('label-new-password').textContent = t.labelNewPassword;
-  document.getElementById('label-repeat-password').textContent = t.labelRepeatPassword;
-  document.getElementById('btn-save').textContent = t.btnSave;
-  document.getElementById('btn-change-password').textContent = t.btnChangePassword;
-  document.getElementById('btn-logout').textContent = t.btnLogout;
-  document.getElementById('stat-fav-label').textContent = t.statFav;
-  document.getElementById('stat-notes-label').textContent = t.statNotes;
-  document.getElementById('p-name').placeholder = t.placeholderName;
-  document.getElementById('p-phone').placeholder = t.placeholderPhone;
-  document.getElementById('new-password').placeholder = t.placeholderNewPassword;
-  document.getElementById('new-password2').placeholder = t.placeholderRepeat;
-}
+    async function uploadAvatar(input) {
+      const file = input.files[0]; if (!file) return;
+      const t = T[lang];
+      document.getElementById('avatar-display').style.opacity = '0.6';
+      const ext = file.name.split('.').pop();
+      const fileName = `${currentUserId}.${ext}`;
+      const res = await fetch(`${SUPABASE_URL}/storage/v1/object/${BUCKET_AVATARS}/${fileName}`, {
+        method: 'POST',
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${getToken()}`, 'Content-Type': file.type, 'x-upsert': 'true' },
+        body: file
+      });
+      if (res.ok) {
+        const avatarUrl = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET_AVATARS}/${fileName}?t=${Date.now()}`;
+        await fetch(`${SUPABASE_URL}/rest/v1/user_profiles?id=eq.${currentUserId}`, {
+          method: 'PATCH', headers: { ...authHeaders(), 'Prefer': 'return=minimal' },
+          body: JSON.stringify({ avatar_url: avatarUrl })
+        });
+        const profile = JSON.parse(localStorage.getItem('bcp_profile') || '{}');
+        profile.avatar_url = avatarUrl;
+        localStorage.setItem('bcp_profile', JSON.stringify(profile));
+        renderAvatar(document.getElementById('p-name').value, avatarUrl);
+        showMsg(t.msgAvatarOk, 'success');
+      } else { showMsg(t.msgAvatarError, 'error'); }
+      document.getElementById('avatar-display').style.opacity = '1';
+      input.value = '';
+    }
 
-function showMsg(text, type){
-  const el=document.getElementById('msg');
-  el.textContent=text; el.className=`msg ${type}`; el.style.display='block';
-  setTimeout(()=>{ el.style.display='none'; }, 4000);
-}
+    async function loadProfile() {
+      const token = getToken();
+      if (!token) { window.location.href = 'auth.html'; return; }
+      const userRes = await fetch(`${SUPABASE_URL}/auth/v1/user`, { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${token}` } });
+      if (!userRes.ok) { window.location.href = 'auth.html'; return; }
+      const user = await userRes.json();
+      currentUserId = user.id;
+      document.getElementById('p-email').value = user.email || '';
+      document.getElementById('user-email').textContent = user.email || '';
+      const profRes = await fetch(`${SUPABASE_URL}/rest/v1/user_profiles?id=eq.${user.id}&select=*`, { headers: authHeaders() });
+      const profiles = await profRes.json();
+      const profile = profiles[0] || {};
+      const name = profile.name || user.user_metadata?.name || '';
+      document.getElementById('p-name').value = name;
+      document.getElementById('p-phone').value = profile.phone || '';
+      document.getElementById('user-name').textContent = name || T[lang].noName;
+      renderAvatar(name, profile.avatar_url);
+      await loadFavourites(user.id);
+    }
 
-function logout(){
-  ['bcp_token','bcp_refresh','bcp_user','bcp_profile'].forEach(k=>localStorage.removeItem(k));
-  window.location.href='index.html';
-}
+    async function loadFavourites(userId) {
+      const t = T[lang];
+      const [favRes, notesRes] = await Promise.all([
+        fetch(`${SUPABASE_URL}/rest/v1/user_favourites?user_id=eq.${userId}&select=property_id`, { headers: authHeaders() }),
+        fetch(`${SUPABASE_URL}/rest/v1/user_notes?user_id=eq.${userId}&select=property_id`, { headers: authHeaders() }),
+      ]);
+      const favs = await favRes.json();
+      const notes = await notesRes.json();
+      document.getElementById('fav-count').textContent = Array.isArray(favs) ? favs.length : 0;
+      document.getElementById('notes-count').textContent = Array.isArray(notes) ? notes.length : 0;
+      const list = document.getElementById('fav-list');
+      if (!Array.isArray(favs) || !favs.length) { list.innerHTML = `<div class="loading" style="color:#aaa">${t.noFavourites}</div>`; return; }
+      const ids = favs.map(f => f.property_id).join(',');
+      const propsRes = await fetch(`${SUPABASE_URL}/rest/v1/Properties?id=in.(${ids})&select=id,title_ru,title_en,title_el,title_he,price,images,emoji`, { headers: authHeaders() });
+      const props = await propsRes.json();
+      if (!Array.isArray(props) || !props.length) { list.innerHTML = `<div class="loading" style="color:#aaa">${t.noFavourites}</div>`; return; }
+      list.innerHTML = props.map(p => {
+        const title = p['title_' + lang] || p.title_ru || p.title_en || '';
+        const thumb = p.images?.length > 0 ? `<div class="fav-thumb"><img src="${p.images[0]}" alt="фото"></div>` : `<div class="fav-thumb">${p.emoji}</div>`;
+        return `<a class="fav-item" href="property.html?id=${p.id}">${thumb}<div class="fav-info"><div class="fav-title">${title}</div><div class="fav-price">€${(p.price * 1000).toLocaleString()}</div></div><span style="color:#aaa">→</span></a>`;
+      }).join('');
+    }
 
-function renderAvatar(name, avatarUrl){
-  const el = document.getElementById('avatar-display');
-  if(avatarUrl){ el.innerHTML = `<img src="${avatarUrl}" alt="avatar">`; }
-  else { el.textContent = name?.trim() ? name.trim()[0].toUpperCase() : '?'; }
-}
+    async function saveProfile() {
+      const t = T[lang];
+      const name = document.getElementById('p-name').value.trim();
+      const phone = document.getElementById('p-phone').value.trim();
+      const btn = document.getElementById('save-profile-btn'); btn.disabled = true;
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/user_profiles?id=eq.${currentUserId}`, {
+        method: 'PATCH', headers: { ...authHeaders(), 'Prefer': 'return=minimal' }, body: JSON.stringify({ name, phone })
+      });
+      if (res.ok) {
+        showMsg(t.msgSaved, 'success');
+        document.getElementById('user-name').textContent = name || t.noName;
+        const profile = JSON.parse(localStorage.getItem('bcp_profile') || '{}');
+        Object.assign(profile, { name, phone }); localStorage.setItem('bcp_profile', JSON.stringify(profile));
+        renderAvatar(name, profile.avatar_url);
+      } else { showMsg(t.msgSaveError, 'error'); }
+      btn.disabled = false;
+    }
 
-async function uploadAvatar(input){
-  const file = input.files[0]; if(!file) return;
-  const t = T[lang];
-  document.getElementById('avatar-display').style.opacity='0.6';
-  const ext = file.name.split('.').pop();
-  const fileName = `${currentUserId}.${ext}`;
-  const res = await fetch(`${SUPABASE_URL}/storage/v1/object/${BUCKET_AVATARS}/${fileName}`, {
-    method:'POST',
-    headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${getToken()}`,'Content-Type':file.type,'x-upsert':'true'},
-    body:file
-  });
-  if(res.ok){
-    const avatarUrl = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET_AVATARS}/${fileName}?t=${Date.now()}`;
-    await fetch(`${SUPABASE_URL}/rest/v1/user_profiles?id=eq.${currentUserId}`,{
-      method:'PATCH', headers:{...authHeaders(),'Prefer':'return=minimal'},
-      body:JSON.stringify({avatar_url:avatarUrl})
-    });
-    const profile = JSON.parse(localStorage.getItem('bcp_profile')||'{}');
-    profile.avatar_url = avatarUrl;
-    localStorage.setItem('bcp_profile', JSON.stringify(profile));
-    renderAvatar(document.getElementById('p-name').value, avatarUrl);
-    showMsg(t.msgAvatarOk, 'success');
-  } else { showMsg(t.msgAvatarError, 'error'); }
-  document.getElementById('avatar-display').style.opacity='1';
-  input.value='';
-}
+    async function changePassword() {
+      const t = T[lang];
+      const p1 = document.getElementById('new-password').value;
+      const p2 = document.getElementById('new-password2').value;
+      if (p1.length < 8) { showMsg(t.msgPasswordShort, 'error'); return; }
+      if (p1 !== p2) { showMsg(t.msgPasswordMismatch, 'error'); return; }
+      const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+        method: 'PUT', headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${getToken()}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ password: p1 })
+      });
+      if (res.ok) { showMsg(t.msgPasswordChanged, 'success'); document.getElementById('new-password').value = ''; document.getElementById('new-password2').value = ''; }
+      else { showMsg(t.msgPasswordError, 'error'); }
+    }
 
-async function loadProfile(){
-  const token = getToken();
-  if(!token){ window.location.href='auth.html'; return; }
-  const userRes = await fetch(`${SUPABASE_URL}/auth/v1/user`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${token}`}});
-  if(!userRes.ok){ window.location.href='auth.html'; return; }
-  const user = await userRes.json();
-  currentUserId = user.id;
-  document.getElementById('p-email').value = user.email||'';
-  document.getElementById('user-email').textContent = user.email||'';
-  const profRes = await fetch(`${SUPABASE_URL}/rest/v1/user_profiles?id=eq.${user.id}&select=*`,{headers:authHeaders()});
-  const profiles = await profRes.json();
-  const profile = profiles[0]||{};
-  const name = profile.name || user.user_metadata?.name || '';
-  document.getElementById('p-name').value = name;
-  document.getElementById('p-phone').value = profile.phone||'';
-  document.getElementById('user-name').textContent = name || T[lang].noName;
-  renderAvatar(name, profile.avatar_url);
-  await loadFavourites(user.id);
-}
-
-async function loadFavourites(userId){
-  const t = T[lang];
-  const [favRes, notesRes] = await Promise.all([
-    fetch(`${SUPABASE_URL}/rest/v1/user_favourites?user_id=eq.${userId}&select=property_id`,{headers:authHeaders()}),
-    fetch(`${SUPABASE_URL}/rest/v1/user_notes?user_id=eq.${userId}&select=property_id`,{headers:authHeaders()}),
-  ]);
-  const favs = await favRes.json();
-  const notes = await notesRes.json();
-  document.getElementById('fav-count').textContent = Array.isArray(favs)?favs.length:0;
-  document.getElementById('notes-count').textContent = Array.isArray(notes)?notes.length:0;
-  const list = document.getElementById('fav-list');
-  if(!Array.isArray(favs)||!favs.length){ list.innerHTML=`<div class="loading" style="color:#aaa">${t.noFavourites}</div>`; return; }
-  const ids = favs.map(f=>f.property_id).join(',');
-  const propsRes = await fetch(`${SUPABASE_URL}/rest/v1/Properties?id=in.(${ids})&select=id,title_ru,title_en,title_el,title_he,price,images,emoji`,{headers:authHeaders()});
-  const props = await propsRes.json();
-  if(!Array.isArray(props)||!props.length){ list.innerHTML=`<div class="loading" style="color:#aaa">${t.noFavourites}</div>`; return; }
-  list.innerHTML = props.map(p=>{
-    const title = p['title_'+lang] || p.title_ru || p.title_en || '';
-    const thumb = p.images?.length>0?`<div class="fav-thumb"><img src="${p.images[0]}" alt="фото"></div>`:`<div class="fav-thumb">${p.emoji}</div>`;
-    return `<a class="fav-item" href="property.html?id=${p.id}">${thumb}<div class="fav-info"><div class="fav-title">${title}</div><div class="fav-price">€${(p.price*1000).toLocaleString()}</div></div><span style="color:#aaa">→</span></a>`;
-  }).join('');
-}
-
-async function saveProfile(){
-  const t = T[lang];
-  const name = document.getElementById('p-name').value.trim();
-  const phone = document.getElementById('p-phone').value.trim();
-  const btn = document.getElementById('save-profile-btn'); btn.disabled=true;
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/user_profiles?id=eq.${currentUserId}`,{
-    method:'PATCH', headers:{...authHeaders(),'Prefer':'return=minimal'}, body:JSON.stringify({name, phone})
-  });
-  if(res.ok){
-    showMsg(t.msgSaved, 'success');
-    document.getElementById('user-name').textContent = name||t.noName;
-    const profile = JSON.parse(localStorage.getItem('bcp_profile')||'{}');
-    Object.assign(profile, {name, phone}); localStorage.setItem('bcp_profile', JSON.stringify(profile));
-    renderAvatar(name, profile.avatar_url);
-  } else { showMsg(t.msgSaveError, 'error'); }
-  btn.disabled=false;
-}
-
-async function changePassword(){
-  const t = T[lang];
-  const p1 = document.getElementById('new-password').value;
-  const p2 = document.getElementById('new-password2').value;
-  if(p1.length<8){ showMsg(t.msgPasswordShort, 'error'); return; }
-  if(p1!==p2){ showMsg(t.msgPasswordMismatch, 'error'); return; }
-  const res = await fetch(`${SUPABASE_URL}/auth/v1/user`,{
-    method:'PUT', headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${getToken()}`,'Content-Type':'application/json'}, body:JSON.stringify({password:p1})
-  });
-  if(res.ok){ showMsg(t.msgPasswordChanged, 'success'); document.getElementById('new-password').value=''; document.getElementById('new-password2').value=''; }
-  else { showMsg(t.msgPasswordError, 'error'); }
-}
-
-window.onload = async function(){
-  const savedLang = localStorage.getItem('bcp_lang');
-  const browserLang = navigator.language?.substring(0,2);
-  const detectedLang = savedLang || (['ru','en','el','he'].includes(browserLang) ? browserLang : 'en');
-  setLang(detectedLang);
-  await loadProfile();
-};
-</script>
+    window.onload = async function () {
+      const savedLang = localStorage.getItem('bcp_lang');
+      const browserLang = navigator.language?.substring(0, 2);
+      const detectedLang = savedLang || (['ru', 'en', 'el', 'he'].includes(browserLang) ? browserLang : 'en');
+      setLang(detectedLang);
+      await loadProfile();
+    };
+  </script>
 </body>
+
 </html>
