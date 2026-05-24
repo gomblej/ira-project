@@ -1,846 +1,1953 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-<meta charset="UTF-8">
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Best Cyprus Properties</title>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a; }
-  .app { width: 100%; max-width: 1200px; margin: 0 auto; padding: 16px; }
+  <meta charset="UTF-8">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f6e56">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Settled">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Best Cyprus Properties</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  .lang-switch { display: flex; gap: 8px; justify-content: center; margin-bottom: 14px; flex-wrap: wrap; }
-  .lb { padding: 6px 10px; border-radius: 20px; border: 1px solid #ccc; background: white; cursor: pointer; display: flex; align-items: center; }
-  .lb.active { border: 2px solid #1a1a1a; }
-  .lb img { display: block; border-radius: 2px; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f5f0;
+      color: #1a1a1a;
+    }
 
-  .header { background: white; border-radius: 16px; margin-bottom: 14px; overflow: hidden; }
-  .header-top { padding: 16px 20px 0; display: flex; justify-content: space-between; align-items: flex-start; }
-  .header-center { flex: 1; text-align: center; }
-  .logo { font-size: 13px; color: #888; margin-bottom: 6px; letter-spacing: 1px; text-transform: uppercase; }
-  .header h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
-  .header p { font-size: 13px; color: #888; margin-bottom: 16px; }
+    .app {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px;
+    }
 
-  .auth-btn { display: flex; align-items: center; gap: 7px; padding: 8px 14px; border-radius: 20px; border: 1px solid #e0e0e0; background: white; font-size: 13px; color: #1a1a1a; cursor: pointer; white-space: nowrap; text-decoration: none; flex-shrink: 0; }
-  .auth-btn:hover { background: #f8f8f8; }
-  .auth-btn.logged { background: #e6f7f2; border-color: #0f6e56; color: #0f6e56; font-weight: 600; }
-  .auth-avatar { width: 26px; height: 26px; border-radius: 50%; background: #0f6e56; color: white; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
-  .auth-avatar img { width: 26px; height: 26px; object-fit: cover; }
+    .lang-switch {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
 
-  .tabs { display: flex; border-top: 1px solid #f0f0f0; }
-  .tab { flex: 1; padding: 14px; text-align: center; font-size: 15px; font-weight: 600; cursor: pointer; color: #888; border: none; background: transparent; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
-  .tab.active { color: #0f6e56; border-bottom: 3px solid #0f6e56; }
-  .tab:first-child { border-right: 1px solid #f0f0f0; }
-  .tab.sell-tab.active { color: #e8a020; border-bottom-color: #e8a020; }
+    .lb {
+      padding: 6px 10px;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+      background: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
 
-  .buy-panel { display: block; }
-  .sell-panel { display: none; }
-  .sell-panel.active { display: block; }
-  .buy-panel.hidden { display: none; }
+    .lb.active {
+      border: 2px solid #1a1a1a;
+    }
 
-  .sell-card { background: white; border-radius: 16px; padding: 24px; margin-bottom: 14px; }
-  .sell-card h2 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
-  .sell-card p { font-size: 14px; color: #888; margin-bottom: 20px; }
-  .sell-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  @media(max-width:600px){ .sell-grid { grid-template-columns: 1fr; } }
-  .sell-grid .full { grid-column: 1/-1; }
-  .field-label { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 4px; }
-  .sell-card input, .sell-card select, .sell-card textarea { font-size: 14px; padding: 10px 12px; border-radius: 10px; border: 1px solid #e0e0e0; background: #f8f8f8; color: #1a1a1a; width: 100%; font-family: inherit; resize: none; }
-  .sell-card input.autofilled { background: #f0faf7; border-color: #b2ddd1; }
-  .sell-submit { width: 100%; padding: 14px; border-radius: 12px; border: none; background: #e8a020; color: white; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 6px; }
-  .sell-success { text-align: center; padding: 30px; display: none; }
-  .sell-success.show { display: block; }
-  .autofill-banner { background: #e6f7f2; border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; font-size: 13px; color: #0f6e56; display: flex; align-items: center; gap: 8px; }
+    .lb img {
+      display: block;
+      border-radius: 2px;
+    }
 
-  .filters { background: white; border-radius: 16px; padding: 16px; margin-bottom: 10px; }
-  .filters-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; }
-  .fg { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 160px; }
-  .fg label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
-  .fg select { font-size: 14px; padding: 9px 10px; border-radius: 10px; border: 1px solid #e0e0e0; background: #f8f8f8; color: #1a1a1a; width: 100%; }
+    .header {
+      background: white;
+      border-radius: 16px;
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
 
-  .more-filters-btn { display: flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: 10px; border: 1px solid #e0e0e0; background: #f8f8f8; color: #1a1a1a; font-size: 14px; cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: all 0.2s; }
-  .more-filters-btn.active { background: #0f6e56; color: white; border-color: #0f6e56; }
-  .count-badge { background: #e8a020; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; font-weight: 700; display: none; align-items: center; justify-content: center; }
-  .more-filters-btn.has-active .count-badge { display: flex; }
+    .header-top {
+      padding: 16px 20px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
 
-  .extra-filters { display: none; background: white; border-radius: 16px; padding: 20px; margin-bottom: 10px; }
-  .extra-filters.open { display: block; }
-  .extra-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
-  .extra-section { display: flex; flex-direction: column; gap: 8px; }
-  .extra-section-title { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
-  .beds-pills { display: flex; flex-wrap: wrap; gap: 8px; }
-  .bed-pill { font-size: 13px; padding: 7px 14px; border-radius: 10px; border: 1px solid #e0e0e0; background: #f8f8f8; color: #666; cursor: pointer; user-select: none; transition: all 0.15s; }
-  .bed-pill:hover { border-color: #0f6e56; color: #0f6e56; }
-  .bed-pill.active { background: #0f6e56; color: white; border-color: #0f6e56; }
-  .range-inputs { display: flex; gap: 8px; align-items: center; }
-  .range-input-wrap { flex: 1; position: relative; }
-  .range-input-wrap input { width: 100%; font-size: 14px; padding: 9px 10px; border-radius: 10px; border: 1px solid #e0e0e0; background: #f8f8f8; color: #1a1a1a; }
-  .range-input-wrap.with-prefix input { padding-left: 26px; }
-  .range-input-wrap.with-prefix::before { content: attr(data-prefix); position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #aaa; font-size: 13px; pointer-events: none; }
-  .range-sep { color: #aaa; font-size: 16px; flex-shrink: 0; }
-  .check-pills { display: flex; flex-wrap: wrap; gap: 8px; }
-  .check-pill { display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 10px; border: 1px solid #e0e0e0; background: #f8f8f8; cursor: pointer; font-size: 13px; color: #666; user-select: none; transition: all 0.15s; }
-  .check-pill input { display: none; }
-  .check-pill.active { background: #0f6e56; color: white; border-color: #0f6e56; }
-  .check-pill:hover:not(.active) { border-color: #0f6e56; color: #0f6e56; }
+    .header-center {
+      flex: 1;
+      text-align: center;
+    }
 
-  .sticky-bar { position: sticky; top: 0; z-index: 100; background: #f5f5f0; padding: 8px 0; margin-bottom: 4px; }
-  .top-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
-  .sort-bar { display: flex; gap: 8px; flex-wrap: wrap; }
-  .sort-btn { font-size: 12px; padding: 5px 12px; border-radius: 20px; border: 1px solid #ddd; background: white; color: #666; cursor: pointer; }
-  .sort-btn.active { background: #0f6e56; color: white; border-color: #0f6e56; }
-  .top-bar-right { display: flex; gap: 8px; align-items: center; }
-  .reset-btn { font-size: 12px; padding: 6px 12px; border-radius: 20px; border: 1px solid #c0392b; background: white; color: #c0392b; cursor: pointer; display: none; white-space: nowrap; }
-  .reset-btn:hover { background: #fff0f0; }
-  .fav-toggle { font-size: 13px; padding: 7px 16px; border-radius: 20px; border: 1px solid #ddd; background: white; color: #666; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; transition: all 0.2s; }
-  .fav-toggle.active { background: #fce4ec; color: #ad1457; border-color: #ad1457; font-weight: 500; }
+    .logo {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 6px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
 
-  .recs-block { margin-bottom: 20px; }
-  .recs-title { font-size: 17px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-  .recs-scroll { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 4px; }
-  .recs-scroll::-webkit-scrollbar { height: 4px; }
-  .recs-scroll::-webkit-scrollbar-thumb { background: #ddd; border-radius: 4px; }
-  .rec-card { background: white; border-radius: 14px; overflow: hidden; flex-shrink: 0; width: 240px; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
-  .rec-card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.1); }
-  .rec-img { width: 100%; height: 140px; object-fit: cover; display: block; }
-  .rec-img-placeholder { width: 100%; height: 140px; background: linear-gradient(135deg, #e6f7f2, #b2e0d0); display: flex; align-items: center; justify-content: center; font-size: 40px; }
-  .rec-body { padding: 12px; }
-  .rec-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .rec-price { font-size: 14px; font-weight: 700; color: #0f6e56; }
-  .rec-meta { font-size: 12px; color: #888; margin-top: 3px; }
+    .header h1 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
 
-  .count { font-size: 13px; color: #888; margin-bottom: 10px; }
-  .loading { text-align: center; padding: 40px; color: #888; font-size: 15px; grid-column: 1/-1; }
-  .listings { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+    .header p {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 16px;
+    }
 
-  .card { background: white; border-radius: 16px; overflow: hidden; position: relative; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
-  .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
-  .card.sold .card-img-wrap { filter: grayscale(60%); }
-  .card.unavailable .card-img-wrap { filter: grayscale(30%); }
-  .card-img-wrap { position: relative; width: 100%; height: 220px; background: linear-gradient(135deg, #e6f7f2, #b2e0d0); overflow: hidden; }
-  .card-img-wrap .no-photo { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 56px; }
-  .gallery-img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
-  .gallery-nav-dots { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; }
-  .gallery-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.6); cursor: pointer; border: none; padding: 0; }
-  .gallery-dot.active { background: white; }
-  .gallery-prev, .gallery-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.35); color: white; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 3; }
-  .gallery-prev { left: 8px; } .gallery-next { right: 8px; }
-  .photo-count { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.5); color: white; font-size: 11px; padding: 2px 7px; border-radius: 20px; }
-  .fav-btn { position: absolute; top: 10px; right: 10px; background: white; border: none; border-radius: 50%; width: 36px; height: 36px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 4; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
-  .status-badge { position: absolute; top: 10px; left: 10px; font-size: 11px; padding: 4px 10px; border-radius: 20px; font-weight: 700; z-index: 4; }
-  .badge-new-build { background: #e3f2fd; color: #1565c0; }
-  .badge-resale { background: #f3e5f5; color: #6a1b9a; }
-  .badge-sold { background: #1a1a1a; color: white; }
-  .badge-unavailable { background: #fff3cd; color: #856404; }
-  .sold-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: 1; }
-  .sold-stamp { font-size: 28px; font-weight: 900; color: rgba(0,0,0,0.18); border: 4px solid rgba(0,0,0,0.15); padding: 6px 16px; border-radius: 8px; transform: rotate(-15deg); letter-spacing: 2px; text-transform: uppercase; }
-  .card-body { padding: 16px; }
-  .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; gap: 8px; }
-  .card-title { font-size: 15px; font-weight: 600; line-height: 1.3; }
-  .card-price { font-size: 16px; font-weight: 700; color: #0f6e56; white-space: nowrap; }
-  .card.sold .card-price { color: #888; text-decoration: line-through; }
-  .card-meta { display: flex; gap: 12px; font-size: 13px; color: #888; margin-bottom: 10px; flex-wrap: wrap; }
-  .tag { display: inline-block; font-size: 12px; padding: 3px 10px; border-radius: 20px; background: #e6f7f2; color: #0f6e56; font-weight: 500; margin-bottom: 10px; }
-  .new-badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 20px; background: #fff3e0; color: #e65100; font-weight: 600; margin-left: 6px; }
-  .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; }
-  .view-btn { font-size: 13px; color: #0f6e56; font-weight: 500; }
-  .quick-wa { background: #25D366; color: white; border: none; border-radius: 10px; padding: 8px 14px; font-size: 13px; cursor: pointer; font-weight: 500; }
-  .note-area { margin-top: 10px; margin-bottom: 4px; }
-  .note-display { font-size: 13px; color: #555; background: #fffde7; border-radius: 10px; padding: 8px 12px; cursor: pointer; border: 1px solid #fff176; white-space: pre-wrap; }
-  .note-display.empty { color: #aaa; background: #f8f8f8; border: 1px dashed #ddd; white-space: normal; }
-  .note-edit-wrap { background: #fffde7; border-radius: 10px; border: 1px solid #0f6e56; overflow: hidden; }
-  .note-input { width: 100%; font-size: 13px; padding: 8px 12px; border: none; background: transparent; color: #1a1a1a; font-family: inherit; resize: none; outline: none; display: block; }
-  .note-save-btn { width: 100%; padding: 7px; border: none; background: #0f6e56; color: white; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .auth-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 14px;
+      border-radius: 20px;
+      border: 1px solid #e0e0e0;
+      background: white;
+      font-size: 13px;
+      color: #1a1a1a;
+      cursor: pointer;
+      white-space: nowrap;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
 
-  .auth-popup { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 500; align-items: flex-end; justify-content: center; padding: 20px; }
-  .auth-popup.open { display: flex; }
-  .auth-popup-card { background: white; border-radius: 24px; padding: 28px; width: 100%; max-width: 420px; text-align: center; animation: slideUp 0.3s ease; }
-  @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-  .auth-popup-icon { font-size: 48px; margin-bottom: 12px; }
-  .auth-popup-title { font-size: 20px; font-weight: 700; margin-bottom: 20px; }
-  .auth-popup-benefits { text-align: left; background: #f8f8f8; border-radius: 12px; padding: 14px; margin-bottom: 20px; }
-  .auth-popup-benefit { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: #555; margin-bottom: 8px; line-height: 1.4; }
-  .auth-popup-benefit:last-child { margin-bottom: 0; }
-  .auth-popup-btns { display: flex; flex-direction: column; gap: 10px; }
-  .auth-popup-reg { padding: 14px; border-radius: 14px; border: none; background: #0f6e56; color: white; font-size: 15px; font-weight: 600; cursor: pointer; }
-  .auth-popup-login { padding: 13px; border-radius: 14px; border: 1px solid #e0e0e0; background: white; color: #1a1a1a; font-size: 15px; cursor: pointer; }
-  .auth-popup-close { margin-top: 10px; font-size: 13px; color: #aaa; cursor: pointer; background: none; border: none; }
+    .auth-btn:hover {
+      background: #f8f8f8;
+    }
 
-  .bottom-actions { margin-top: 20px; }
-  .action-card { background: white; border-radius: 16px; padding: 16px; display: flex; align-items: center; gap: 14px; cursor: pointer; border: none; width: 100%; text-align: left; margin-bottom: 10px; }
-  .action-icon { font-size: 28px; }
-  .action-text strong { display: block; font-size: 15px; font-weight: 600; margin-bottom: 2px; }
-  .action-text span { font-size: 13px; color: #888; }
-  .search-form-wrap { display: none; background: white; border-radius: 16px; padding: 20px; margin-bottom: 10px; }
-  .search-form-wrap.open { display: block; }
-  .cform { display: flex; flex-direction: column; gap: 8px; }
-  .cform input, .cform textarea { font-size: 14px; padding: 10px 12px; border-radius: 10px; border: 1px solid #e0e0e0; background: #f8f8f8; color: #1a1a1a; width: 100%; font-family: inherit; resize: none; }
-  .cform input.autofilled { background: #f0faf7; border-color: #b2ddd1; }
-  .sbtn { background: #0f6e56; color: white; border: none; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; width: 100%; }
-  .none { text-align: center; padding: 40px 20px; color: #aaa; background: white; border-radius: 16px; grid-column: 1/-1; }
-</style>
-</head>
-<body>
-<div class="app" id="app">
+    .auth-btn.logged {
+      background: #e6f7f2;
+      border-color: #0f6e56;
+      color: #0f6e56;
+      font-weight: 600;
+    }
 
-  <div class="lang-switch">
-    <button class="lb active" onclick="setLang('ru', this)"><img src="https://flagcdn.com/24x18/ru.png" alt="RU"></button>
-    <button class="lb" onclick="setLang('en', this)"><img src="https://flagcdn.com/24x18/gb.png" alt="EN"></button>
-    <button class="lb" onclick="setLang('el', this)"><img src="https://flagcdn.com/24x18/cy.png" alt="ΕΛ"></button>
-    <button class="lb" onclick="setLang('he', this)"><img src="https://flagcdn.com/24x18/il.png" alt="HE"></button>
-  </div>
+    .auth-avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #0f6e56;
+      color: white;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
 
-  <div class="header">
-    <div class="header-top">
-      <div style="width:100px"></div>
-      <div class="header-center">
-        <div class="logo">Best Cyprus Properties</div>
-        <h1 id="hn"></h1>
-        <p id="hs"></p>
-      </div>
-      <div style="width:100px;display:flex;justify-content:flex-end;padding-top:4px">
-        <a id="auth-btn" class="auth-btn" href="auth.html">👤 <span id="auth-btn-label">Войти</span></a>
-      </div>
-    </div>
-    <div class="tabs">
-      <button class="tab active" id="tab-buy" onclick="switchTab('buy')"><span>🔍</span> <span id="tab-buy-label"></span></button>
-      <button class="tab sell-tab" id="tab-sell" onclick="switchTab('sell')"><span>🏡</span> <span id="tab-sell-label"></span></button>
-    </div>
-  </div>
+    .auth-avatar img {
+      width: 26px;
+      height: 26px;
+      object-fit: cover;
+    }
 
-  <div class="buy-panel" id="buy-panel">
-    <div class="filters">
-      <div class="filters-row">
-        <div class="fg"><label id="lc"></label>
-          <select id="fc" onchange="onFilter()">
-            <option value=""></option>
-            <option value="Limassol"></option><option value="Limassol_district"></option>
-            <option value="Paphos"></option><option value="Paphos_district"></option>
-            <option value="Larnaca"></option><option value="Larnaca_district"></option>
-            <option value="Nicosia"></option><option value="Nicosia_district"></option>
-            <option value="Famagusta_district"></option>
-          </select>
-        </div>
-        <div class="fg"><label id="lt"></label>
-          <select id="ft" onchange="onFilter()">
-            <option value=""></option>
-            <option value="apt"></option><option value="penthouse"></option>
-            <option value="house"></option><option value="townhouse"></option>
-            <option value="land_res"></option><option value="land_other"></option>
-            <option value="commercial"></option><option value="building"></option>
-          </select>
-        </div>
-        <div class="fg"><label id="lm"></label>
-          <select id="fm" onchange="onFilter()">
-            <option value=""></option><option value="new"></option><option value="resale"></option>
-          </select>
-        </div>
-        <div class="fg"><label id="lst-label"></label>
-          <select id="fs" onchange="onFilter()">
-            <option value="all"></option><option value="available"></option>
-            <option value="sold"></option><option value="unavailable"></option>
-          </select>
-        </div>
-        <button class="more-filters-btn" id="more-filters-btn" onclick="toggleExtraFilters()">
-          <span id="more-filters-label"></span>
-          <span class="count-badge" id="extra-count">0</span>
-        </button>
-      </div>
-    </div>
+    .tabs {
+      display: flex;
+      border-top: 1px solid #f0f0f0;
+    }
 
-    <div class="extra-filters" id="extra-filters">
-      <div class="extra-grid">
-        <div class="extra-section"><div class="extra-section-title" id="lb2"></div><div class="beds-pills" id="beds-pills"></div></div>
-        <div class="extra-section"><div class="extra-section-title" id="lp"></div>
-          <div class="range-inputs">
-            <div class="range-input-wrap with-prefix" data-prefix="€"><input type="number" id="pmin" min="0" oninput="onFilter()"></div>
-            <span class="range-sep">—</span>
-            <div class="range-input-wrap with-prefix" data-prefix="€"><input type="number" id="pmax" min="0" oninput="onFilter()"></div>
-          </div>
-        </div>
-        <div class="extra-section"><div class="extra-section-title" id="l-internal"></div>
-          <div class="range-inputs">
-            <div class="range-input-wrap"><input type="number" id="imin" min="0" oninput="onFilter()" placeholder="м²"></div>
-            <span class="range-sep">—</span>
-            <div class="range-input-wrap"><input type="number" id="imax" min="0" oninput="onFilter()" placeholder="м²"></div>
-          </div>
-        </div>
-        <div class="extra-section"><div class="extra-section-title" id="l-plot"></div>
-          <div class="range-inputs">
-            <div class="range-input-wrap"><input type="number" id="plotmin" min="0" oninput="onFilter()" placeholder="м²"></div>
-            <span class="range-sep">—</span>
-            <div class="range-input-wrap"><input type="number" id="plotmax" min="0" oninput="onFilter()" placeholder="м²"></div>
-          </div>
-        </div>
-        <div class="extra-section"><div class="extra-section-title" id="l-year"></div>
-          <div class="range-inputs">
-            <div class="range-input-wrap"><input type="number" id="ymin" min="1900" max="2030" oninput="onFilter()"></div>
-            <span class="range-sep">—</span>
-            <div class="range-input-wrap"><input type="number" id="ymax" min="1900" max="2030" oninput="onFilter()"></div>
-          </div>
-        </div>
-        <div class="extra-section"><div class="extra-section-title" id="l-pool"></div><div class="check-pills" id="pool-pills"></div></div>
-        <div class="extra-section"><div class="extra-section-title" id="l-sea"></div><div class="check-pills" id="sea-pills"></div></div>
-      </div>
-    </div>
+    .tab {
+      flex: 1;
+      padding: 14px;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      color: #888;
+      border: none;
+      background: transparent;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
 
-    <div class="sticky-bar">
-      <div class="top-bar">
-        <div class="sort-bar" id="sort-bar"></div>
-        <div class="top-bar-right">
-          <button class="reset-btn" id="reset-btn" onclick="resetFilters()">✕ <span id="reset-label"></span></button>
-          <button class="fav-toggle" id="fav-toggle" onclick="toggleFavView()">❤️ <span id="fav-label"></span></button>
-        </div>
-      </div>
-    </div>
+    .tab.active {
+      color: #0f6e56;
+      border-bottom: 3px solid #0f6e56;
+    }
 
-    <div class="recs-block" id="recs-block" style="display:none">
-      <div class="recs-title">✨ <span id="recs-title-text"></span></div>
-      <div class="recs-scroll" id="recs-scroll"></div>
-    </div>
+    .tab:first-child {
+      border-right: 1px solid #f0f0f0;
+    }
 
-    <p class="count" id="rc"></p>
-    <div class="listings" id="lst"><div class="loading">⏳ Загружаем объекты...</div></div>
+    .tab.sell-tab.active {
+      color: #e8a020;
+      border-bottom-color: #e8a020;
+    }
 
-    <div class="bottom-actions">
-      <button class="action-card" onclick="toggleSearchForm()">
-        <span class="action-icon">🔍</span>
-        <div class="action-text"><strong id="ba-search"></strong><span id="ba-search-sub"></span></div>
-      </button>
-      <div class="search-form-wrap" id="search-form-wrap">
-        <div id="search-autofill-banner"></div>
-        <div class="cform">
-          <input type="text" id="qf-name">
-          <input type="text" id="qf-phone">
-          <input type="text" id="qf-budget">
-          <textarea id="qf-msg" rows="3"></textarea>
-          <button class="sbtn" id="qf-submit" onclick="submitSearchForm()"></button>
-        </div>
-      </div>
-    </div>
-  </div>
+    .buy-panel {
+      display: block;
+    }
 
-  <div class="sell-panel" id="sell-panel">
-    <div class="sell-card">
-      <h2 id="sell-title"></h2>
-      <p id="sell-sub"></p>
-      <div id="sell-form-inner">
-        <div id="sell-autofill-banner"></div>
-        <div class="sell-grid">
-          <div><div class="field-label" id="sf-label-name"></div><input type="text" id="sf-name" style="margin-bottom:10px"></div>
-          <div><div class="field-label" id="sf-label-phone"></div><input type="text" id="sf-phone" style="margin-bottom:10px"></div>
-          <div><div class="field-label" id="sf-label-type"></div>
-            <select id="sf-type" style="margin-bottom:10px">
-              <option value="apt"></option><option value="house"></option><option value="townhouse"></option>
-              <option value="land_res"></option><option value="land_other"></option>
-              <option value="commercial"></option><option value="building"></option>
-            </select>
-          </div>
-          <div><div class="field-label" id="sf-label-market"></div>
-            <select id="sf-market" style="margin-bottom:10px"><option value="new"></option><option value="resale"></option></select>
-          </div>
-          <div><div class="field-label" id="sf-label-area"></div><input type="text" id="sf-area" style="margin-bottom:10px"></div>
-          <div><div class="field-label" id="sf-label-price"></div><input type="text" id="sf-price" style="margin-bottom:10px"></div>
-          <div class="full"><div class="field-label" id="sf-label-desc"></div><textarea id="sf-desc" rows="4" style="margin-bottom:10px"></textarea></div>
-        </div>
-        <button class="sell-submit" id="sf-submit" onclick="submitSellForm()"></button>
-      </div>
-      <div class="sell-success" id="sell-success">
-        <div style="font-size:48px;margin-bottom:12px">✅</div>
-        <div style="font-size:18px;font-weight:700;color:#0f6e56;margin-bottom:8px" id="sell-success-title"></div>
-        <div style="color:#666" id="sell-success-text"></div>
-      </div>
-    </div>
-  </div>
-</div>
+    .sell-panel {
+      display: none;
+    }
 
-<div class="auth-popup" id="auth-popup">
-  <div class="auth-popup-card">
-    <div class="auth-popup-icon">✨</div>
-    <div class="auth-popup-title" id="popup-title"></div>
-    <div class="auth-popup-benefits" id="popup-benefits"></div>
-    <div class="auth-popup-btns">
-      <button class="auth-popup-reg" id="popup-reg-btn" onclick="window.location.href='auth.html?mode=register'"></button>
-      <button class="auth-popup-login" id="popup-login-btn" onclick="window.location.href='auth.html'"></button>
-    </div>
-    <button class="auth-popup-close" id="popup-close-btn" onclick="closeAuthPopup()"></button>
-  </div>
-</div>
+    .sell-panel.active {
+      display: block;
+    }
 
-<script>
-const SUPABASE_URL = 'https://lfgqhprihykoxqfnubhc.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_-E46ER3EDjD4TTMMiTRaCQ_9xAe36q_';
-const TABLE = 'Properties';
+    .buy-panel.hidden {
+      display: none;
+    }
 
-// ---- Telegram ----
-const TG_TOKEN = '8750318696:AAHvFAHd2USoDJx2R5lqc4iGklYdlEf2wBw';
-const TG_CHATS = ['176908650', '951659704']; // Олег + Ира
+    .sell-card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 14px;
+    }
 
-async function sendToTelegram(text){
-  for(const chat_id of TG_CHATS){
-    try {
-      await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({ chat_id, text, parse_mode:'HTML' })
-      });
-    } catch(e){ console.error('TG error', e); }
-  }
-}
+    .sell-card h2 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
 
-async function fetchProperties(){
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?select=*`, {
-    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
-  });
-  if(!res.ok) throw new Error('err');
-  return await res.json();
-}
+    .sell-card p {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 20px;
+    }
 
-function getToken(){ return localStorage.getItem('bcp_token')||''; }
-function getUser(){ try{ return JSON.parse(localStorage.getItem('bcp_user')||'null'); }catch(e){ return null; } }
-function getProfile(){ try{ return JSON.parse(localStorage.getItem('bcp_profile')||'null'); }catch(e){ return null; } }
-function isLoggedIn(){ return !!getToken(); }
+    .sell-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
 
-async function refreshProfile(){
-  if(!isLoggedIn()) return;
-  const user=getUser(); if(!user) return;
-  try {
-    const res=await fetch(`${SUPABASE_URL}/rest/v1/user_profiles?id=eq.${user.id}&select=*`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${getToken()}`}});
-    if(res.ok){ const data=await res.json(); if(data.length) localStorage.setItem('bcp_profile',JSON.stringify(data[0])); }
-  } catch(e){}
-}
-
-function updateAuthBtn(){
-  const btn=document.getElementById('auth-btn'); if(!btn) return;
-  if(isLoggedIn()){
-    const profile=getProfile();
-    const name=profile?.name||getUser()?.email?.split('@')[0]||'Профиль';
-    const avatarUrl=profile?.avatar_url;
-    const avatarHtml=avatarUrl?`<div class="auth-avatar"><img src="${avatarUrl}" alt="avatar"></div>`:`<div class="auth-avatar">${name[0].toUpperCase()}</div>`;
-    btn.href='profile.html'; btn.className='auth-btn logged';
-    btn.innerHTML=`${avatarHtml} <span>${name}</span>`;
-  } else {
-    btn.href='auth.html'; btn.className='auth-btn';
-    btn.innerHTML=`👤 <span>${T[lang]?.authBtn||'Войти'}</span>`;
-  }
-}
-
-function applyProfileAutofill(){
-  if(!isLoggedIn()) return;
-  const profile=getProfile(); const user=getUser();
-  if(!profile&&!user) return;
-  const name=profile?.name||''; const phone=profile?.phone||'';
-  const t=T[lang]; const hasData=name||phone;
-  const sfName=document.getElementById('sf-name'); const sfPhone=document.getElementById('sf-phone');
-  if(sfName&&name){ sfName.value=name; sfName.classList.add('autofilled'); }
-  if(sfPhone&&phone){ sfPhone.value=phone; sfPhone.classList.add('autofilled'); }
-  const sellBanner=document.getElementById('sell-autofill-banner');
-  if(sellBanner&&hasData) sellBanner.innerHTML=`<div class="autofill-banner">✅ ${t.autofillBanner}</div>`;
-  const qfName=document.getElementById('qf-name'); const qfPhone=document.getElementById('qf-phone');
-  if(qfName&&name){ qfName.value=name; qfName.classList.add('autofilled'); }
-  if(qfPhone&&phone){ qfPhone.value=phone; qfPhone.classList.add('autofilled'); }
-  const searchBanner=document.getElementById('search-autofill-banner');
-  if(searchBanner&&hasData) searchBanner.innerHTML=`<div class="autofill-banner">✅ ${t.autofillBanner}</div>`;
-}
-
-function showAuthPopup(){
-  const t=T[lang];
-  document.getElementById('popup-title').textContent=t.popupTitle;
-  document.getElementById('popup-benefits').innerHTML=t.popupBenefits;
-  document.getElementById('popup-reg-btn').textContent=t.popupRegBtn;
-  document.getElementById('popup-login-btn').textContent=t.popupLoginBtn;
-  document.getElementById('popup-close-btn').textContent=t.popupClose;
-  document.getElementById('auth-popup').classList.add('open');
-}
-function closeAuthPopup(){ document.getElementById('auth-popup').classList.remove('open'); }
-
-let favs=new Set(), notes={};
-
-function loadLocalStorage(){
-  try {
-    const f=localStorage.getItem('bcp_favs'); const n=localStorage.getItem('bcp_notes');
-    if(f) f.split(',').filter(Boolean).forEach(id=>favs.add(parseInt(id)));
-    if(n) Object.assign(notes, JSON.parse(n));
-  } catch(e){}
-}
-function saveNotesLocal(){ try{ localStorage.setItem('bcp_notes',JSON.stringify(notes)); }catch(e){} }
-
-async function loadFavsFromSupabase(){
-  const user=getUser(); if(!user) return;
-  const token=getToken();
-  const [favRes, notesRes]=await Promise.all([
-    fetch(`${SUPABASE_URL}/rest/v1/user_favourites?user_id=eq.${user.id}&select=property_id`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${token}`}}),
-    fetch(`${SUPABASE_URL}/rest/v1/user_notes?user_id=eq.${user.id}&select=property_id,note`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${token}`}})
-  ]);
-  const favsData=await favRes.json(); const notesData=await notesRes.json();
-  if(!Array.isArray(favsData)||!Array.isArray(notesData)){ localStorage.removeItem('bcp_token'); location.reload(); return; }
-  favs=new Set(favsData.map(f=>f.property_id));
-  notes={}; notesData.forEach(n=>{ notes[n.property_id]=n.note; });
-}
-
-async function toggleFavSupabase(id){
-  const user=getUser(); const token=getToken();
-  if(favs.has(id)){
-    if(notes[id]){
-      if(confirm(T[lang]?.deleteNoteConfirm||'Удалить заметку?')){
-        await fetch(`${SUPABASE_URL}/rest/v1/user_notes?user_id=eq.${user.id}&property_id=eq.${id}`,{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${token}`}});
-        delete notes[id];
+    @media(max-width:600px) {
+      .sell-grid {
+        grid-template-columns: 1fr;
       }
     }
-    await fetch(`${SUPABASE_URL}/rest/v1/user_favourites?user_id=eq.${user.id}&property_id=eq.${id}`,{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${token}`}});
-    favs.delete(id);
-  } else {
-    await fetch(`${SUPABASE_URL}/rest/v1/user_favourites`,{method:'POST',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${token}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({user_id:user.id,property_id:id})});
-    favs.add(id);
-  }
-}
 
-async function saveNoteSupabase(id, text){
-  const user=getUser(); const token=getToken();
-  await fetch(`${SUPABASE_URL}/rest/v1/user_notes`,{method:'POST',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${token}`,'Content-Type':'application/json','Prefer':'resolution=merge-duplicates'},body:JSON.stringify({user_id:user.id,property_id:id,note:text})});
-  notes[id]=text;
-}
+    .sell-grid .full {
+      grid-column: 1/-1;
+    }
 
-const BEDS_OPTIONS=['studio','1','2','3','4','5+'];
-const ROOMS_TYPES=['apt','penthouse','house','townhouse'];
-const PLOT_TYPES=['house','land_res','land_other'];
+    .field-label {
+      font-size: 12px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 4px;
+    }
 
-const T = {
-  ru:{
-    h:'Недвижимость на Кипре', s:'Лимасол, Пафос, Ларнака, Никосия, Фамагуста',
-    tabBuy:'Купить', tabSell:'Продать', authBtn:'Войти',
-    lc:'Город', lt:'Тип недвижимости', lm:'Первичная / Вторичная', lstL:'Статус',
-    lb2:'Спальни', lp:'Цена €', moreFilters:'Ещё фильтры', lessFilters:'Скрыть',
-    lInternal:'Площадь (м²)', lPlot:'Размер участка (м²)', lYear:'Год постройки',
-    lPool:'Бассейн', lSea:'Море в шаговой доступности',
-    poolYes:'Есть', poolPossible:'Можно построить', poolNone:'Нет', seaYes:'Да',
-    all:'Все', apt:'Квартира', penthouse:'Пентхаус', house:'Дом / вилла', townhouse:'Таунхаус',
-    land_res:'Участок под жильё', land_other:'Участок (прочее)', commercial:'Коммерческая', building:'Целое здание',
-    newBuild:'Первичная', resale:'Вторичная',
-    statusAll:'Все объекты', statusAvailable:'В продаже', statusSold:'Проданные', statusUnavailable:'Временно не продаётся',
-    cities:{Limassol:'Лимасол',Limassol_district:'Лимасол дистрикт',Paphos:'Пафос',Paphos_district:'Пафос дистрикт',Larnaca:'Ларнака',Larnaca_district:'Ларнака дистрикт',Nicosia:'Никосия',Nicosia_district:'Никосия дистрикт',Famagusta_district:'Фамагуста дистрикт'},
-    beds:{studio:'Студия','1':'1 спальня','2':'2 спальни','3':'3 спальни','4':'4 спальни','5+':'5+ спален'},
-    rooms:'спал.', studio:'Студия', area:'м²',
-    res:n=>`Найдено: ${n} объектов`, none:'Ничего не найдено', error:'Ошибка загрузки.',
-    wa:'WhatsApp', viewMore:'Подробнее →', resetLabel:'Сбросить',
-    newBadge:'Новое', soldBadge:'Продано', unavailBadge:'Временно не продаётся',
-    sorts:['По цене ↑','По цене ↓','По спальням','По метражу','Сначала новые'],
-    favLabel:'Избранное', favLabelExit:'Выйти из избранного', favEmpty:'Нет избранных объектов',
-    notePlaceholder:'Добавить заметку...', noteSave:'Сохранить',
-    deleteNoteConfirm:'Удалить заметку к этому объекту?',
-    autofillBanner:'Данные из вашего профиля подставлены автоматически',
-    recsTitle:'Вам может понравиться', recsTitleNew:'Новые объекты',
-    sellTitle:'Продаёте недвижимость?', sellSub:'Оставьте заявку — наш сотрудник свяжется с вами.',
-    sfLabelName:'Ваше имя', sfLabelPhone:'Телефон или Telegram', sfLabelType:'Тип недвижимости', sfLabelMarket:'Первичная / Вторичная',
-    sfLabelArea:'Площадь (м²)', sfLabelPrice:'Цена (€)', sfLabelDesc:'Описание',
-    sfSubmit:'Отправить заявку', sfSuccessTitle:'Заявка отправлена!', sfSuccessText:'Наш сотрудник свяжется с вами.',
-    baSearch:'Не нашли нужное?', baSearchSub:'Оставьте заявку — мы подберём',
-    qfName:'Ваше имя', qfPhone:'Телефон', qfBudget:'Бюджет (€)', qfMsg:'Что ищете?', qfSubmit:'Отправить',
-    priceFrom:'от', priceTo:'до', rtl:false,
-    popupTitle:'Создайте аккаунт',
-    popupBenefits:`<div class="auth-popup-benefit"><span>❤️</span><span>Сохраняйте объекты — доступно с любого устройства</span></div><div class="auth-popup-benefit"><span>📝</span><span>Личные заметки — видны только вам</span></div><div class="auth-popup-benefit"><span>⚡</span><span>Заявка в один клик</span></div><div class="auth-popup-benefit"><span>🔔</span><span>Уведомления об изменении цены или статуса</span></div>`,
-    popupRegBtn:'Создать аккаунт', popupLoginBtn:'Уже есть аккаунт — войти', popupClose:'Продолжить без регистрации',
-  },
-  en:{
-    h:'Cyprus Real Estate', s:'Limassol, Paphos, Larnaca, Nicosia, Famagusta',
-    tabBuy:'Buy', tabSell:'Sell', authBtn:'Sign in',
-    lc:'City', lt:'Property type', lm:'New build / Resale', lstL:'Status',
-    lb2:'Bedrooms', lp:'Price €', moreFilters:'More filters', lessFilters:'Hide',
-    lInternal:'Internal area (m²)', lPlot:'Plot size (m²)', lYear:'Year built',
-    lPool:'Swimming pool', lSea:'Walking distance to sea',
-    poolYes:'Has pool', poolPossible:'Pool possible', poolNone:'No pool', seaYes:'Yes',
-    all:'All', apt:'Apartment', penthouse:'Penthouse', house:'House / villa', townhouse:'Townhouse',
-    land_res:'Residential land', land_other:'Land (other)', commercial:'Commercial', building:'Whole building',
-    newBuild:'New build', resale:'Resale',
-    statusAll:'All properties', statusAvailable:'Available', statusSold:'Sold', statusUnavailable:'Temporarily unavailable',
-    cities:{Limassol:'Limassol',Limassol_district:'Limassol District',Paphos:'Paphos',Paphos_district:'Paphos District',Larnaca:'Larnaca',Larnaca_district:'Larnaca District',Nicosia:'Nicosia',Nicosia_district:'Nicosia District',Famagusta_district:'Famagusta District'},
-    beds:{studio:'Studio','1':'1 bed','2':'2 beds','3':'3 beds','4':'4 beds','5+':'5+ beds'},
-    rooms:'bed.', studio:'Studio', area:'m²',
-    res:n=>`Found: ${n} properties`, none:'No properties found', error:'Loading error.',
-    wa:'WhatsApp', viewMore:'View details →', resetLabel:'Reset',
-    newBadge:'New', soldBadge:'Sold', unavailBadge:'Temporarily unavailable',
-    sorts:['Price ↑','Price ↓','Bedrooms','Area','Newest first'],
-    favLabel:'Favourites', favLabelExit:'Exit favourites', favEmpty:'No saved properties',
-    notePlaceholder:'Add a note...', noteSave:'Save',
-    deleteNoteConfirm:'Delete the note for this property?',
-    autofillBanner:'Your profile details have been filled in automatically',
-    recsTitle:'You might also like', recsTitleNew:'New listings',
-    sellTitle:'Selling your property?', sellSub:'Leave a request — our agent will contact you.',
-    sfLabelName:'Your name', sfLabelPhone:'Phone or Telegram', sfLabelType:'Property type', sfLabelMarket:'New build / Resale',
-    sfLabelArea:'Area (m²)', sfLabelPrice:'Price (€)', sfLabelDesc:'Description',
-    sfSubmit:'Submit enquiry', sfSuccessTitle:'Enquiry sent!', sfSuccessText:'Our agent will contact you.',
-    baSearch:"Can't find it?", baSearchSub:"Leave a request — we'll find it",
-    qfName:'Your name', qfPhone:'Phone', qfBudget:'Budget (€)', qfMsg:'What are you looking for?', qfSubmit:'Send',
-    priceFrom:'from', priceTo:'to', rtl:false,
-    popupTitle:'Create an account',
-    popupBenefits:`<div class="auth-popup-benefit"><span>❤️</span><span>Save properties — accessible from any device</span></div><div class="auth-popup-benefit"><span>📝</span><span>Personal notes — visible only to you</span></div><div class="auth-popup-benefit"><span>⚡</span><span>Submit enquiries in one click</span></div><div class="auth-popup-benefit"><span>🔔</span><span>Get notified when price or status changes</span></div>`,
-    popupRegBtn:'Create account', popupLoginBtn:'Already have an account — sign in', popupClose:'Continue without registering',
-  },
-  el:{
-    h:'Ακίνητα στην Κύπρο', s:'Λεμεσός, Πάφος, Λάρνακα, Λευκωσία, Αμμόχωστος',
-    tabBuy:'Αγορά', tabSell:'Πώληση', authBtn:'Σύνδεση',
-    lc:'Πόλη', lt:'Τύπος ακινήτου', lm:'Πρωτογενής / Μεταπώληση', lstL:'Κατάσταση',
-    lb2:'Υπνοδωμάτια', lp:'Τιμή €', moreFilters:'Περισσότερα', lessFilters:'Απόκρυψη',
-    lInternal:'Εσωτερική επιφάνεια (τ.μ.)', lPlot:'Μέγεθος οικοπέδου (τ.μ.)', lYear:'Έτος κατασκευής',
-    lPool:'Πισίνα', lSea:'Θάλασσα κοντά',
-    poolYes:'Υπάρχει', poolPossible:'Δυνατή', poolNone:'Όχι', seaYes:'Ναι',
-    all:'Όλες', apt:'Διαμέρισμα', penthouse:'Πεντχάους', house:'Σπίτι / Βίλα', townhouse:'Μεζονέτα',
-    land_res:'Οικόπεδο κατοικίας', land_other:'Οικόπεδο (άλλο)', commercial:'Εμπορικό', building:'Ολόκληρο κτίριο',
-    newBuild:'Πρωτογενής', resale:'Μεταπώληση',
-    statusAll:'Όλα τα ακίνητα', statusAvailable:'Διαθέσιμο', statusSold:'Πωλήθηκε', statusUnavailable:'Προσωρινά μη διαθέσιμο',
-    cities:{Limassol:'Λεμεσός',Limassol_district:'Επαρχία Λεμεσού',Paphos:'Πάφος',Paphos_district:'Επαρχία Πάφου',Larnaca:'Λάρνακα',Larnaca_district:'Επαρχία Λάρνακας',Nicosia:'Λευκωσία',Nicosia_district:'Επαρχία Λευκωσίας',Famagusta_district:'Επαρχία Αμμοχώστου'},
-    beds:{studio:'Στούντιο','1':'1 υπν.','2':'2 υπν.','3':'3 υπν.','4':'4 υπν.','5+':'5+'},
-    rooms:'υπν.', studio:'Στούντιο', area:'τ.μ.',
-    res:n=>`Βρέθηκαν: ${n} ακίνητα`, none:'Δεν βρέθηκαν', error:'Σφάλμα.',
-    wa:'WhatsApp', viewMore:'Περισσότερα →', resetLabel:'Επαναφορά',
-    newBadge:'Νέο', soldBadge:'Πωλήθηκε', unavailBadge:'Προσωρινά μη διαθέσιμο',
-    sorts:['Τιμή ↑','Τιμή ↓','Υπνοδωμάτια','Εμβαδόν','Νεότερα πρώτα'],
-    favLabel:'Αγαπημένα', favLabelExit:'Έξοδος', favEmpty:'Δεν υπάρχουν αγαπημένα',
-    notePlaceholder:'Προσθήκη σημείωσης...', noteSave:'Αποθήκευση',
-    deleteNoteConfirm:'Διαγραφή σημείωσης;',
-    autofillBanner:'Τα στοιχεία σας συμπληρώθηκαν αυτόματα',
-    recsTitle:'Μπορεί να σας αρέσει', recsTitleNew:'Νέα ακίνητα',
-    sellTitle:'Πουλάτε ακίνητο;', sellSub:'Αφήστε αίτημα — ο εκπρόσωπός μας θα επικοινωνήσει μαζί σας.',
-    sfLabelName:'Όνομα', sfLabelPhone:'Τηλέφωνο', sfLabelType:'Τύπος', sfLabelMarket:'Αγορά',
-    sfLabelArea:'Εμβαδόν', sfLabelPrice:'Τιμή', sfLabelDesc:'Περιγραφή',
-    sfSubmit:'Αποστολή', sfSuccessTitle:'Στάλθηκε!', sfSuccessText:'Θα επικοινωνήσουμε.',
-    baSearch:'Δεν βρήκατε;', baSearchSub:'Αφήστε αίτημα',
-    qfName:'Όνομα', qfPhone:'Τηλέφωνο', qfBudget:'Προϋπολογισμός', qfMsg:'Τι ψάχνετε;', qfSubmit:'Αποστολή',
-    priceFrom:'από', priceTo:'έως', rtl:false,
-    popupTitle:'Δημιουργήστε λογαριασμό',
-    popupBenefits:`<div class="auth-popup-benefit"><span>❤️</span><span>Αποθηκεύστε ακίνητα</span></div><div class="auth-popup-benefit"><span>📝</span><span>Προσωπικές σημειώσεις</span></div><div class="auth-popup-benefit"><span>⚡</span><span>Αποστολή με ένα κλικ</span></div><div class="auth-popup-benefit"><span>🔔</span><span>Ειδοποιήσεις αλλαγών</span></div>`,
-    popupRegBtn:'Δημιουργία λογαριασμού', popupLoginBtn:'Έχω ήδη λογαριασμό', popupClose:'Συνέχεια χωρίς εγγραφή',
-  },
-  he:{
-    h:'נדל״ן בקפריסין', s:'לימסול, פאפוס, לרנקה, ניקוסיה, פמגוסטה',
-    tabBuy:'קנייה', tabSell:'מכירה', authBtn:'כניסה',
-    lc:'עיר', lt:'סוג נכס', lm:'יד ראשונה / יד שנייה', lstL:'סטטוס',
-    lb2:'חדרי שינה', lp:'מחיר €', moreFilters:'פילטרים נוספים', lessFilters:'הסתר',
-    lInternal:'שטח פנימי (מ״ר)', lPlot:'גודל מגרש (מ״ר)', lYear:'שנת בנייה',
-    lPool:'בריכת שחייה', lSea:'מרחק הליכה לים',
-    poolYes:'יש בריכה', poolPossible:'אפשר לבנות', poolNone:'אין', seaYes:'כן',
-    all:'הכל', apt:'דירה', penthouse:'פנטהאוס', house:'בית / וילה', townhouse:'טאונהאוס',
-    land_res:'מגרש למגורים', land_other:'מגרש (אחר)', commercial:'מסחרי', building:'בניין שלם',
-    newBuild:'יד ראשונה', resale:'יד שנייה',
-    statusAll:'כל הנכסים', statusAvailable:'למכירה', statusSold:'נמכר', statusUnavailable:'זמנית לא למכירה',
-    cities:{Limassol:'לימסול',Limassol_district:'מחוז לימסול',Paphos:'פאפוס',Paphos_district:'מחוז פאפוס',Larnaca:'לרנקה',Larnaca_district:'מחוז לרנקה',Nicosia:'ניקוסיה',Nicosia_district:'מחוז ניקוסיה',Famagusta_district:'מחוז פמגוסטה'},
-    beds:{studio:'סטודיו','1':'1 חדר','2':'2 חדרים','3':'3 חדרים','4':'4 חדרים','5+':'5+ חדרים'},
-    rooms:"חד'", studio:'סטודיו', area:'מ״ר',
-    res:n=>`נמצאו: ${n} נכסים`, none:'לא נמצאו תוצאות', error:'שגיאת טעינה.',
-    wa:'וואטסאפ', viewMore:'פרטים נוספים →', resetLabel:'איפוס',
-    newBadge:'חדש', soldBadge:'נמכר', unavailBadge:'זמנית לא למכירה',
-    sorts:['מחיר ↑','מחיר ↓','חדרי שינה','שטח','חדש ראשון'],
-    favLabel:'מועדפים', favLabelExit:'צא ממועדפים', favEmpty:'אין נכסים שמורים',
-    notePlaceholder:'הוסף הערה...', noteSave:'שמור',
-    deleteNoteConfirm:'למחוק את ההערה לנכס זה?',
-    autofillBanner:'הפרטים שלך מולאו אוטומטית מהפרופיל',
-    recsTitle:'אולי תאהב גם', recsTitleNew:'נכסים חדשים',
-    sellTitle:'מוכר נכס?', sellSub:'השאר פנייה — הנציג שלנו יצור איתך קשר.',
-    sfLabelName:'שם', sfLabelPhone:'טלפון', sfLabelType:'סוג נכס', sfLabelMarket:'יד ראשונה / שנייה',
-    sfLabelArea:'שטח', sfLabelPrice:'מחיר', sfLabelDesc:'תיאור',
-    sfSubmit:'שלח פנייה', sfSuccessTitle:'נשלח!', sfSuccessText:'הנציג שלנו יצור איתך קשר.',
-    baSearch:'לא מצאת?', baSearchSub:'השאר בקשה',
-    qfName:'שם', qfPhone:'טלפון', qfBudget:'תקציב', qfMsg:'מה אתה מחפש?', qfSubmit:'שלח',
-    priceFrom:'מ', priceTo:'עד', rtl:true,
-    popupTitle:'צור חשבון',
-    popupBenefits:`<div class="auth-popup-benefit"><span>❤️</span><span>שמור נכסים</span></div><div class="auth-popup-benefit"><span>📝</span><span>הערות אישיות</span></div><div class="auth-popup-benefit"><span>⚡</span><span>שלח פנייה בלחיצה אחת</span></div><div class="auth-popup-benefit"><span>🔔</span><span>התראות על שינויים</span></div>`,
-    popupRegBtn:'צור חשבון', popupLoginBtn:'כבר יש לי חשבון', popupClose:'המשך ללא הרשמה',
-  }
-};
+    .sell-card input,
+    .sell-card select,
+    .sell-card textarea {
+      font-size: 14px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e0e0e0;
+      background: #f8f8f8;
+      color: #1a1a1a;
+      width: 100%;
+      font-family: inherit;
+      resize: none;
+    }
 
-let lang='ru', sortIdx=4, editingNote=null;
-let showFavOnly=false, selectedBeds=new Set(), selectedPool=new Set(), filterSea=false;
-let ALL_DATA=[], galleryIndex={};
-let searchFormOpen=false, extraFiltersOpen=false, currentTab='buy';
+    .sell-card input.autofilled {
+      background: #f0faf7;
+      border-color: #b2ddd1;
+    }
 
-const SORT_FNS=[(a,b)=>a.price-b.price,(a,b)=>b.price-a.price,(a,b)=>a.rooms-b.rooms,(a,b)=>a.area-b.area,(a,b)=>a.days_ago-b.days_ago];
+    .sell-submit {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      background: #e8a020;
+      color: white;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 6px;
+    }
 
-function switchTab(tab){
-  currentTab=tab;
-  document.getElementById('tab-buy').classList.toggle('active', tab==='buy');
-  document.getElementById('tab-sell').classList.toggle('active', tab==='sell');
-  document.getElementById('buy-panel').classList.toggle('hidden', tab==='sell');
-  document.getElementById('sell-panel').classList.toggle('active', tab==='sell');
-  if(tab==='sell') applyProfileAutofill();
-}
+    .sell-success {
+      text-align: center;
+      padding: 30px;
+      display: none;
+    }
 
-async function submitSellForm(){
-  const name=document.getElementById('sf-name').value.trim();
-  const phone=document.getElementById('sf-phone').value.trim();
-  const type=document.getElementById('sf-type').value;
-  const market=document.getElementById('sf-market').value;
-  const area=document.getElementById('sf-area').value.trim();
-  const price=document.getElementById('sf-price').value.trim();
-  const desc=document.getElementById('sf-desc').value.trim();
-  const t=T[lang];
+    .sell-success.show {
+      display: block;
+    }
 
-  let msg=`🏡 <b>Хочу продать недвижимость</b>\n\n`;
-  msg+=`<b>Имя:</b> ${name||'—'}\n`;
-  msg+=`<b>Телефон:</b> ${phone||'—'}\n`;
-  msg+=`<b>Тип:</b> ${t[type]||type}\n`;
-  msg+=`<b>Рынок:</b> ${market==='new'?t.newBuild:t.resale}\n`;
-  if(area) msg+=`<b>Площадь:</b> ${area} м²\n`;
-  if(price) msg+=`<b>Цена:</b> €${price}\n`;
-  if(desc) msg+=`<b>Описание:</b> ${desc}\n`;
-  msg+=`\n🌐 Язык клиента: ${lang.toUpperCase()}`;
+    .autofill-banner {
+      background: #e6f7f2;
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+      font-size: 13px;
+      color: #0f6e56;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-  await sendToTelegram(msg);
-  document.getElementById('sell-form-inner').style.display='none';
-  document.getElementById('sell-success-title').textContent=t.sfSuccessTitle;
-  document.getElementById('sell-success-text').textContent=t.sfSuccessText;
-  document.getElementById('sell-success').classList.add('show');
-}
+    .filters {
+      background: white;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 10px;
+    }
 
-async function submitSearchForm(){
-  const name=document.getElementById('qf-name').value.trim();
-  const phone=document.getElementById('qf-phone').value.trim();
-  const budget=document.getElementById('qf-budget').value.trim();
-  const msg_text=document.getElementById('qf-msg').value.trim();
+    .filters-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: flex-end;
+    }
 
-  let msg=`🔍 <b>Заявка на подбор недвижимости</b>\n\n`;
-  msg+=`<b>Имя:</b> ${name||'—'}\n`;
-  msg+=`<b>Телефон:</b> ${phone||'—'}\n`;
-  if(budget) msg+=`<b>Бюджет:</b> €${budget}\n`;
-  if(msg_text) msg+=`<b>Запрос:</b> ${msg_text}\n`;
-  msg+=`\n🌐 Язык клиента: ${lang.toUpperCase()}`;
+    .fg {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+      min-width: 160px;
+    }
 
-  await sendToTelegram(msg);
-  const wrap=document.getElementById('search-form-wrap');
-  wrap.innerHTML=`<div style="text-align:center;padding:20px;color:#0f6e56;font-weight:600">✅ ${T[lang].sfSuccessTitle}</div>`;
-}
+    .fg label {
+      font-size: 11px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
 
-function toggleExtraFilters(){ extraFiltersOpen=!extraFiltersOpen; document.getElementById('extra-filters').classList.toggle('open', extraFiltersOpen); updateMoreBtn(); }
-function countExtraActive(){
-  return selectedBeds.size+(document.getElementById('pmin').value?1:0)+(document.getElementById('pmax').value?1:0)+(document.getElementById('imin').value?1:0)+(document.getElementById('imax').value?1:0)+(document.getElementById('plotmin').value?1:0)+(document.getElementById('plotmax').value?1:0)+(document.getElementById('ymin').value?1:0)+(document.getElementById('ymax').value?1:0)+selectedPool.size+(filterSea?1:0);
-}
-function updateMoreBtn(){
-  const t=T[lang], btn=document.getElementById('more-filters-btn'), cnt=countExtraActive();
-  btn.classList.toggle('active', extraFiltersOpen); btn.classList.toggle('has-active', cnt>0);
-  document.getElementById('extra-count').textContent=cnt;
-  document.getElementById('more-filters-label').textContent=extraFiltersOpen?t.lessFilters:t.moreFilters;
-}
-function onFilter(){ if(showFavOnly) exitFavView(); else render(); updateResetBtn(); updateMoreBtn(); }
-function exitFavView(){ showFavOnly=false; updateFavBtn(); render(); }
-function updateFavBtn(){ const t=T[lang]; document.getElementById('fav-toggle').classList.toggle('active',showFavOnly); document.getElementById('fav-label').textContent=showFavOnly?t.favLabelExit:t.favLabel; }
-function toggleSearchForm(){ searchFormOpen=!searchFormOpen; document.getElementById('search-form-wrap').classList.toggle('open', searchFormOpen); if(searchFormOpen) applyProfileAutofill(); }
-function goToProperty(id){ window.location.href=`property.html?id=${id}`; }
-function updateResetBtn(){ const hasFilters=document.getElementById('fc').value||document.getElementById('ft').value||document.getElementById('fm').value||document.getElementById('fs').value!=='all'||countExtraActive()>0; document.getElementById('reset-btn').style.display=hasFilters?'block':'none'; }
-function resetFilters(){ ['fc','ft','fm'].forEach(id=>document.getElementById(id).value=''); document.getElementById('fs').value='all'; ['pmin','pmax','imin','imax','plotmin','plotmax','ymin','ymax'].forEach(id=>document.getElementById(id).value=''); selectedBeds.clear(); selectedPool.clear(); filterSea=false; renderBeds(); renderPoolPills(); renderSeaPills(); document.getElementById('reset-btn').style.display='none'; updateMoreBtn(); render(); }
-function renderPoolPills(){ const t=T[lang]; document.getElementById('pool-pills').innerHTML=[{v:'yes',l:t.poolYes},{v:'possible',l:t.poolPossible},{v:'none',l:t.poolNone}].map(o=>`<label class="check-pill ${selectedPool.has(o.v)?'active':''}" onclick="togglePool('${o.v}')"><input type="checkbox" style="display:none"> ${o.l}</label>`).join(''); }
-function renderSeaPills(){ document.getElementById('sea-pills').innerHTML=`<label class="check-pill ${filterSea?'active':''}" onclick="toggleSea()"><input type="checkbox" style="display:none"> 🌊 ${T[lang].seaYes}</label>`; }
-function togglePool(v){ selectedPool.has(v)?selectedPool.delete(v):selectedPool.add(v); renderPoolPills(); onFilter(); }
-function toggleSea(){ filterSea=!filterSea; renderSeaPills(); onFilter(); }
-async function toggleFav(id, e){ e.stopPropagation(); if(!isLoggedIn()){ showAuthPopup(); return; } await toggleFavSupabase(id); buildRecs(); render(); }
-function toggleFavView(){ showFavOnly=!showFavOnly; updateFavBtn(); render(); }
-function startEditNote(id, e){ e.stopPropagation(); if(!isLoggedIn()){ showAuthPopup(); return; } editingNote=id; render(); const el=document.getElementById('note-input-'+id); if(el) el.focus(); }
-async function saveNote(id){ const el=document.getElementById('note-input-'+id); if(!el) return; const text=el.value.trim(); if(isLoggedIn()){ await saveNoteSupabase(id, text); } else { notes[id]=text; saveNotesLocal(); } editingNote=null; render(); }
+    .fg select {
+      font-size: 14px;
+      padding: 9px 10px;
+      border-radius: 10px;
+      border: 1px solid #e0e0e0;
+      background: #f8f8f8;
+      color: #1a1a1a;
+      width: 100%;
+    }
 
-function buildRecs(){
-  const t=T[lang]; const block=document.getElementById('recs-block'); const scroll=document.getElementById('recs-scroll');
-  if(!ALL_DATA.length){ block.style.display='none'; return; }
-  let recs=[];
-  if(favs.size>0){
-    const favProps=ALL_DATA.filter(d=>favs.has(d.id)); const favCities=new Set(favProps.map(d=>d.city)); const favTypes=new Set(favProps.map(d=>d.type));
-    recs=ALL_DATA.filter(d=>!favs.has(d.id)&&d.status==='available'&&(favCities.has(d.city)||favTypes.has(d.type))).slice(0,8);
-    document.getElementById('recs-title-text').textContent=t.recsTitle;
-  } else {
-    recs=ALL_DATA.filter(d=>d.status==='available').sort((a,b)=>a.days_ago-b.days_ago).slice(0,8);
-    document.getElementById('recs-title-text').textContent=t.recsTitleNew;
-  }
-  if(!recs.length){ block.style.display='none'; return; }
-  scroll.innerHTML=recs.map(d=>{ const img=d.images?.length>0?`<img class="rec-img" src="${d.images[0]}" alt="фото">`:`<div class="rec-img-placeholder">${d.emoji}</div>`; const rl=roomsLabel(d); return `<div class="rec-card" onclick="goToProperty(${d.id})">${img}<div class="rec-body"><div class="rec-title">${d['title_'+lang]}</div><div class="rec-price">€${(d.price*1000).toLocaleString()}</div><div class="rec-meta">📍 ${getCityLabel(d)}${rl?' · 🛏️ '+rl:''}</div></div></div>`; }).join('');
-  block.style.display='block';
-}
+    .more-filters-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 16px;
+      border-radius: 10px;
+      border: 1px solid #e0e0e0;
+      background: #f8f8f8;
+      color: #1a1a1a;
+      font-size: 14px;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
 
-function updateTexts(){
-  const t=T[lang];
-  document.getElementById('app').setAttribute('dir', t.rtl?'rtl':'ltr');
-  document.getElementById('hn').textContent=t.h; document.getElementById('hs').textContent=t.s;
-  document.getElementById('tab-buy-label').textContent=t.tabBuy; document.getElementById('tab-sell-label').textContent=t.tabSell;
-  document.getElementById('lc').textContent=t.lc; document.getElementById('lt').textContent=t.lt; document.getElementById('lm').textContent=t.lm; document.getElementById('lst-label').textContent=t.lstL;
-  document.getElementById('lb2').textContent=t.lb2; document.getElementById('lp').textContent=t.lp; document.getElementById('l-internal').textContent=t.lInternal; document.getElementById('l-plot').textContent=t.lPlot; document.getElementById('l-year').textContent=t.lYear; document.getElementById('l-pool').textContent=t.lPool; document.getElementById('l-sea').textContent=t.lSea;
-  document.getElementById('pmin').placeholder=t.priceFrom; document.getElementById('pmax').placeholder=t.priceTo; document.getElementById('reset-label').textContent=t.resetLabel;
-  const cityKeys=['Limassol','Limassol_district','Paphos','Paphos_district','Larnaca','Larnaca_district','Nicosia','Nicosia_district','Famagusta_district'];
-  const fc=document.getElementById('fc'); fc.options[0].text=t.all; cityKeys.forEach((c,i)=>{ if(fc.options[i+1]) fc.options[i+1].text=t.cities[c]; });
-  const ft=document.getElementById('ft'); ft.options[0].text=t.all; ['apt','penthouse','house','townhouse','land_res','land_other','commercial','building'].forEach((v,i)=>{ if(ft.options[i+1]) ft.options[i+1].text=t[v]; });
-  const fmk=document.getElementById('fm'); fmk.options[0].text=t.all; if(fmk.options[1]) fmk.options[1].text=t.newBuild; if(fmk.options[2]) fmk.options[2].text=t.resale;
-  const fs=document.getElementById('fs'); [t.statusAll,t.statusAvailable,t.statusSold,t.statusUnavailable].forEach((v,i)=>{ if(fs.options[i]) fs.options[i].text=v; });
-  document.getElementById('sell-title').textContent=t.sellTitle; document.getElementById('sell-sub').textContent=t.sellSub;
-  ['name','phone','type','market','area','price','desc'].forEach(f=>{ const el=document.getElementById(`sf-label-${f}`); if(el) el.textContent=t[`sfLabel${f.charAt(0).toUpperCase()+f.slice(1)}`]; });
-  document.getElementById('sf-submit').textContent=t.sfSubmit;
-  document.getElementById('sf-name').placeholder=t.sfLabelName; document.getElementById('sf-phone').placeholder=t.sfLabelPhone; document.getElementById('sf-area').placeholder=t.sfLabelArea; document.getElementById('sf-price').placeholder=t.sfLabelPrice; document.getElementById('sf-desc').placeholder=t.sfLabelDesc;
-  const sfType=document.getElementById('sf-type'); ['apt','house','townhouse','land_res','land_other','commercial','building'].forEach((v,i)=>{ if(sfType.options[i]) sfType.options[i].text=t[v]; });
-  const sfMarket=document.getElementById('sf-market'); if(sfMarket.options[0]) sfMarket.options[0].text=t.newBuild; if(sfMarket.options[1]) sfMarket.options[1].text=t.resale;
-  document.getElementById('ba-search').textContent=t.baSearch; document.getElementById('ba-search-sub').textContent=t.baSearchSub;
-  document.getElementById('qf-name').placeholder=t.qfName; document.getElementById('qf-phone').placeholder=t.qfPhone; document.getElementById('qf-budget').placeholder=t.qfBudget; document.getElementById('qf-msg').placeholder=t.qfMsg; document.getElementById('qf-submit').textContent=t.qfSubmit;
-  updateFavBtn(); updateMoreBtn(); updateAuthBtn();
-}
+    .more-filters-btn.active {
+      background: #0f6e56;
+      color: white;
+      border-color: #0f6e56;
+    }
 
-function setLang(l, btn){
-  lang=l; localStorage.setItem('bcp_lang', l);
-  document.querySelectorAll('.lb').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  updateTexts(); renderBeds(); renderPoolPills(); renderSeaPills(); renderSorts(); render(); buildRecs(); applyProfileAutofill();
-}
+    .count-badge {
+      background: #e8a020;
+      color: white;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 11px;
+      font-weight: 700;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
 
-function renderBeds(){ const t=T[lang]; document.getElementById('beds-pills').innerHTML=BEDS_OPTIONS.map(b=>`<span class="bed-pill ${selectedBeds.has(b)?'active':''}" onclick="toggleBed('${b}')">${t.beds[b]}</span>`).join(''); }
-function toggleBed(b){ if(showFavOnly) exitFavView(); selectedBeds.has(b)?selectedBeds.delete(b):selectedBeds.add(b); renderBeds(); render(); updateResetBtn(); updateMoreBtn(); }
-function renderSorts(){ const t=T[lang]; document.getElementById('sort-bar').innerHTML=t.sorts.map((s,i)=>`<button class="sort-btn ${i===sortIdx?'active':''}" onclick="setSort(${i})">${s}</button>`).join(''); }
-function setSort(i){ sortIdx=i; renderSorts(); render(); }
+    .more-filters-btn.has-active .count-badge {
+      display: flex;
+    }
 
-function galleryNav(id, dir, total, e){ e.stopPropagation(); galleryIndex[id]=((galleryIndex[id]||0)+dir+total)%total; const wrap=document.getElementById('gallery-'+id); if(!wrap) return; const imgs=ALL_DATA.find(d=>d.id===id)?.images||[]; const idx=galleryIndex[id]; wrap.querySelector('.gallery-img').src=imgs[idx]; wrap.querySelectorAll('.gallery-dot').forEach((d,i)=>d.classList.toggle('active',i===idx)); const pc=wrap.querySelector('.photo-count'); if(pc) pc.textContent=`${idx+1}/${imgs.length}`; }
-function getCityLabel(d){ return T[lang].cities[d.district?d.city+'_district':d.city]||d.city; }
-function roomsLabel(d){ const t=T[lang]; if(ROOMS_TYPES.includes(d.type)&&d.rooms===0) return t.studio; if(d.rooms===0) return ''; if(d.rooms>=5) return `5+ ${t.rooms}`; return `${d.rooms} ${t.rooms}`; }
-function buildGallery(d){ const imgs=d.images&&d.images.length>0?d.images:[]; const idx=galleryIndex[d.id]||0; if(!imgs.length) return `<div class="no-photo">${d.emoji}</div>`; const dots=imgs.length>1?`<div class="gallery-nav-dots">${imgs.map((_,i)=>`<button class="gallery-dot ${i===idx?'active':''}" onclick="event.stopPropagation();galleryNav(${d.id},${i-idx},${imgs.length},event)"></button>`).join('')}</div>`:''; const navBtns=imgs.length>1?`<button class="gallery-prev" onclick="galleryNav(${d.id},-1,${imgs.length},event)">‹</button><button class="gallery-next" onclick="galleryNav(${d.id},1,${imgs.length},event)">›</button>`:''; const count=imgs.length>1?`<span class="photo-count">${idx+1}/${imgs.length}</span>`:''; return `<img class="gallery-img" src="${imgs[idx]}" alt="фото">${navBtns}${dots}${count}`; }
+    .extra-filters {
+      display: none;
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 10px;
+    }
 
-function render(){
-  const t=T[lang];
-  const cityFilter=document.getElementById('fc').value; const type=document.getElementById('ft').value; const market=document.getElementById('fm').value; const statusFilter=document.getElementById('fs').value;
-  const pmin=(parseFloat(document.getElementById('pmin').value)||0)/1000; const pmax=(parseFloat(document.getElementById('pmax').value)||Infinity)/1000;
-  const imin=parseInt(document.getElementById('imin').value)||0; const imax=parseInt(document.getElementById('imax').value)||Infinity;
-  const plotmin=parseInt(document.getElementById('plotmin').value)||0; const plotmax=parseInt(document.getElementById('plotmax').value)||Infinity;
-  const ymin=parseInt(document.getElementById('ymin').value)||0; const ymax=parseInt(document.getElementById('ymax').value)||Infinity;
-  let f=ALL_DATA.filter(d=>{
-    if(showFavOnly&&!favs.has(d.id)) return false;
-    if(cityFilter){ if(cityFilter.endsWith('_district')){ if(d.city+'_district'!==cityFilter) return false; } else { if(d.city!==cityFilter||d.district) return false; } }
-    if(type&&d.type!==type) return false; if(market&&d.market!==market) return false;
-    if(statusFilter==='available'&&d.status!=='available') return false; if(statusFilter==='sold'&&d.status!=='sold') return false; if(statusFilter==='unavailable'&&d.status!=='unavailable') return false;
-    if(selectedBeds.size>0){ if(!ROOMS_TYPES.includes(d.type)) return false; const bedKey=d.rooms===0?'studio':d.rooms>=5?'5+':String(d.rooms); if(!selectedBeds.has(bedKey)) return false; }
-    if(d.price<pmin||d.price>pmax) return false;
-    if(d.internal_area&&(d.internal_area<imin||d.internal_area>imax)) return false;
-    if(PLOT_TYPES.includes(d.type)&&d.plot_size&&(d.plot_size<plotmin||d.plot_size>plotmax)) return false;
-    if(ymin>0&&d.year_built&&d.year_built<ymin) return false; if(ymax<Infinity&&d.year_built&&d.year_built>ymax) return false;
-    if(selectedPool.size>0){ const poolVal=d.pool||'none'; if(!selectedPool.has(poolVal)) return false; }
-    if(filterSea&&!d.sea_walking) return false;
-    return true;
-  });
-  f=[...f].sort(SORT_FNS[sortIdx]);
-  document.getElementById('rc').textContent=t.res(f.length);
-  const con=document.getElementById('lst');
-  if(!f.length){ con.innerHTML=`<div class="none">${showFavOnly?t.favEmpty:t.none}</div>`; return; }
-  con.innerHTML=f.map((d)=>{
-    const isSold=d.status==='sold', isUnavail=d.status==='unavailable', isFav=favs.has(d.id);
-    let badgeClass='', badgeText='';
-    if(isSold){ badgeClass='badge-sold'; badgeText=t.soldBadge; } else if(isUnavail){ badgeClass='badge-unavailable'; badgeText=t.unavailBadge; } else if(d.market==='new'){ badgeClass='badge-new-build'; badgeText=t.newBuild; } else { badgeClass='badge-resale'; badgeText=t.resale; }
-    const rl=roomsLabel(d), note=notes[d.id]||'', isEditingThis=editingNote===d.id;
-    const noteHtml=isFav?`<div class="note-area">${isEditingThis?`<div class="note-edit-wrap"><textarea class="note-input" id="note-input-${d.id}" rows="3" onclick="event.stopPropagation()">${note}</textarea><button class="note-save-btn" onclick="event.stopPropagation();saveNote(${d.id})">${t.noteSave}</button></div>`:`<div class="note-display ${note?'':'empty'}" onclick="startEditNote(${d.id},event)">${note?'📝 '+note:'📝 '+t.notePlaceholder}</div>`}</div>`:'';
-    return `<div class="card ${d.status}" onclick="goToProperty(${d.id})"><div class="card-img-wrap" id="gallery-${d.id}">${buildGallery(d)}${isSold?`<div class="sold-overlay"><div class="sold-stamp">${t.soldBadge}</div></div>`:''}<button class="fav-btn" onclick="toggleFav(${d.id},event)">${isFav?'❤️':'🤍'}</button><span class="status-badge ${badgeClass}">${badgeText}</span></div><div class="card-body"><div class="card-top"><span class="card-title">${d['title_'+lang]}${d.is_new&&!isSold?`<span class="new-badge">${t.newBadge}</span>`:''}</span><span class="card-price">€${(d.price*1000).toLocaleString()}</span></div><div class="card-meta"><span>📍 ${getCityLabel(d)}</span>${rl?`<span>🛏️ ${rl}</span>`:''}<span>📐 ${d.area} ${t.area}</span>${d.year_built?`<span>🏗️ ${d.year_built}</span>`:''}${d.pool&&d.pool!=='none'?`<span>${d.pool==='yes'?'🏊 '+t.poolYes:'🏊 '+t.poolPossible}</span>`:''} ${d.sea_walking?`<span>🌊</span>`:''}</div><span class="tag">${d['tag_'+lang]}</span>${noteHtml}<div class="card-footer"><span class="view-btn">${t.viewMore}</span><button class="quick-wa" onclick="event.stopPropagation();location.href='https://wa.me/35799000000?text=${encodeURIComponent(d['title_'+lang])}'">💬 ${t.wa}</button></div></div></div>`;
-  }).join('');
-}
+    .extra-filters.open {
+      display: block;
+    }
 
-window.onload = async function(){
-  const savedLang = localStorage.getItem('bcp_lang');
-  if(savedLang && T[savedLang]){
-    lang = savedLang;
-    const activeLb = document.querySelector(`.lb[onclick*="'${savedLang}'"]`);
-    if(activeLb){ document.querySelectorAll('.lb').forEach(b=>b.classList.remove('active')); activeLb.classList.add('active'); }
-  }
-  if(isLoggedIn()){ await refreshProfile(); await loadFavsFromSupabase(); } else { loadLocalStorage(); }
-  updateTexts(); renderBeds(); renderPoolPills(); renderSeaPills(); renderSorts(); updateAuthBtn();
-  try { ALL_DATA = await fetchProperties(); render(); buildRecs(); applyProfileAutofill(); }
-  catch(e) { document.getElementById('lst').innerHTML=`<div class="none">${T[lang].error}</div>`; }
-};
-</script>
+    .extra-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .extra-section {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .extra-section-title {
+      font-size: 12px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+    }
+
+    .beds-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .bed-pill {
+      font-size: 13px;
+      padding: 7px 14px;
+      border-radius: 10px;
+      border: 1px solid #e0e0e0;
+      background: #f8f8f8;
+      color: #666;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s;
+    }
+
+    .bed-pill:hover {
+      border-color: #0f6e56;
+      color: #0f6e56;
+    }
+
+    .bed-pill.active {
+      background: #0f6e56;
+      color: white;
+      border-color: #0f6e56;
+    }
+
+    .range-inputs {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .range-input-wrap {
+      flex: 1;
+      position: relative;
+    }
+
+    .range-input-wrap input {
+      width: 100%;
+      font-size: 14px;
+      padding: 9px 10px;
+      border-radius: 10px;
+      border: 1px solid #e0e0e0;
+      background: #f8f8f8;
+      color: #1a1a1a;
+    }
+
+    .range-input-wrap.with-prefix input {
+      padding-left: 26px;
+    }
+
+    .range-input-wrap.with-prefix::before {
+      content: attr(data-prefix);
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #aaa;
+      font-size: 13px;
+      pointer-events: none;
+    }
+
+    .range-sep {
+      color: #aaa;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .check-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .check-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 10px;
+      border: 1px solid #e0e0e0;
+      background: #f8f8f8;
+      cursor: pointer;
+      font-size: 13px;
+      color: #666;
+      user-select: none;
+      transition: all 0.15s;
+    }
+
+    .check-pill input {
+      display: none;
+    }
+
+    .check-pill.active {
+      background: #0f6e56;
+      color: white;
+      border-color: #0f6e56;
+    }
+
+    .check-pill:hover:not(.active) {
+      border-color: #0f6e56;
+      color: #0f6e56;
+    }
+
+    .sticky-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #f5f5f0;
+      padding: 8px 0;
+      margin-bottom: 4px;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .sort-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .sort-btn {
+      font-size: 12px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid #ddd;
+      background: white;
+      color: #666;
+      cursor: pointer;
+    }
+
+    .sort-btn.active {
+      background: #0f6e56;
+      color: white;
+      border-color: #0f6e56;
+    }
+
+    .top-bar-right {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .reset-btn {
+      font-size: 12px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid #c0392b;
+      background: white;
+      color: #c0392b;
+      cursor: pointer;
+      display: none;
+      white-space: nowrap;
+    }
+
+    .reset-btn:hover {
+      background: #fff0f0;
+    }
+
+    .fav-toggle {
+      font-size: 13px;
+      padding: 7px 16px;
+      border-radius: 20px;
+      border: 1px solid #ddd;
+      background: white;
+      color: #666;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .fav-toggle.active {
+      background: #fce4ec;
+      color: #ad1457;
+      border-color: #ad1457;
+      font-weight: 500;
+    }
+
+    .recs-block {
+      margin-bottom: 20px;
+    }
+
+    .recs-title {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .recs-scroll {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .recs-scroll::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .recs-scroll::-webkit-scrollbar-thumb {
+      background: #ddd;
+      border-radius: 4px;
+    }
+
+    .rec-card {
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+      flex-shrink: 0;
+      width: 240px;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .rec-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    }
+
+    .rec-img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .rec-img-placeholder {
+      width: 100%;
+      height: 140px;
+      background: linear-gradient(135deg, #e6f7f2, #b2e0d0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+    }
+
+    .rec-body {
+      padding: 12px;
+    }
+
+    .rec-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .rec-price {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0f6e56;
+    }
+
+    .rec-meta {
+      font-size: 12px;
+      color: #888;
+      margin-top: 3px;
+    }
+
+    .count {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 10px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #888;
+      font-size: 15px;
+      grid-column: 1/-1;
+    }
+
+    .listings {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    .card.sold .card-img-wrap {
+      filter: grayscale(60%);
+    }
+
+    .card.unavailable .card-img-wrap {
+      filter: grayscale(30%);
+    }
+
+    .card-img-wrap {
+      position: relative;
+      width: 100%;
+      height: 220px;
+      background: linear-gradient(135deg, #e6f7f2, #b2e0d0);
+      overflow: hidden;
+    }
+
+    .card-img-wrap .no-photo {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 56px;
+    }
+
+    .gallery-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    .gallery-nav-dots {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 5px;
+    }
+
+    .gallery-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.6);
+      cursor: pointer;
+      border: none;
+      padding: 0;
+    }
+
+    .gallery-dot.active {
+      background: white;
+    }
+
+    .gallery-prev,
+    .gallery-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.35);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
+    }
+
+    .gallery-prev {
+      left: 8px;
+    }
+
+    .gallery-next {
+      right: 8px;
+    }
+
+    .photo-count {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 20px;
+    }
+
+    .fav-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: white;
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 4;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .status-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: 700;
+      z-index: 4;
+    }
+
+    .badge-new-build {
+      background: #e3f2fd;
+      color: #1565c0;
+    }
+
+    .badge-resale {
+      background: #f3e5f5;
+      color: #6a1b9a;
+    }
+
+    .badge-sold {
+      background: #1a1a1a;
+      color: white;
+    }
+
+    .badge-unavailable {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .sold-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .sold-stamp {
+      font-size: 28px;
+      font-weight: 900;
+      color: rgba(0, 0, 0, 0.18);
+      border: 4px solid rgba(0, 0, 0, 0.15);
+      padding: 6px 16px;
+      border-radius: 8px;
+      transform: rotate(-15deg);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .card-body {
+      padding: 16px;
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 6px;
+      gap: 8px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .card-price {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0f6e56;
+      white-space: nowrap;
+    }
+
+    .card.sold .card-price {
+      color: #888;
+      text-decoration: line-through;
+    }
+
+    .card-meta {
+      display: flex;
+      gap: 12px;
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: #e6f7f2;
+      color: #0f6e56;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+
+    .new-badge {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 20px;
+      background: #fff3e0;
+      color: #e65100;
+      font-weight: 600;
+      margin-left: 6px;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4px;
+    }
+
+    .view-btn {
+      font-size: 13px;
+      color: #0f6e56;
+      font-weight: 500;
+    }
+
+    .quick-wa {
+      background: #25D366;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .note-area {
+      margin-top: 10px;
+      margin-bottom: 4px;
+    }
+
+    .note-display {
+      font-size: 13px;
+      color: #555;
+      background: #fffde7;
+      border-radius: 10px;
+      padding: 8px 12px;
+      cursor: pointer;
+      border: 1px solid #fff176;
+      white-space: pre-wrap;
+    }
+
+    .note-display.empty {
+      color: #aaa;
+      background: #f8f8f8;
+      border: 1px dashed #ddd;
+      white-space: normal;
+    }
+
+    .note-edit-wrap {
+      background: #fffde7;
+      border-radius: 10px;
+      border: 1px solid #0f6e56;
+      overflow: hidden;
+    }
+
+    .note-input {
+      width: 100%;
+      font-size: 13px;
+      padding: 8px 12px;
+      border: none;
+      background: transparent;
+      color: #1a1a1a;
+      font-family: inherit;
+      resize: none;
+      outline: none;
+      display: block;
+    }
+
+    .note-save-btn {
+      width: 100%;
+      padding: 7px;
+      border: none;
+      background: #0f6e56;
+      color: white;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .auth-popup {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 500;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .auth-popup.open {
+      display: flex;
+    }
+
+    .auth-popup-card {
+      background: white;
+      border-radius: 24px;
+      padding: 28px;
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(40px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .auth-popup-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+
+    .auth-popup-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .auth-popup-benefits {
+      text-align: left;
+      background: #f8f8f8;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 20px;
+    }
+
+    .auth-popup-benefit {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .auth-popup-benefit:last-child {
+      margin-bottom: 0;
+    }
+
+    .auth-popup-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .auth-popup-reg {
+      padding: 14px;
+      border-radius: 14px;
+      border: none;
+      background: #0f6e56;
+      color: white;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .auth-popup-login {
+      padding: 13px;
+      border-radius: 14px;
+      border: 1px solid #e0e0e0;
+      background: white;
+      color: #1a1a1a;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .auth-popup-close {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #aaa;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    .bottom-actions {
+      margin-top: 20px;
+    }
+
+    .action-card {
+      background: white;
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      border: none;
+      width: 100%;
+      text-align: left;
+      margin-bottom: 10px;
+    }
+
+    .action-icon {
+      font-size: 28px;
+    }
+
+    .action-text strong {
+      display: block;
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .action-text span {
+      font-size: 13px;
+      color: #888;
+    }
+
+    .search-form-wrap {
+      display: none;
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 10px;
+    }
+
+    .search-form-wrap.open {
+      display: block;
+    }
+
+    .cform {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .cform input,
+    .cform textarea {
+      font-size: 14px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e0e0e0;
+      background: #f8f8f8;
+      color: #1a1a1a;
+      width: 100%;
+      font-family: inherit;
+      resize: none;
+    }
+
+    .cform input.autofilled {
+      background: #f0faf7;
+      border-color: #b2ddd1;
+    }
+
+    .sbtn {
+      background: #0f6e56;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .none {
+      text-align: center;
+      padding: 40px 20px;
+      color: #aaa;
+      background: white;
+      border-radius: 16px;
+      grid-column: 1/-1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app" id="app">
+
+    <div class="lang-switch">
+      <button class="lb active" onclick="setLang('ru', this)"><img src="https://flagcdn.com/24x18/ru.png"
+          alt="RU"></button>
+      <button class="lb" onclick="setLang('en', this)"><img src="https://flagcdn.com/24x18/gb.png" alt="EN"></button>
+      <button class="lb" onclick="setLang('el', this)"><img src="https://flagcdn.com/24x18/cy.png" alt="ΕΛ"></button>
+      <button class="lb" onclick="setLang('he', this)"><img src="https://flagcdn.com/24x18/il.png" alt="HE"></button>
+    </div>
+
+    <div class="header">
+      <div class="header-top">
+        <div style="width:100px"></div>
+        <div class="header-center">
+          <div class="logo">Best Cyprus Properties</div>
+          <h1 id="hn"></h1>
+          <p id="hs"></p>
+        </div>
+        <div style="width:100px;display:flex;justify-content:flex-end;padding-top:4px">
+          <a id="auth-btn" class="auth-btn" href="auth.html">👤 <span id="auth-btn-label">Войти</span></a>
+        </div>
+      </div>
+      <div class="tabs">
+        <button class="tab active" id="tab-buy" onclick="switchTab('buy')"><span>🔍</span> <span
+            id="tab-buy-label"></span></button>
+        <button class="tab sell-tab" id="tab-sell" onclick="switchTab('sell')"><span>🏡</span> <span
+            id="tab-sell-label"></span></button>
+      </div>
+    </div>
+
+    <div class="buy-panel" id="buy-panel">
+      <div class="filters">
+        <div class="filters-row">
+          <div class="fg"><label id="lc"></label>
+            <select id="fc" onchange="onFilter()">
+              <option value=""></option>
+              <option value="Limassol"></option>
+              <option value="Limassol_district"></option>
+              <option value="Paphos"></option>
+              <option value="Paphos_district"></option>
+              <option value="Larnaca"></option>
+              <option value="Larnaca_district"></option>
+              <option value="Nicosia"></option>
+              <option value="Nicosia_district"></option>
+              <option value="Famagusta_district"></option>
+            </select>
+          </div>
+          <div class="fg"><label id="lt"></label>
+            <select id="ft" onchange="onFilter()">
+              <option value=""></option>
+              <option value="apt"></option>
+              <option value="penthouse"></option>
+              <option value="house"></option>
+              <option value="townhouse"></option>
+              <option value="land_res"></option>
+              <option value="land_other"></option>
+              <option value="commercial"></option>
+              <option value="building"></option>
+            </select>
+          </div>
+          <div class="fg"><label id="lm"></label>
+            <select id="fm" onchange="onFilter()">
+              <option value=""></option>
+              <option value="new"></option>
+              <option value="resale"></option>
+            </select>
+          </div>
+          <div class="fg"><label id="lst-label"></label>
+            <select id="fs" onchange="onFilter()">
+              <option value="all"></option>
+              <option value="available"></option>
+              <option value="sold"></option>
+              <option value="unavailable"></option>
+            </select>
+          </div>
+          <button class="more-filters-btn" id="more-filters-btn" onclick="toggleExtraFilters()">
+            <span id="more-filters-label"></span>
+            <span class="count-badge" id="extra-count">0</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="extra-filters" id="extra-filters">
+        <div class="extra-grid">
+          <div class="extra-section">
+            <div class="extra-section-title" id="lb2"></div>
+            <div class="beds-pills" id="beds-pills"></div>
+          </div>
+          <div class="extra-section">
+            <div class="extra-section-title" id="lp"></div>
+            <div class="range-inputs">
+              <div class="range-input-wrap with-prefix" data-prefix="€"><input type="number" id="pmin" min="0"
+                  oninput="onFilter()"></div>
+              <span class="range-sep">—</span>
+              <div class="range-input-wrap with-prefix" data-prefix="€"><input type="number" id="pmax" min="0"
+                  oninput="onFilter()"></div>
+            </div>
+          </div>
+          <div class="extra-section">
+            <div class="extra-section-title" id="l-internal"></div>
+            <div class="range-inputs">
+              <div class="range-input-wrap"><input type="number" id="imin" min="0" oninput="onFilter()"
+                  placeholder="м²"></div>
+              <span class="range-sep">—</span>
+              <div class="range-input-wrap"><input type="number" id="imax" min="0" oninput="onFilter()"
+                  placeholder="м²"></div>
+            </div>
+          </div>
+          <div class="extra-section">
+            <div class="extra-section-title" id="l-plot"></div>
+            <div class="range-inputs">
+              <div class="range-input-wrap"><input type="number" id="plotmin" min="0" oninput="onFilter()"
+                  placeholder="м²"></div>
+              <span class="range-sep">—</span>
+              <div class="range-input-wrap"><input type="number" id="plotmax" min="0" oninput="onFilter()"
+                  placeholder="м²"></div>
+            </div>
+          </div>
+          <div class="extra-section">
+            <div class="extra-section-title" id="l-year"></div>
+            <div class="range-inputs">
+              <div class="range-input-wrap"><input type="number" id="ymin" min="1900" max="2030" oninput="onFilter()">
+              </div>
+              <span class="range-sep">—</span>
+              <div class="range-input-wrap"><input type="number" id="ymax" min="1900" max="2030" oninput="onFilter()">
+              </div>
+            </div>
+          </div>
+          <div class="extra-section">
+            <div class="extra-section-title" id="l-pool"></div>
+            <div class="check-pills" id="pool-pills"></div>
+          </div>
+          <div class="extra-section">
+            <div class="extra-section-title" id="l-sea"></div>
+            <div class="check-pills" id="sea-pills"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sticky-bar">
+        <div class="top-bar">
+          <div class="sort-bar" id="sort-bar"></div>
+          <div class="top-bar-right">
+            <button class="reset-btn" id="reset-btn" onclick="resetFilters()">✕ <span id="reset-label"></span></button>
+            <button class="fav-toggle" id="fav-toggle" onclick="toggleFavView()">❤️ <span
+                id="fav-label"></span></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="recs-block" id="recs-block" style="display:none">
+        <div class="recs-title">✨ <span id="recs-title-text"></span></div>
+        <div class="recs-scroll" id="recs-scroll"></div>
+      </div>
+
+      <p class="count" id="rc"></p>
+      <div class="listings" id="lst">
+        <div class="loading">⏳ Загружаем объекты...</div>
+      </div>
+
+      <div class="bottom-actions">
+        <button class="action-card" onclick="toggleSearchForm()">
+          <span class="action-icon">🔍</span>
+          <div class="action-text"><strong id="ba-search"></strong><span id="ba-search-sub"></span></div>
+        </button>
+        <div class="search-form-wrap" id="search-form-wrap">
+          <div id="search-autofill-banner"></div>
+          <div class="cform">
+            <input type="text" id="qf-name">
+            <input type="text" id="qf-phone">
+            <input type="text" id="qf-budget">
+            <textarea id="qf-msg" rows="3"></textarea>
+            <button class="sbtn" id="qf-submit" onclick="submitSearchForm()"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sell-panel" id="sell-panel">
+      <div class="sell-card">
+        <h2 id="sell-title"></h2>
+        <p id="sell-sub"></p>
+        <div id="sell-form-inner">
+          <div id="sell-autofill-banner"></div>
+          <div class="sell-grid">
+            <div>
+              <div class="field-label" id="sf-label-name"></div><input type="text" id="sf-name"
+                style="margin-bottom:10px">
+            </div>
+            <div>
+              <div class="field-label" id="sf-label-phone"></div><input type="text" id="sf-phone"
+                style="margin-bottom:10px">
+            </div>
+            <div>
+              <div class="field-label" id="sf-label-type"></div>
+              <select id="sf-type" style="margin-bottom:10px">
+                <option value="apt"></option>
+                <option value="house"></option>
+                <option value="townhouse"></option>
+                <option value="land_res"></option>
+                <option value="land_other"></option>
+                <option value="commercial"></option>
+                <option value="building"></option>
+              </select>
+            </div>
+            <div>
+              <div class="field-label" id="sf-label-market"></div>
+              <select id="sf-market" style="margin-bottom:10px">
+                <option value="new"></option>
+                <option value="resale"></option>
+              </select>
+            </div>
+            <div>
+              <div class="field-label" id="sf-label-area"></div><input type="text" id="sf-area"
+                style="margin-bottom:10px">
+            </div>
+            <div>
+              <div class="field-label" id="sf-label-price"></div><input type="text" id="sf-price"
+                style="margin-bottom:10px">
+            </div>
+            <div class="full">
+              <div class="field-label" id="sf-label-desc"></div><textarea id="sf-desc" rows="4"
+                style="margin-bottom:10px"></textarea>
+            </div>
+          </div>
+          <button class="sell-submit" id="sf-submit" onclick="submitSellForm()"></button>
+        </div>
+        <div class="sell-success" id="sell-success">
+          <div style="font-size:48px;margin-bottom:12px">✅</div>
+          <div style="font-size:18px;font-weight:700;color:#0f6e56;margin-bottom:8px" id="sell-success-title"></div>
+          <div style="color:#666" id="sell-success-text"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-popup" id="auth-popup">
+    <div class="auth-popup-card">
+      <div class="auth-popup-icon">✨</div>
+      <div class="auth-popup-title" id="popup-title"></div>
+      <div class="auth-popup-benefits" id="popup-benefits"></div>
+      <div class="auth-popup-btns">
+        <button class="auth-popup-reg" id="popup-reg-btn"
+          onclick="window.location.href='auth.html?mode=register'"></button>
+        <button class="auth-popup-login" id="popup-login-btn" onclick="window.location.href='auth.html'"></button>
+      </div>
+      <button class="auth-popup-close" id="popup-close-btn" onclick="closeAuthPopup()"></button>
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://lfgqhprihykoxqfnubhc.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_-E46ER3EDjD4TTMMiTRaCQ_9xAe36q_';
+    const TABLE = 'Properties';
+
+    // ---- Telegram ----
+    const TG_TOKEN = '8750318696:AAHvFAHd2USoDJx2R5lqc4iGklYdlEf2wBw';
+    const TG_CHATS = ['176908650', '951659704']; // Олег + Ира
+
+    async function sendToTelegram(text) {
+      for (const chat_id of TG_CHATS) {
+        try {
+          await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id, text, parse_mode: 'HTML' })
+          });
+        } catch (e) { console.error('TG error', e); }
+      }
+    }
+
+    async function fetchProperties() {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?select=*`, {
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+      });
+      if (!res.ok) throw new Error('err');
+      return await res.json();
+    }
+
+    function getToken() { return localStorage.getItem('bcp_token') || ''; }
+    function getUser() { try { return JSON.parse(localStorage.getItem('bcp_user') || 'null'); } catch (e) { return null; } }
+    function getProfile() { try { return JSON.parse(localStorage.getItem('bcp_profile') || 'null'); } catch (e) { return null; } }
+    function isLoggedIn() { return !!getToken(); }
+
+    async function refreshProfile() {
+      if (!isLoggedIn()) return;
+      const user = getUser(); if (!user) return;
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/user_profiles?id=eq.${user.id}&select=*`, { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${getToken()}` } });
+        if (res.ok) { const data = await res.json(); if (data.length) localStorage.setItem('bcp_profile', JSON.stringify(data[0])); }
+      } catch (e) { }
+    }
+
+    function updateAuthBtn() {
+      const btn = document.getElementById('auth-btn'); if (!btn) return;
+      if (isLoggedIn()) {
+        const profile = getProfile();
+        const name = profile?.name || getUser()?.email?.split('@')[0] || 'Профиль';
+        const avatarUrl = profile?.avatar_url;
+        const avatarHtml = avatarUrl ? `<div class="auth-avatar"><img src="${avatarUrl}" alt="avatar"></div>` : `<div class="auth-avatar">${name[0].toUpperCase()}</div>`;
+        btn.href = 'profile.html'; btn.className = 'auth-btn logged';
+        btn.innerHTML = `${avatarHtml} <span>${name}</span>`;
+      } else {
+        btn.href = 'auth.html'; btn.className = 'auth-btn';
+        btn.innerHTML = `👤 <span>${T[lang]?.authBtn || 'Войти'}</span>`;
+      }
+    }
+
+    function applyProfileAutofill() {
+      if (!isLoggedIn()) return;
+      const profile = getProfile(); const user = getUser();
+      if (!profile && !user) return;
+      const name = profile?.name || ''; const phone = profile?.phone || '';
+      const t = T[lang]; const hasData = name || phone;
+      const sfName = document.getElementById('sf-name'); const sfPhone = document.getElementById('sf-phone');
+      if (sfName && name) { sfName.value = name; sfName.classList.add('autofilled'); }
+      if (sfPhone && phone) { sfPhone.value = phone; sfPhone.classList.add('autofilled'); }
+      const sellBanner = document.getElementById('sell-autofill-banner');
+      if (sellBanner && hasData) sellBanner.innerHTML = `<div class="autofill-banner">✅ ${t.autofillBanner}</div>`;
+      const qfName = document.getElementById('qf-name'); const qfPhone = document.getElementById('qf-phone');
+      if (qfName && name) { qfName.value = name; qfName.classList.add('autofilled'); }
+      if (qfPhone && phone) { qfPhone.value = phone; qfPhone.classList.add('autofilled'); }
+      const searchBanner = document.getElementById('search-autofill-banner');
+      if (searchBanner && hasData) searchBanner.innerHTML = `<div class="autofill-banner">✅ ${t.autofillBanner}</div>`;
+    }
+
+    function showAuthPopup() {
+      const t = T[lang];
+      document.getElementById('popup-title').textContent = t.popupTitle;
+      document.getElementById('popup-benefits').innerHTML = t.popupBenefits;
+      document.getElementById('popup-reg-btn').textContent = t.popupRegBtn;
+      document.getElementById('popup-login-btn').textContent = t.popupLoginBtn;
+      document.getElementById('popup-close-btn').textContent = t.popupClose;
+      document.getElementById('auth-popup').classList.add('open');
+    }
+    function closeAuthPopup() { document.getElementById('auth-popup').classList.remove('open'); }
+
+    let favs = new Set(), notes = {};
+
+    function loadLocalStorage() {
+      try {
+        const f = localStorage.getItem('bcp_favs'); const n = localStorage.getItem('bcp_notes');
+        if (f) f.split(',').filter(Boolean).forEach(id => favs.add(parseInt(id)));
+        if (n) Object.assign(notes, JSON.parse(n));
+      } catch (e) { }
+    }
+    function saveNotesLocal() { try { localStorage.setItem('bcp_notes', JSON.stringify(notes)); } catch (e) { } }
+
+    async function loadFavsFromSupabase() {
+      const user = getUser(); if (!user) return;
+      const token = getToken();
+      const [favRes, notesRes] = await Promise.all([
+        fetch(`${SUPABASE_URL}/rest/v1/user_favourites?user_id=eq.${user.id}&select=property_id`, { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${token}` } }),
+        fetch(`${SUPABASE_URL}/rest/v1/user_notes?user_id=eq.${user.id}&select=property_id,note`, { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${token}` } })
+      ]);
+      const favsData = await favRes.json(); const notesData = await notesRes.json();
+      if (!Array.isArray(favsData) || !Array.isArray(notesData)) { localStorage.removeItem('bcp_token'); location.reload(); return; }
+      favs = new Set(favsData.map(f => f.property_id));
+      notes = {}; notesData.forEach(n => { notes[n.property_id] = n.note; });
+    }
+
+    async function toggleFavSupabase(id) {
+      const user = getUser(); const token = getToken();
+      if (favs.has(id)) {
+        if (notes[id]) {
+          if (confirm(T[lang]?.deleteNoteConfirm || 'Удалить заметку?')) {
+            await fetch(`${SUPABASE_URL}/rest/v1/user_notes?user_id=eq.${user.id}&property_id=eq.${id}`, { method: 'DELETE', headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${token}` } });
+            delete notes[id];
+          }
+        }
+        await fetch(`${SUPABASE_URL}/rest/v1/user_favourites?user_id=eq.${user.id}&property_id=eq.${id}`, { method: 'DELETE', headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${token}` } });
+        favs.delete(id);
+      } else {
+        await fetch(`${SUPABASE_URL}/rest/v1/user_favourites`, { method: 'POST', headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' }, body: JSON.stringify({ user_id: user.id, property_id: id }) });
+        favs.add(id);
+      }
+    }
+
+    async function saveNoteSupabase(id, text) {
+      const user = getUser(); const token = getToken();
+      await fetch(`${SUPABASE_URL}/rest/v1/user_notes`, { method: 'POST', headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json', 'Prefer': 'resolution=merge-duplicates' }, body: JSON.stringify({ user_id: user.id, property_id: id, note: text }) });
+      notes[id] = text;
+    }
+
+    const BEDS_OPTIONS = ['studio', '1', '2', '3', '4', '5+'];
+    const ROOMS_TYPES = ['apt', 'penthouse', 'house', 'townhouse'];
+    const PLOT_TYPES = ['house', 'land_res', 'land_other'];
+
+    const T = {
+      ru: {
+        h: 'Недвижимость на Кипре', s: 'Лимасол, Пафос, Ларнака, Никосия, Фамагуста',
+        tabBuy: 'Купить', tabSell: 'Продать', authBtn: 'Войти',
+        lc: 'Город', lt: 'Тип недвижимости', lm: 'Первичная / Вторичная', lstL: 'Статус',
+        lb2: 'Спальни', lp: 'Цена €', moreFilters: 'Ещё фильтры', lessFilters: 'Скрыть',
+        lInternal: 'Площадь (м²)', lPlot: 'Размер участка (м²)', lYear: 'Год постройки',
+        lPool: 'Бассейн', lSea: 'Море в шаговой доступности',
+        poolYes: 'Есть', poolPossible: 'Можно построить', poolNone: 'Нет', seaYes: 'Да',
+        all: 'Все', apt: 'Квартира', penthouse: 'Пентхаус', house: 'Дом / вилла', townhouse: 'Таунхаус',
+        land_res: 'Участок под жильё', land_other: 'Участок (прочее)', commercial: 'Коммерческая', building: 'Целое здание',
+        newBuild: 'Первичная', resale: 'Вторичная',
+        statusAll: 'Все объекты', statusAvailable: 'В продаже', statusSold: 'Проданные', statusUnavailable: 'Временно не продаётся',
+        cities: { Limassol: 'Лимасол', Limassol_district: 'Лимасол дистрикт', Paphos: 'Пафос', Paphos_district: 'Пафос дистрикт', Larnaca: 'Ларнака', Larnaca_district: 'Ларнака дистрикт', Nicosia: 'Никосия', Nicosia_district: 'Никосия дистрикт', Famagusta_district: 'Фамагуста дистрикт' },
+        beds: { studio: 'Студия', '1': '1 спальня', '2': '2 спальни', '3': '3 спальни', '4': '4 спальни', '5+': '5+ спален' },
+        rooms: 'спал.', studio: 'Студия', area: 'м²',
+        res: n => `Найдено: ${n} объектов`, none: 'Ничего не найдено', error: 'Ошибка загрузки.',
+        wa: 'WhatsApp', viewMore: 'Подробнее →', resetLabel: 'Сбросить',
+        newBadge: 'Новое', soldBadge: 'Продано', unavailBadge: 'Временно не продаётся',
+        sorts: ['По цене ↑', 'По цене ↓', 'По спальням', 'По метражу', 'Сначала новые'],
+        favLabel: 'Избранное', favLabelExit: 'Выйти из избранного', favEmpty: 'Нет избранных объектов',
+        notePlaceholder: 'Добавить заметку...', noteSave: 'Сохранить',
+        deleteNoteConfirm: 'Удалить заметку к этому объекту?',
+        autofillBanner: 'Данные из вашего профиля подставлены автоматически',
+        recsTitle: 'Вам может понравиться', recsTitleNew: 'Новые объекты',
+        sellTitle: 'Продаёте недвижимость?', sellSub: 'Оставьте заявку — наш сотрудник свяжется с вами.',
+        sfLabelName: 'Ваше имя', sfLabelPhone: 'Телефон или Telegram', sfLabelType: 'Тип недвижимости', sfLabelMarket: 'Первичная / Вторичная',
+        sfLabelArea: 'Площадь (м²)', sfLabelPrice: 'Цена (€)', sfLabelDesc: 'Описание',
+        sfSubmit: 'Отправить заявку', sfSuccessTitle: 'Заявка отправлена!', sfSuccessText: 'Наш сотрудник свяжется с вами.',
+        baSearch: 'Не нашли нужное?', baSearchSub: 'Оставьте заявку — мы подберём',
+        qfName: 'Ваше имя', qfPhone: 'Телефон', qfBudget: 'Бюджет (€)', qfMsg: 'Что ищете?', qfSubmit: 'Отправить',
+        priceFrom: 'от', priceTo: 'до', rtl: false,
+        popupTitle: 'Создайте аккаунт',
+        popupBenefits: `<div class="auth-popup-benefit"><span>❤️</span><span>Сохраняйте объекты — доступно с любого устройства</span></div><div class="auth-popup-benefit"><span>📝</span><span>Личные заметки — видны только вам</span></div><div class="auth-popup-benefit"><span>⚡</span><span>Заявка в один клик</span></div><div class="auth-popup-benefit"><span>🔔</span><span>Уведомления об изменении цены или статуса</span></div>`,
+        popupRegBtn: 'Создать аккаунт', popupLoginBtn: 'Уже есть аккаунт — войти', popupClose: 'Продолжить без регистрации',
+      },
+      en: {
+        h: 'Cyprus Real Estate', s: 'Limassol, Paphos, Larnaca, Nicosia, Famagusta',
+        tabBuy: 'Buy', tabSell: 'Sell', authBtn: 'Sign in',
+        lc: 'City', lt: 'Property type', lm: 'New build / Resale', lstL: 'Status',
+        lb2: 'Bedrooms', lp: 'Price €', moreFilters: 'More filters', lessFilters: 'Hide',
+        lInternal: 'Internal area (m²)', lPlot: 'Plot size (m²)', lYear: 'Year built',
+        lPool: 'Swimming pool', lSea: 'Walking distance to sea',
+        poolYes: 'Has pool', poolPossible: 'Pool possible', poolNone: 'No pool', seaYes: 'Yes',
+        all: 'All', apt: 'Apartment', penthouse: 'Penthouse', house: 'House / villa', townhouse: 'Townhouse',
+        land_res: 'Residential land', land_other: 'Land (other)', commercial: 'Commercial', building: 'Whole building',
+        newBuild: 'New build', resale: 'Resale',
+        statusAll: 'All properties', statusAvailable: 'Available', statusSold: 'Sold', statusUnavailable: 'Temporarily unavailable',
+        cities: { Limassol: 'Limassol', Limassol_district: 'Limassol District', Paphos: 'Paphos', Paphos_district: 'Paphos District', Larnaca: 'Larnaca', Larnaca_district: 'Larnaca District', Nicosia: 'Nicosia', Nicosia_district: 'Nicosia District', Famagusta_district: 'Famagusta District' },
+        beds: { studio: 'Studio', '1': '1 bed', '2': '2 beds', '3': '3 beds', '4': '4 beds', '5+': '5+ beds' },
+        rooms: 'bed.', studio: 'Studio', area: 'm²',
+        res: n => `Found: ${n} properties`, none: 'No properties found', error: 'Loading error.',
+        wa: 'WhatsApp', viewMore: 'View details →', resetLabel: 'Reset',
+        newBadge: 'New', soldBadge: 'Sold', unavailBadge: 'Temporarily unavailable',
+        sorts: ['Price ↑', 'Price ↓', 'Bedrooms', 'Area', 'Newest first'],
+        favLabel: 'Favourites', favLabelExit: 'Exit favourites', favEmpty: 'No saved properties',
+        notePlaceholder: 'Add a note...', noteSave: 'Save',
+        deleteNoteConfirm: 'Delete the note for this property?',
+        autofillBanner: 'Your profile details have been filled in automatically',
+        recsTitle: 'You might also like', recsTitleNew: 'New listings',
+        sellTitle: 'Selling your property?', sellSub: 'Leave a request — our agent will contact you.',
+        sfLabelName: 'Your name', sfLabelPhone: 'Phone or Telegram', sfLabelType: 'Property type', sfLabelMarket: 'New build / Resale',
+        sfLabelArea: 'Area (m²)', sfLabelPrice: 'Price (€)', sfLabelDesc: 'Description',
+        sfSubmit: 'Submit enquiry', sfSuccessTitle: 'Enquiry sent!', sfSuccessText: 'Our agent will contact you.',
+        baSearch: "Can't find it?", baSearchSub: "Leave a request — we'll find it",
+        qfName: 'Your name', qfPhone: 'Phone', qfBudget: 'Budget (€)', qfMsg: 'What are you looking for?', qfSubmit: 'Send',
+        priceFrom: 'from', priceTo: 'to', rtl: false,
+        popupTitle: 'Create an account',
+        popupBenefits: `<div class="auth-popup-benefit"><span>❤️</span><span>Save properties — accessible from any device</span></div><div class="auth-popup-benefit"><span>📝</span><span>Personal notes — visible only to you</span></div><div class="auth-popup-benefit"><span>⚡</span><span>Submit enquiries in one click</span></div><div class="auth-popup-benefit"><span>🔔</span><span>Get notified when price or status changes</span></div>`,
+        popupRegBtn: 'Create account', popupLoginBtn: 'Already have an account — sign in', popupClose: 'Continue without registering',
+      },
+      el: {
+        h: 'Ακίνητα στην Κύπρο', s: 'Λεμεσός, Πάφος, Λάρνακα, Λευκωσία, Αμμόχωστος',
+        tabBuy: 'Αγορά', tabSell: 'Πώληση', authBtn: 'Σύνδεση',
+        lc: 'Πόλη', lt: 'Τύπος ακινήτου', lm: 'Πρωτογενής / Μεταπώληση', lstL: 'Κατάσταση',
+        lb2: 'Υπνοδωμάτια', lp: 'Τιμή €', moreFilters: 'Περισσότερα', lessFilters: 'Απόκρυψη',
+        lInternal: 'Εσωτερική επιφάνεια (τ.μ.)', lPlot: 'Μέγεθος οικοπέδου (τ.μ.)', lYear: 'Έτος κατασκευής',
+        lPool: 'Πισίνα', lSea: 'Θάλασσα κοντά',
+        poolYes: 'Υπάρχει', poolPossible: 'Δυνατή', poolNone: 'Όχι', seaYes: 'Ναι',
+        all: 'Όλες', apt: 'Διαμέρισμα', penthouse: 'Πεντχάους', house: 'Σπίτι / Βίλα', townhouse: 'Μεζονέτα',
+        land_res: 'Οικόπεδο κατοικίας', land_other: 'Οικόπεδο (άλλο)', commercial: 'Εμπορικό', building: 'Ολόκληρο κτίριο',
+        newBuild: 'Πρωτογενής', resale: 'Μεταπώληση',
+        statusAll: 'Όλα τα ακίνητα', statusAvailable: 'Διαθέσιμο', statusSold: 'Πωλήθηκε', statusUnavailable: 'Προσωρινά μη διαθέσιμο',
+        cities: { Limassol: 'Λεμεσός', Limassol_district: 'Επαρχία Λεμεσού', Paphos: 'Πάφος', Paphos_district: 'Επαρχία Πάφου', Larnaca: 'Λάρνακα', Larnaca_district: 'Επαρχία Λάρνακας', Nicosia: 'Λευκωσία', Nicosia_district: 'Επαρχία Λευκωσίας', Famagusta_district: 'Επαρχία Αμμοχώστου' },
+        beds: { studio: 'Στούντιο', '1': '1 υπν.', '2': '2 υπν.', '3': '3 υπν.', '4': '4 υπν.', '5+': '5+' },
+        rooms: 'υπν.', studio: 'Στούντιο', area: 'τ.μ.',
+        res: n => `Βρέθηκαν: ${n} ακίνητα`, none: 'Δεν βρέθηκαν', error: 'Σφάλμα.',
+        wa: 'WhatsApp', viewMore: 'Περισσότερα →', resetLabel: 'Επαναφορά',
+        newBadge: 'Νέο', soldBadge: 'Πωλήθηκε', unavailBadge: 'Προσωρινά μη διαθέσιμο',
+        sorts: ['Τιμή ↑', 'Τιμή ↓', 'Υπνοδωμάτια', 'Εμβαδόν', 'Νεότερα πρώτα'],
+        favLabel: 'Αγαπημένα', favLabelExit: 'Έξοδος', favEmpty: 'Δεν υπάρχουν αγαπημένα',
+        notePlaceholder: 'Προσθήκη σημείωσης...', noteSave: 'Αποθήκευση',
+        deleteNoteConfirm: 'Διαγραφή σημείωσης;',
+        autofillBanner: 'Τα στοιχεία σας συμπληρώθηκαν αυτόματα',
+        recsTitle: 'Μπορεί να σας αρέσει', recsTitleNew: 'Νέα ακίνητα',
+        sellTitle: 'Πουλάτε ακίνητο;', sellSub: 'Αφήστε αίτημα — ο εκπρόσωπός μας θα επικοινωνήσει μαζί σας.',
+        sfLabelName: 'Όνομα', sfLabelPhone: 'Τηλέφωνο', sfLabelType: 'Τύπος', sfLabelMarket: 'Αγορά',
+        sfLabelArea: 'Εμβαδόν', sfLabelPrice: 'Τιμή', sfLabelDesc: 'Περιγραφή',
+        sfSubmit: 'Αποστολή', sfSuccessTitle: 'Στάλθηκε!', sfSuccessText: 'Θα επικοινωνήσουμε.',
+        baSearch: 'Δεν βρήκατε;', baSearchSub: 'Αφήστε αίτημα',
+        qfName: 'Όνομα', qfPhone: 'Τηλέφωνο', qfBudget: 'Προϋπολογισμός', qfMsg: 'Τι ψάχνετε;', qfSubmit: 'Αποστολή',
+        priceFrom: 'από', priceTo: 'έως', rtl: false,
+        popupTitle: 'Δημιουργήστε λογαριασμό',
+        popupBenefits: `<div class="auth-popup-benefit"><span>❤️</span><span>Αποθηκεύστε ακίνητα</span></div><div class="auth-popup-benefit"><span>📝</span><span>Προσωπικές σημειώσεις</span></div><div class="auth-popup-benefit"><span>⚡</span><span>Αποστολή με ένα κλικ</span></div><div class="auth-popup-benefit"><span>🔔</span><span>Ειδοποιήσεις αλλαγών</span></div>`,
+        popupRegBtn: 'Δημιουργία λογαριασμού', popupLoginBtn: 'Έχω ήδη λογαριασμό', popupClose: 'Συνέχεια χωρίς εγγραφή',
+      },
+      he: {
+        h: 'נדל״ן בקפריסין', s: 'לימסול, פאפוס, לרנקה, ניקוסיה, פמגוסטה',
+        tabBuy: 'קנייה', tabSell: 'מכירה', authBtn: 'כניסה',
+        lc: 'עיר', lt: 'סוג נכס', lm: 'יד ראשונה / יד שנייה', lstL: 'סטטוס',
+        lb2: 'חדרי שינה', lp: 'מחיר €', moreFilters: 'פילטרים נוספים', lessFilters: 'הסתר',
+        lInternal: 'שטח פנימי (מ״ר)', lPlot: 'גודל מגרש (מ״ר)', lYear: 'שנת בנייה',
+        lPool: 'בריכת שחייה', lSea: 'מרחק הליכה לים',
+        poolYes: 'יש בריכה', poolPossible: 'אפשר לבנות', poolNone: 'אין', seaYes: 'כן',
+        all: 'הכל', apt: 'דירה', penthouse: 'פנטהאוס', house: 'בית / וילה', townhouse: 'טאונהאוס',
+        land_res: 'מגרש למגורים', land_other: 'מגרש (אחר)', commercial: 'מסחרי', building: 'בניין שלם',
+        newBuild: 'יד ראשונה', resale: 'יד שנייה',
+        statusAll: 'כל הנכסים', statusAvailable: 'למכירה', statusSold: 'נמכר', statusUnavailable: 'זמנית לא למכירה',
+        cities: { Limassol: 'לימסול', Limassol_district: 'מחוז לימסול', Paphos: 'פאפוס', Paphos_district: 'מחוז פאפוס', Larnaca: 'לרנקה', Larnaca_district: 'מחוז לרנקה', Nicosia: 'ניקוסיה', Nicosia_district: 'מחוז ניקוסיה', Famagusta_district: 'מחוז פמגוסטה' },
+        beds: { studio: 'סטודיו', '1': '1 חדר', '2': '2 חדרים', '3': '3 חדרים', '4': '4 חדרים', '5+': '5+ חדרים' },
+        rooms: "חד'", studio: 'סטודיו', area: 'מ״ר',
+        res: n => `נמצאו: ${n} נכסים`, none: 'לא נמצאו תוצאות', error: 'שגיאת טעינה.',
+        wa: 'וואטסאפ', viewMore: 'פרטים נוספים →', resetLabel: 'איפוס',
+        newBadge: 'חדש', soldBadge: 'נמכר', unavailBadge: 'זמנית לא למכירה',
+        sorts: ['מחיר ↑', 'מחיר ↓', 'חדרי שינה', 'שטח', 'חדש ראשון'],
+        favLabel: 'מועדפים', favLabelExit: 'צא ממועדפים', favEmpty: 'אין נכסים שמורים',
+        notePlaceholder: 'הוסף הערה...', noteSave: 'שמור',
+        deleteNoteConfirm: 'למחוק את ההערה לנכס זה?',
+        autofillBanner: 'הפרטים שלך מולאו אוטומטית מהפרופיל',
+        recsTitle: 'אולי תאהב גם', recsTitleNew: 'נכסים חדשים',
+        sellTitle: 'מוכר נכס?', sellSub: 'השאר פנייה — הנציג שלנו יצור איתך קשר.',
+        sfLabelName: 'שם', sfLabelPhone: 'טלפון', sfLabelType: 'סוג נכס', sfLabelMarket: 'יד ראשונה / שנייה',
+        sfLabelArea: 'שטח', sfLabelPrice: 'מחיר', sfLabelDesc: 'תיאור',
+        sfSubmit: 'שלח פנייה', sfSuccessTitle: 'נשלח!', sfSuccessText: 'הנציג שלנו יצור איתך קשר.',
+        baSearch: 'לא מצאת?', baSearchSub: 'השאר בקשה',
+        qfName: 'שם', qfPhone: 'טלפון', qfBudget: 'תקציב', qfMsg: 'מה אתה מחפש?', qfSubmit: 'שלח',
+        priceFrom: 'מ', priceTo: 'עד', rtl: true,
+        popupTitle: 'צור חשבון',
+        popupBenefits: `<div class="auth-popup-benefit"><span>❤️</span><span>שמור נכסים</span></div><div class="auth-popup-benefit"><span>📝</span><span>הערות אישיות</span></div><div class="auth-popup-benefit"><span>⚡</span><span>שלח פנייה בלחיצה אחת</span></div><div class="auth-popup-benefit"><span>🔔</span><span>התראות על שינויים</span></div>`,
+        popupRegBtn: 'צור חשבון', popupLoginBtn: 'כבר יש לי חשבון', popupClose: 'המשך ללא הרשמה',
+      }
+    };
+
+    let lang = 'ru', sortIdx = 4, editingNote = null;
+    let showFavOnly = false, selectedBeds = new Set(), selectedPool = new Set(), filterSea = false;
+    let ALL_DATA = [], galleryIndex = {};
+    let searchFormOpen = false, extraFiltersOpen = false, currentTab = 'buy';
+
+    const SORT_FNS = [(a, b) => a.price - b.price, (a, b) => b.price - a.price, (a, b) => a.rooms - b.rooms, (a, b) => a.area - b.area, (a, b) => a.days_ago - b.days_ago];
+
+    function switchTab(tab) {
+      currentTab = tab;
+      document.getElementById('tab-buy').classList.toggle('active', tab === 'buy');
+      document.getElementById('tab-sell').classList.toggle('active', tab === 'sell');
+      document.getElementById('buy-panel').classList.toggle('hidden', tab === 'sell');
+      document.getElementById('sell-panel').classList.toggle('active', tab === 'sell');
+      if (tab === 'sell') applyProfileAutofill();
+    }
+
+    async function submitSellForm() {
+      const name = document.getElementById('sf-name').value.trim();
+      const phone = document.getElementById('sf-phone').value.trim();
+      const type = document.getElementById('sf-type').value;
+      const market = document.getElementById('sf-market').value;
+      const area = document.getElementById('sf-area').value.trim();
+      const price = document.getElementById('sf-price').value.trim();
+      const desc = document.getElementById('sf-desc').value.trim();
+      const t = T[lang];
+
+      let msg = `🏡 <b>Хочу продать недвижимость</b>\n\n`;
+      msg += `<b>Имя:</b> ${name || '—'}\n`;
+      msg += `<b>Телефон:</b> ${phone || '—'}\n`;
+      msg += `<b>Тип:</b> ${t[type] || type}\n`;
+      msg += `<b>Рынок:</b> ${market === 'new' ? t.newBuild : t.resale}\n`;
+      if (area) msg += `<b>Площадь:</b> ${area} м²\n`;
+      if (price) msg += `<b>Цена:</b> €${price}\n`;
+      if (desc) msg += `<b>Описание:</b> ${desc}\n`;
+      msg += `\n🌐 Язык клиента: ${lang.toUpperCase()}`;
+
+      await sendToTelegram(msg);
+      document.getElementById('sell-form-inner').style.display = 'none';
+      document.getElementById('sell-success-title').textContent = t.sfSuccessTitle;
+      document.getElementById('sell-success-text').textContent = t.sfSuccessText;
+      document.getElementById('sell-success').classList.add('show');
+    }
+
+    async function submitSearchForm() {
+      const name = document.getElementById('qf-name').value.trim();
+      const phone = document.getElementById('qf-phone').value.trim();
+      const budget = document.getElementById('qf-budget').value.trim();
+      const msg_text = document.getElementById('qf-msg').value.trim();
+
+      let msg = `🔍 <b>Заявка на подбор недвижимости</b>\n\n`;
+      msg += `<b>Имя:</b> ${name || '—'}\n`;
+      msg += `<b>Телефон:</b> ${phone || '—'}\n`;
+      if (budget) msg += `<b>Бюджет:</b> €${budget}\n`;
+      if (msg_text) msg += `<b>Запрос:</b> ${msg_text}\n`;
+      msg += `\n🌐 Язык клиента: ${lang.toUpperCase()}`;
+
+      await sendToTelegram(msg);
+      const wrap = document.getElementById('search-form-wrap');
+      wrap.innerHTML = `<div style="text-align:center;padding:20px;color:#0f6e56;font-weight:600">✅ ${T[lang].sfSuccessTitle}</div>`;
+    }
+
+    function toggleExtraFilters() { extraFiltersOpen = !extraFiltersOpen; document.getElementById('extra-filters').classList.toggle('open', extraFiltersOpen); updateMoreBtn(); }
+    function countExtraActive() {
+      return selectedBeds.size + (document.getElementById('pmin').value ? 1 : 0) + (document.getElementById('pmax').value ? 1 : 0) + (document.getElementById('imin').value ? 1 : 0) + (document.getElementById('imax').value ? 1 : 0) + (document.getElementById('plotmin').value ? 1 : 0) + (document.getElementById('plotmax').value ? 1 : 0) + (document.getElementById('ymin').value ? 1 : 0) + (document.getElementById('ymax').value ? 1 : 0) + selectedPool.size + (filterSea ? 1 : 0);
+    }
+    function updateMoreBtn() {
+      const t = T[lang], btn = document.getElementById('more-filters-btn'), cnt = countExtraActive();
+      btn.classList.toggle('active', extraFiltersOpen); btn.classList.toggle('has-active', cnt > 0);
+      document.getElementById('extra-count').textContent = cnt;
+      document.getElementById('more-filters-label').textContent = extraFiltersOpen ? t.lessFilters : t.moreFilters;
+    }
+    function onFilter() { if (showFavOnly) exitFavView(); else render(); updateResetBtn(); updateMoreBtn(); }
+    function exitFavView() { showFavOnly = false; updateFavBtn(); render(); }
+    function updateFavBtn() { const t = T[lang]; document.getElementById('fav-toggle').classList.toggle('active', showFavOnly); document.getElementById('fav-label').textContent = showFavOnly ? t.favLabelExit : t.favLabel; }
+    function toggleSearchForm() { searchFormOpen = !searchFormOpen; document.getElementById('search-form-wrap').classList.toggle('open', searchFormOpen); if (searchFormOpen) applyProfileAutofill(); }
+    function goToProperty(id) { window.location.href = `property.html?id=${id}`; }
+    function updateResetBtn() { const hasFilters = document.getElementById('fc').value || document.getElementById('ft').value || document.getElementById('fm').value || document.getElementById('fs').value !== 'all' || countExtraActive() > 0; document.getElementById('reset-btn').style.display = hasFilters ? 'block' : 'none'; }
+    function resetFilters() { ['fc', 'ft', 'fm'].forEach(id => document.getElementById(id).value = ''); document.getElementById('fs').value = 'all';['pmin', 'pmax', 'imin', 'imax', 'plotmin', 'plotmax', 'ymin', 'ymax'].forEach(id => document.getElementById(id).value = ''); selectedBeds.clear(); selectedPool.clear(); filterSea = false; renderBeds(); renderPoolPills(); renderSeaPills(); document.getElementById('reset-btn').style.display = 'none'; updateMoreBtn(); render(); }
+    function renderPoolPills() { const t = T[lang]; document.getElementById('pool-pills').innerHTML = [{ v: 'yes', l: t.poolYes }, { v: 'possible', l: t.poolPossible }, { v: 'none', l: t.poolNone }].map(o => `<label class="check-pill ${selectedPool.has(o.v) ? 'active' : ''}" onclick="togglePool('${o.v}')"><input type="checkbox" style="display:none"> ${o.l}</label>`).join(''); }
+    function renderSeaPills() { document.getElementById('sea-pills').innerHTML = `<label class="check-pill ${filterSea ? 'active' : ''}" onclick="toggleSea()"><input type="checkbox" style="display:none"> 🌊 ${T[lang].seaYes}</label>`; }
+    function togglePool(v) { selectedPool.has(v) ? selectedPool.delete(v) : selectedPool.add(v); renderPoolPills(); onFilter(); }
+    function toggleSea() { filterSea = !filterSea; renderSeaPills(); onFilter(); }
+    async function toggleFav(id, e) { e.stopPropagation(); if (!isLoggedIn()) { showAuthPopup(); return; } await toggleFavSupabase(id); buildRecs(); render(); }
+    function toggleFavView() { showFavOnly = !showFavOnly; updateFavBtn(); render(); }
+    function startEditNote(id, e) { e.stopPropagation(); if (!isLoggedIn()) { showAuthPopup(); return; } editingNote = id; render(); const el = document.getElementById('note-input-' + id); if (el) el.focus(); }
+    async function saveNote(id) { const el = document.getElementById('note-input-' + id); if (!el) return; const text = el.value.trim(); if (isLoggedIn()) { await saveNoteSupabase(id, text); } else { notes[id] = text; saveNotesLocal(); } editingNote = null; render(); }
+
+    function buildRecs() {
+      const t = T[lang]; const block = document.getElementById('recs-block'); const scroll = document.getElementById('recs-scroll');
+      if (!ALL_DATA.length) { block.style.display = 'none'; return; }
+      let recs = [];
+      if (favs.size > 0) {
+        const favProps = ALL_DATA.filter(d => favs.has(d.id)); const favCities = new Set(favProps.map(d => d.city)); const favTypes = new Set(favProps.map(d => d.type));
+        recs = ALL_DATA.filter(d => !favs.has(d.id) && d.status === 'available' && (favCities.has(d.city) || favTypes.has(d.type))).slice(0, 8);
+        document.getElementById('recs-title-text').textContent = t.recsTitle;
+      } else {
+        recs = ALL_DATA.filter(d => d.status === 'available').sort((a, b) => a.days_ago - b.days_ago).slice(0, 8);
+        document.getElementById('recs-title-text').textContent = t.recsTitleNew;
+      }
+      if (!recs.length) { block.style.display = 'none'; return; }
+      scroll.innerHTML = recs.map(d => { const img = d.images?.length > 0 ? `<img class="rec-img" src="${d.images[0]}" alt="фото">` : `<div class="rec-img-placeholder">${d.emoji}</div>`; const rl = roomsLabel(d); return `<div class="rec-card" onclick="goToProperty(${d.id})">${img}<div class="rec-body"><div class="rec-title">${d['title_' + lang]}</div><div class="rec-price">€${(d.price * 1000).toLocaleString()}</div><div class="rec-meta">📍 ${getCityLabel(d)}${rl ? ' · 🛏️ ' + rl : ''}</div></div></div>`; }).join('');
+      block.style.display = 'block';
+    }
+
+    function updateTexts() {
+      const t = T[lang];
+      document.getElementById('app').setAttribute('dir', t.rtl ? 'rtl' : 'ltr');
+      document.getElementById('hn').textContent = t.h; document.getElementById('hs').textContent = t.s;
+      document.getElementById('tab-buy-label').textContent = t.tabBuy; document.getElementById('tab-sell-label').textContent = t.tabSell;
+      document.getElementById('lc').textContent = t.lc; document.getElementById('lt').textContent = t.lt; document.getElementById('lm').textContent = t.lm; document.getElementById('lst-label').textContent = t.lstL;
+      document.getElementById('lb2').textContent = t.lb2; document.getElementById('lp').textContent = t.lp; document.getElementById('l-internal').textContent = t.lInternal; document.getElementById('l-plot').textContent = t.lPlot; document.getElementById('l-year').textContent = t.lYear; document.getElementById('l-pool').textContent = t.lPool; document.getElementById('l-sea').textContent = t.lSea;
+      document.getElementById('pmin').placeholder = t.priceFrom; document.getElementById('pmax').placeholder = t.priceTo; document.getElementById('reset-label').textContent = t.resetLabel;
+      const cityKeys = ['Limassol', 'Limassol_district', 'Paphos', 'Paphos_district', 'Larnaca', 'Larnaca_district', 'Nicosia', 'Nicosia_district', 'Famagusta_district'];
+      const fc = document.getElementById('fc'); fc.options[0].text = t.all; cityKeys.forEach((c, i) => { if (fc.options[i + 1]) fc.options[i + 1].text = t.cities[c]; });
+      const ft = document.getElementById('ft'); ft.options[0].text = t.all;['apt', 'penthouse', 'house', 'townhouse', 'land_res', 'land_other', 'commercial', 'building'].forEach((v, i) => { if (ft.options[i + 1]) ft.options[i + 1].text = t[v]; });
+      const fmk = document.getElementById('fm'); fmk.options[0].text = t.all; if (fmk.options[1]) fmk.options[1].text = t.newBuild; if (fmk.options[2]) fmk.options[2].text = t.resale;
+      const fs = document.getElementById('fs');[t.statusAll, t.statusAvailable, t.statusSold, t.statusUnavailable].forEach((v, i) => { if (fs.options[i]) fs.options[i].text = v; });
+      document.getElementById('sell-title').textContent = t.sellTitle; document.getElementById('sell-sub').textContent = t.sellSub;
+      ['name', 'phone', 'type', 'market', 'area', 'price', 'desc'].forEach(f => { const el = document.getElementById(`sf-label-${f}`); if (el) el.textContent = t[`sfLabel${f.charAt(0).toUpperCase() + f.slice(1)}`]; });
+      document.getElementById('sf-submit').textContent = t.sfSubmit;
+      document.getElementById('sf-name').placeholder = t.sfLabelName; document.getElementById('sf-phone').placeholder = t.sfLabelPhone; document.getElementById('sf-area').placeholder = t.sfLabelArea; document.getElementById('sf-price').placeholder = t.sfLabelPrice; document.getElementById('sf-desc').placeholder = t.sfLabelDesc;
+      const sfType = document.getElementById('sf-type');['apt', 'house', 'townhouse', 'land_res', 'land_other', 'commercial', 'building'].forEach((v, i) => { if (sfType.options[i]) sfType.options[i].text = t[v]; });
+      const sfMarket = document.getElementById('sf-market'); if (sfMarket.options[0]) sfMarket.options[0].text = t.newBuild; if (sfMarket.options[1]) sfMarket.options[1].text = t.resale;
+      document.getElementById('ba-search').textContent = t.baSearch; document.getElementById('ba-search-sub').textContent = t.baSearchSub;
+      document.getElementById('qf-name').placeholder = t.qfName; document.getElementById('qf-phone').placeholder = t.qfPhone; document.getElementById('qf-budget').placeholder = t.qfBudget; document.getElementById('qf-msg').placeholder = t.qfMsg; document.getElementById('qf-submit').textContent = t.qfSubmit;
+      updateFavBtn(); updateMoreBtn(); updateAuthBtn();
+    }
+
+    function setLang(l, btn) {
+      lang = l; localStorage.setItem('bcp_lang', l);
+      document.querySelectorAll('.lb').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      updateTexts(); renderBeds(); renderPoolPills(); renderSeaPills(); renderSorts(); render(); buildRecs(); applyProfileAutofill();
+    }
+
+    function renderBeds() { const t = T[lang]; document.getElementById('beds-pills').innerHTML = BEDS_OPTIONS.map(b => `<span class="bed-pill ${selectedBeds.has(b) ? 'active' : ''}" onclick="toggleBed('${b}')">${t.beds[b]}</span>`).join(''); }
+    function toggleBed(b) { if (showFavOnly) exitFavView(); selectedBeds.has(b) ? selectedBeds.delete(b) : selectedBeds.add(b); renderBeds(); render(); updateResetBtn(); updateMoreBtn(); }
+    function renderSorts() { const t = T[lang]; document.getElementById('sort-bar').innerHTML = t.sorts.map((s, i) => `<button class="sort-btn ${i === sortIdx ? 'active' : ''}" onclick="setSort(${i})">${s}</button>`).join(''); }
+    function setSort(i) { sortIdx = i; renderSorts(); render(); }
+
+    function galleryNav(id, dir, total, e) { e.stopPropagation(); galleryIndex[id] = ((galleryIndex[id] || 0) + dir + total) % total; const wrap = document.getElementById('gallery-' + id); if (!wrap) return; const imgs = ALL_DATA.find(d => d.id === id)?.images || []; const idx = galleryIndex[id]; wrap.querySelector('.gallery-img').src = imgs[idx]; wrap.querySelectorAll('.gallery-dot').forEach((d, i) => d.classList.toggle('active', i === idx)); const pc = wrap.querySelector('.photo-count'); if (pc) pc.textContent = `${idx + 1}/${imgs.length}`; }
+    function getCityLabel(d) { return T[lang].cities[d.district ? d.city + '_district' : d.city] || d.city; }
+    function roomsLabel(d) { const t = T[lang]; if (ROOMS_TYPES.includes(d.type) && d.rooms === 0) return t.studio; if (d.rooms === 0) return ''; if (d.rooms >= 5) return `5+ ${t.rooms}`; return `${d.rooms} ${t.rooms}`; }
+    function buildGallery(d) { const imgs = d.images && d.images.length > 0 ? d.images : []; const idx = galleryIndex[d.id] || 0; if (!imgs.length) return `<div class="no-photo">${d.emoji}</div>`; const dots = imgs.length > 1 ? `<div class="gallery-nav-dots">${imgs.map((_, i) => `<button class="gallery-dot ${i === idx ? 'active' : ''}" onclick="event.stopPropagation();galleryNav(${d.id},${i - idx},${imgs.length},event)"></button>`).join('')}</div>` : ''; const navBtns = imgs.length > 1 ? `<button class="gallery-prev" onclick="galleryNav(${d.id},-1,${imgs.length},event)">‹</button><button class="gallery-next" onclick="galleryNav(${d.id},1,${imgs.length},event)">›</button>` : ''; const count = imgs.length > 1 ? `<span class="photo-count">${idx + 1}/${imgs.length}</span>` : ''; return `<img class="gallery-img" src="${imgs[idx]}" alt="фото">${navBtns}${dots}${count}`; }
+
+    function render() {
+      const t = T[lang];
+      const cityFilter = document.getElementById('fc').value; const type = document.getElementById('ft').value; const market = document.getElementById('fm').value; const statusFilter = document.getElementById('fs').value;
+      const pmin = (parseFloat(document.getElementById('pmin').value) || 0) / 1000; const pmax = (parseFloat(document.getElementById('pmax').value) || Infinity) / 1000;
+      const imin = parseInt(document.getElementById('imin').value) || 0; const imax = parseInt(document.getElementById('imax').value) || Infinity;
+      const plotmin = parseInt(document.getElementById('plotmin').value) || 0; const plotmax = parseInt(document.getElementById('plotmax').value) || Infinity;
+      const ymin = parseInt(document.getElementById('ymin').value) || 0; const ymax = parseInt(document.getElementById('ymax').value) || Infinity;
+      let f = ALL_DATA.filter(d => {
+        if (showFavOnly && !favs.has(d.id)) return false;
+        if (cityFilter) { if (cityFilter.endsWith('_district')) { if (d.city + '_district' !== cityFilter) return false; } else { if (d.city !== cityFilter || d.district) return false; } }
+        if (type && d.type !== type) return false; if (market && d.market !== market) return false;
+        if (statusFilter === 'available' && d.status !== 'available') return false; if (statusFilter === 'sold' && d.status !== 'sold') return false; if (statusFilter === 'unavailable' && d.status !== 'unavailable') return false;
+        if (selectedBeds.size > 0) { if (!ROOMS_TYPES.includes(d.type)) return false; const bedKey = d.rooms === 0 ? 'studio' : d.rooms >= 5 ? '5+' : String(d.rooms); if (!selectedBeds.has(bedKey)) return false; }
+        if (d.price < pmin || d.price > pmax) return false;
+        if (d.internal_area && (d.internal_area < imin || d.internal_area > imax)) return false;
+        if (PLOT_TYPES.includes(d.type) && d.plot_size && (d.plot_size < plotmin || d.plot_size > plotmax)) return false;
+        if (ymin > 0 && d.year_built && d.year_built < ymin) return false; if (ymax < Infinity && d.year_built && d.year_built > ymax) return false;
+        if (selectedPool.size > 0) { const poolVal = d.pool || 'none'; if (!selectedPool.has(poolVal)) return false; }
+        if (filterSea && !d.sea_walking) return false;
+        return true;
+      });
+      f = [...f].sort(SORT_FNS[sortIdx]);
+      document.getElementById('rc').textContent = t.res(f.length);
+      const con = document.getElementById('lst');
+      if (!f.length) { con.innerHTML = `<div class="none">${showFavOnly ? t.favEmpty : t.none}</div>`; return; }
+      con.innerHTML = f.map((d) => {
+        const isSold = d.status === 'sold', isUnavail = d.status === 'unavailable', isFav = favs.has(d.id);
+        let badgeClass = '', badgeText = '';
+        if (isSold) { badgeClass = 'badge-sold'; badgeText = t.soldBadge; } else if (isUnavail) { badgeClass = 'badge-unavailable'; badgeText = t.unavailBadge; } else if (d.market === 'new') { badgeClass = 'badge-new-build'; badgeText = t.newBuild; } else { badgeClass = 'badge-resale'; badgeText = t.resale; }
+        const rl = roomsLabel(d), note = notes[d.id] || '', isEditingThis = editingNote === d.id;
+        const noteHtml = isFav ? `<div class="note-area">${isEditingThis ? `<div class="note-edit-wrap"><textarea class="note-input" id="note-input-${d.id}" rows="3" onclick="event.stopPropagation()">${note}</textarea><button class="note-save-btn" onclick="event.stopPropagation();saveNote(${d.id})">${t.noteSave}</button></div>` : `<div class="note-display ${note ? '' : 'empty'}" onclick="startEditNote(${d.id},event)">${note ? '📝 ' + note : '📝 ' + t.notePlaceholder}</div>`}</div>` : '';
+        return `<div class="card ${d.status}" onclick="goToProperty(${d.id})"><div class="card-img-wrap" id="gallery-${d.id}">${buildGallery(d)}${isSold ? `<div class="sold-overlay"><div class="sold-stamp">${t.soldBadge}</div></div>` : ''}<button class="fav-btn" onclick="toggleFav(${d.id},event)">${isFav ? '❤️' : '🤍'}</button><span class="status-badge ${badgeClass}">${badgeText}</span></div><div class="card-body"><div class="card-top"><span class="card-title">${d['title_' + lang]}${d.is_new && !isSold ? `<span class="new-badge">${t.newBadge}</span>` : ''}</span><span class="card-price">€${(d.price * 1000).toLocaleString()}</span></div><div class="card-meta"><span>📍 ${getCityLabel(d)}</span>${rl ? `<span>🛏️ ${rl}</span>` : ''}<span>📐 ${d.area} ${t.area}</span>${d.year_built ? `<span>🏗️ ${d.year_built}</span>` : ''}${d.pool && d.pool !== 'none' ? `<span>${d.pool === 'yes' ? '🏊 ' + t.poolYes : '🏊 ' + t.poolPossible}</span>` : ''} ${d.sea_walking ? `<span>🌊</span>` : ''}</div><span class="tag">${d['tag_' + lang]}</span>${noteHtml}<div class="card-footer"><span class="view-btn">${t.viewMore}</span><button class="quick-wa" onclick="event.stopPropagation();location.href='https://wa.me/35799000000?text=${encodeURIComponent(d['title_' + lang])}'">💬 ${t.wa}</button></div></div></div>`;
+      }).join('');
+    }
+
+    window.onload = async function () {
+      const savedLang = localStorage.getItem('bcp_lang');
+      if (savedLang && T[savedLang]) {
+        lang = savedLang;
+        const activeLb = document.querySelector(`.lb[onclick*="'${savedLang}'"]`);
+        if (activeLb) { document.querySelectorAll('.lb').forEach(b => b.classList.remove('active')); activeLb.classList.add('active'); }
+      }
+      if (isLoggedIn()) { await refreshProfile(); await loadFavsFromSupabase(); } else { loadLocalStorage(); }
+      updateTexts(); renderBeds(); renderPoolPills(); renderSeaPills(); renderSorts(); updateAuthBtn();
+      try { ALL_DATA = await fetchProperties(); render(); buildRecs(); applyProfileAutofill(); }
+      catch (e) { document.getElementById('lst').innerHTML = `<div class="none">${T[lang].error}</div>`; }
+    };
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js');
+    }
+  </script>
 </body>
+
 </html>
